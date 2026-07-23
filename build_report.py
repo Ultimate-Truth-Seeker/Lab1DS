@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 """Genera el PDF del avance (Análisis Exploratorio + Análisis preliminar de series)."""
 
+import os
+
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.units import inch
 from reportlab.lib import colors
@@ -13,12 +15,18 @@ from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
 from PIL import Image as PILImage
 
 
-def sized_image(path, width_in):
-    """Return a reportlab Image scaled to width_in inches, preserving aspect ratio."""
+def sized_image(path, width_in, height_in=None):
+    """Return a reportlab Image scaled to the requested size while preserving aspect ratio."""
     with PILImage.open(path) as im:
         w, h = im.size
-    width = width_in * inch
-    height = width * (h / w)
+
+    if height_in is None:
+        width = width_in * inch
+        height = width * (h / w)
+    else:
+        height = height_in * inch
+        width = height * (w / h)
+
     return Image(path, width=width, height=height)
 
 FIG = "figs"
@@ -307,7 +315,7 @@ for nombre, fig, media, sd, mn, mx, adf_stat, adf_p, interpretacion in series_in
     block.append(sized_image(f"{FIG}/{fig}", 6.0))
     block.append(Paragraph(f"Figura. {nombre} — serie, tendencia, estacionalidad y residuo (train).", styles["Caption"]))
     story.append(KeepTogether(block))
-    story.append(Image(f"{FIG}/{fig.replace('.png','_acf.png')}", width=4.3*inch, height=None, kind="proportional"))
+    story.append(sized_image(f"{FIG}/{fig.replace('.png','_acf.png')}", 4.3))
     story.append(Paragraph("Figura. Función de autocorrelación (ACF, 36 rezagos).", styles["Caption"]))
     p(interpretacion)
     p(f"<b>Prueba ADF preliminar</b> (sobre el nivel, sin diferenciar): estadístico = {adf_stat:.3f}, "
@@ -338,12 +346,16 @@ bullet("Desarrollar el análisis comparativo entre las series de cada categoría
        "volatilidad, impacto de la pandemia) y los hallazgos generales orientados a la toma de decisiones del "
        "INGUAT.")
 
+output_dir = os.path.join(os.getcwd(), "outputs")
+os.makedirs(output_dir, exist_ok=True)
+output_path = os.path.join(output_dir, "Laboratorio1_Avance_SeriesDeTiempo.pdf")
+
 doc = SimpleDocTemplate(
-    "/mnt/user-data/outputs/Laboratorio1_Avance_SeriesDeTiempo.pdf",
+    output_path,
     pagesize=letter,
     topMargin=0.7*inch, bottomMargin=0.7*inch, leftMargin=0.75*inch, rightMargin=0.75*inch,
     title="Laboratorio 1 - Avance - Series de Tiempo - CC3084",
     author="CC3084 Data Science - UVG",
 )
 doc.build(story)
-print("PDF generado.")
+print(f"PDF generado en {output_path}")
