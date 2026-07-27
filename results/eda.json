@@ -1,0 +1,294 @@
+{
+  "dataset": {
+    "filas": 161036,
+    "columnas": 14,
+    "columnas_fuente": 13
+  },
+  "calidad": {
+    "faltantes_por_columna": {
+      "Año": 0,
+      "Mes cod": 0,
+      "Mes": 0,
+      "Vía": 0,
+      "Frontera": 0,
+      "País": 0,
+      "Región": 0,
+      "Región dos": 0,
+      "Regiones OMT": 0,
+      "MCEO": 0,
+      "Agrupación Residencia": 0,
+      "Tipo de Viajero": 0,
+      "Viajero": 0,
+      "Fecha": 0
+    },
+    "faltantes_total": 0,
+    "duplicados_exactos": 0,
+    "ceros": 54,
+    "pct_ceros": 0.033532874636727196,
+    "negativos": 0,
+    "iqr_umbral_superior": 94.22916666666666,
+    "iqr_filas_sobre_umbral": 26390,
+    "iqr_pct_sobre_umbral": 16.387640030800565,
+    "registros_por_anio": {
+      "2009": 10213,
+      "2010": 10459,
+      "2011": 10975,
+      "2012": 10971,
+      "2013": 11324,
+      "2014": 11806,
+      "2015": 12280,
+      "2016": 12595,
+      "2017": 11418,
+      "2018": 12151,
+      "2019": 11644,
+      "2020": 4375,
+      "2021": 6523,
+      "2022": 7323,
+      "2023": 4660,
+      "2024": 4837,
+      "2025": 5148,
+      "2026": 2334
+    }
+  },
+  "descriptivos_viajero": {
+    "count": 161036.0,
+    "media": 324.69719251394116,
+    "sd": 2387.7451401889202,
+    "min": 0.0,
+    "p25": 2.0,
+    "mediana": 7.0,
+    "p75": 38.891666666666666,
+    "max": 92336.03506702803,
+    "max_contexto": {
+      "pais": "Belice",
+      "frontera": "20 Melchor de Mencos",
+      "tipo_viajero": "Viajero",
+      "fecha": "2017-08"
+    }
+  },
+  "quiebre_metodologico": {
+    "anio_corte": 2023,
+    "paises_antes": 232,
+    "grupos_despues": 26,
+    "viajero_anio_previo": 1060805.8,
+    "viajero_anio_corte": 330882.1886773848
+  },
+  "cuasi_duplicados": {
+    "combinaciones_repetidas": 20
+  },
+  "region_sin_asignar": {
+    "registros": 13,
+    "pct": 0.008072729079212101,
+    "anios": [
+      2022
+    ]
+  },
+  "impacto_pandemia": {
+    "anio_base": 2019,
+    "total_base": 4132250.6018769946,
+    "pct_respecto_base": {
+      "2020": 25.646325317776466,
+      "2021": 26.59481441397788
+    }
+  },
+  "top_paises": [
+    {
+      "nombre": "El Salvador",
+      "acumulado": 16213975.460637605,
+      "pct": 31.009017302766985
+    },
+    {
+      "nombre": "Guatemala",
+      "acumulado": 14792331.349785285,
+      "pct": 28.29014142073436
+    },
+    {
+      "nombre": "Estados Unidos de América",
+      "acumulado": 7047842.963420366,
+      "pct": 13.478908052528435
+    },
+    {
+      "nombre": "Honduras",
+      "acumulado": 2788232.816192475,
+      "pct": 5.332459016689247
+    },
+    {
+      "nombre": "México",
+      "acumulado": 1808945.7790694959,
+      "pct": 3.4595852879579634
+    },
+    {
+      "nombre": "Belice",
+      "acumulado": 1328255.7686093096,
+      "pct": 2.5402718914492826
+    },
+    {
+      "nombre": "Nicaragua",
+      "acumulado": 1164342.7311080275,
+      "pct": 2.226790337936035
+    },
+    {
+      "nombre": "Cruceristas",
+      "acumulado": 1078372.0,
+      "pct": 2.0623724322267143
+    },
+    {
+      "nombre": "Costa Rica",
+      "acumulado": 882179.7476337904,
+      "pct": 1.6871572998822755
+    },
+    {
+      "nombre": "Colombia",
+      "acumulado": 561035.317097089,
+      "pct": 1.0729727510419498
+    }
+  ],
+  "regiones": [
+    {
+      "nombre": "América Del Centro",
+      "acumulado": 37406534.831772566,
+      "pct": 71.5395116176756
+    },
+    {
+      "nombre": "América Del Norte",
+      "acumulado": 9383035.372518081,
+      "pct": 17.94493317972778
+    },
+    {
+      "nombre": "Europa",
+      "acumulado": 2222620.8476609015,
+      "pct": 4.250733479270803
+    },
+    {
+      "nombre": "América Del Sur y el Caribe",
+      "acumulado": 1447949.6454330508,
+      "pct": 2.769184874972244
+    },
+    {
+      "nombre": "Cruceristas",
+      "acumulado": 1078372.0,
+      "pct": 2.062372432226714
+    },
+    {
+      "nombre": "Asia",
+      "acumulado": 421702.5162151041,
+      "pct": 0.8065005805442551
+    },
+    {
+      "nombre": "Oceanía",
+      "acumulado": 140047.18729855752,
+      "pct": 0.26783842523307005
+    },
+    {
+      "nombre": "Oriente Medio",
+      "acumulado": 135712.54647113924,
+      "pct": 0.25954848099669164
+    },
+    {
+      "nombre": "Cruceros",
+      "acumulado": 26030.0,
+      "pct": 0.04978203663565204
+    },
+    {
+      "nombre": "Otros Paises Del Mundo",
+      "acumulado": 25111.14630563996,
+      "pct": 0.048024740889380975
+    },
+    {
+      "nombre": "0",
+      "acumulado": 821.0,
+      "pct": 0.0015701518278090788
+    }
+  ],
+  "vias": [
+    {
+      "nombre": "Terrestre",
+      "acumulado": 31995304.9060934,
+      "pct": 61.190604725470585
+    },
+    {
+      "nombre": "Aérea",
+      "acumulado": 19063850.187581636,
+      "pct": 36.45936567248448
+    },
+    {
+      "nombre": "Marítima",
+      "acumulado": 1228782.0,
+      "pct": 2.3500296020449403
+    }
+  ],
+  "fronteras": [
+    {
+      "nombre": "01 La Aurora",
+      "acumulado": 19034395.24839665,
+      "pct": 36.40303348417838
+    },
+    {
+      "nombre": "07 Valle Nuevo",
+      "acumulado": 10732340.48923108,
+      "pct": 20.525461675804586
+    },
+    {
+      "nombre": "09 San Cristóbal",
+      "acumulado": 5363009.008367814,
+      "pct": 10.256685014671472
+    },
+    {
+      "nombre": "08 Pedro de Alvarado",
+      "acumulado": 4393577.482680648,
+      "pct": 8.402659823449246
+    },
+    {
+      "nombre": "10 La Ermita (Nueva Anguiatú)",
+      "acumulado": 2879210.144925561,
+      "pct": 5.506451975275654
+    },
+    {
+      "nombre": "20 Melchor de Mencos",
+      "acumulado": 2349551.0311426823,
+      "pct": 4.493485805212409
+    },
+    {
+      "nombre": "13 El Cinchado / El Corinto",
+      "acumulado": 1497006.4230710664,
+      "pct": 2.8630053245151843
+    },
+    {
+      "nombre": "12 El Florido",
+      "acumulado": 1221039.8854890994,
+      "pct": 2.3352229086827014
+    },
+    {
+      "nombre": "11 Agua Caliente",
+      "acumulado": 1154542.4281519472,
+      "pct": 2.208047385926811
+    },
+    {
+      "nombre": "15 El Carmen",
+      "acumulado": 1023092.4230100734,
+      "pct": 1.9566509598135031
+    }
+  ],
+  "tipos_viajero": [
+    {
+      "nombre": "Turista",
+      "acumulado": 37642728.55012445,
+      "pct": 71.99122903373802
+    },
+    {
+      "nombre": "Excursionista",
+      "acumulado": 9069184.336393053,
+      "pct": 17.34469715289284
+    },
+    {
+      "nombre": "Viajero",
+      "acumulado": 4471622.207157529,
+      "pct": 8.551919344506775
+    },
+    {
+      "nombre": "Cruceristas",
+      "acumulado": 1104402.0,
+      "pct": 2.112154468862366
+    }
+  ]
+}

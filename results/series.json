@@ -1,0 +1,167 @@
+{
+  "periodo_estacional": 12,
+  "lags_acf": 36,
+  "series": [
+    {
+      "clave": "total",
+      "nombre": "Total mensual de viajeros internacionales",
+      "categoria": "obligatoria",
+      "fig_panel": "figs/10_serie_total.png",
+      "fig_acf": "figs/10_serie_total_acf.png",
+      "inicio": "2009-01",
+      "fin": "2021-03",
+      "frecuencia": "Mensual (MS)",
+      "n_obs": 147,
+      "media": 237120.91144306015,
+      "sd": 101886.47100784692,
+      "min": 9779.0,
+      "max": 515820.44595176575,
+      "meses_en_cero": 0,
+      "racha_ceros_max": 0,
+      "adf": {
+        "stat": -1.9700820414677906,
+        "pvalue": 0.29984314212502194,
+        "alpha": 0.05,
+        "estacionaria": false
+      }
+    },
+    {
+      "clave": "Aérea",
+      "nombre": "Vía de ingreso: Aérea",
+      "categoria": "via",
+      "fig_panel": "figs/11_serie_via_Aerea.png",
+      "fig_acf": "figs/11_serie_via_Aerea_acf.png",
+      "inicio": "2009-01",
+      "fin": "2021-03",
+      "frecuencia": "Mensual (MS)",
+      "n_obs": 147,
+      "media": 89141.25507585192,
+      "sd": 29412.47620486511,
+      "min": 489.0,
+      "max": 157842.00000000003,
+      "meses_en_cero": 0,
+      "racha_ceros_max": 0,
+      "adf": {
+        "stat": -2.3637391826888505,
+        "pvalue": 0.15223331912213406,
+        "alpha": 0.05,
+        "estacionaria": false
+      }
+    },
+    {
+      "clave": "Terrestre",
+      "nombre": "Vía de ingreso: Terrestre",
+      "categoria": "via",
+      "fig_panel": "figs/11_serie_via_Terrestre.png",
+      "fig_acf": "figs/11_serie_via_Terrestre_acf.png",
+      "inicio": "2009-01",
+      "fin": "2021-03",
+      "frecuencia": "Mensual (MS)",
+      "n_obs": 147,
+      "media": 139988.46589101775,
+      "sd": 72323.8691584526,
+      "min": 5715.0,
+      "max": 348626.4459517657,
+      "meses_en_cero": 0,
+      "racha_ceros_max": 0,
+      "adf": {
+        "stat": -1.8725677323453351,
+        "pvalue": 0.3450740877252113,
+        "alpha": 0.05,
+        "estacionaria": false
+      }
+    },
+    {
+      "clave": "Marítima",
+      "nombre": "Vía de ingreso: Marítima",
+      "categoria": "via",
+      "fig_panel": "figs/11_serie_via_Maritima.png",
+      "fig_acf": "figs/11_serie_via_Maritima_acf.png",
+      "inicio": "2009-01",
+      "fin": "2021-03",
+      "frecuencia": "Mensual (MS)",
+      "n_obs": 147,
+      "media": 7991.190476190476,
+      "sd": 6934.347760790477,
+      "min": 0.0,
+      "max": 29506.0,
+      "meses_en_cero": 16,
+      "racha_ceros_max": 12,
+      "adf": {
+        "stat": -0.9893818845320322,
+        "pvalue": 0.7571172873966927,
+        "alpha": 0.05,
+        "estacionaria": false
+      }
+    },
+    {
+      "clave": "El Salvador",
+      "nombre": "País de residencia: El Salvador",
+      "categoria": "pais",
+      "fig_panel": "figs/12_serie_pais_El_Salvador.png",
+      "fig_acf": "figs/12_serie_pais_El_Salvador_acf.png",
+      "inicio": "2009-01",
+      "fin": "2021-03",
+      "frecuencia": "Mensual (MS)",
+      "n_obs": 147,
+      "media": 61502.012810111955,
+      "sd": 33698.016109175725,
+      "min": 0.0,
+      "max": 165263.0,
+      "meses_en_cero": 5,
+      "racha_ceros_max": 5,
+      "adf": {
+        "stat": -1.780707786559189,
+        "pvalue": 0.3900809274184229,
+        "alpha": 0.05,
+        "estacionaria": false
+      }
+    },
+    {
+      "clave": "Guatemala",
+      "nombre": "País de residencia: Guatemala",
+      "categoria": "pais",
+      "fig_panel": "figs/12_serie_pais_Guatemala.png",
+      "fig_acf": "figs/12_serie_pais_Guatemala_acf.png",
+      "inicio": "2009-01",
+      "fin": "2021-03",
+      "frecuencia": "Mensual (MS)",
+      "n_obs": 147,
+      "media": 86951.76428425364,
+      "sd": 40005.624337529145,
+      "min": 9779.0,
+      "max": 207097.0000000001,
+      "meses_en_cero": 0,
+      "racha_ceros_max": 0,
+      "adf": {
+        "stat": -2.0911465270168637,
+        "pvalue": 0.24808949785954382,
+        "alpha": 0.05,
+        "estacionaria": false
+      }
+    },
+    {
+      "clave": "Estados Unidos de América",
+      "nombre": "País de residencia: Estados Unidos de América",
+      "categoria": "pais",
+      "fig_panel": "figs/12_serie_pais_Estados_Unidos_de_America.png",
+      "fig_acf": "figs/12_serie_pais_Estados_Unidos_de_America_acf.png",
+      "inicio": "2009-01",
+      "fin": "2021-03",
+      "frecuencia": "Mensual (MS)",
+      "n_obs": 147,
+      "media": 27955.115397417456,
+      "sd": 11062.867135988012,
+      "min": 0.0,
+      "max": 54990.0,
+      "meses_en_cero": 5,
+      "racha_ceros_max": 5,
+      "adf": {
+        "stat": -3.1223223442498798,
+        "pvalue": 0.024944736205908643,
+        "alpha": 0.05,
+        "estacionaria": true
+      }
+    }
+  ]
+}

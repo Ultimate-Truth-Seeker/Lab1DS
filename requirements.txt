@@ -1,0 +1,16 @@
+# Laboratorio 1 - Series de Tiempo (CC3084)
+# Probado con Python 3.13.6
+#
+# Las versiones van fijas a proposito: matplotlib cambia el layout entre
+# versiones menores, asi que con otra version las figuras salen distintas
+# aunque el codigo sea el mismo.
+
+pandas==2.3.3
+numpy==2.2.6
+matplotlib==3.10.0
+statsmodels==0.14.6
+openpyxl==3.1.5
+
+# generacion del PDF
+reportlab==4.5.1
+pillow==11.3.0

@@ -1,0 +1,10 @@
+docs/temp/*
+
+# cache del Excel: se regenera solo, pesa ~25MB
+.cache/
+
+__pycache__/
+*.pyc
+
+
+

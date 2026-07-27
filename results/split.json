@@ -1,0 +1,21 @@
+{
+  "n_meses_total": 210,
+  "train_frac_objetivo": 0.7,
+  "corte": "2021-03",
+  "train": {
+    "inicio": "2009-01",
+    "fin": "2021-03",
+    "n_meses": 147,
+    "pct_meses": 70.0,
+    "filas": 131442,
+    "pct_filas": 81.62274274075362
+  },
+  "test": {
+    "inicio": "2021-04",
+    "fin": "2026-06",
+    "n_meses": 63,
+    "pct_meses": 30.0,
+    "filas": 29594,
+    "pct_filas": 18.37725725924638
+  }
+}
