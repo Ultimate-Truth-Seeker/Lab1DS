@@ -29,8 +29,8 @@
           "aic": -324.8726246830522,
           "bic": -318.89175950949476,
           "ljung_box": {
-            "stat": 23.115903238561845,
-            "pvalue": 0.02675792159743239,
+            "stat": 23.115903422461006,
+            "pvalue": 0.02675792008659316,
             "alpha": 0.05,
             "independientes": false
           },
@@ -45,44 +45,44 @@
             "seasonal_periods": 12,
             "alpha": 0.9999999850988388,
             "beta": 0.0,
-            "gamma": 2.8482252410219185e-10
+            "gamma": 2.8483160859552593e-10
           },
-          "aic": -347.9986353053582,
-          "bic": -300.1517139168984,
+          "aic": -347.99863530334926,
+          "bic": -300.15171391488946,
           "ljung_box": {
-            "stat": 16.701453664207747,
-            "pvalue": 0.16117689818826747,
+            "stat": 16.7014589448812,
+            "pvalue": 0.16117668711917454,
             "alpha": 0.05,
             "independientes": true
           },
-          "mae": 196955.0152172675,
-          "rmse": 216456.06048933268,
+          "mae": 196956.51222466503,
+          "rmse": 216457.59930032396,
           "n_obs_comparados": 63
         },
         "sarima": {
           "parametros": {
             "order": [
-              2,
+              1,
               1,
               2
             ],
             "seasonal_order": [
               1,
-              1,
+              0,
               1,
               12
             ]
           },
-          "aic": 68.4966107486049,
-          "bic": 87.95047520038561,
+          "aic": 72.09484893472867,
+          "bic": 89.34603287393557,
           "ljung_box": {
-            "stat": 34.21197092014,
-            "pvalue": 0.0006245212358714188,
+            "stat": 36.39470623926303,
+            "pvalue": 0.00027988723296605615,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 249761.85725660346,
-          "rmse": 273949.39117615036,
+          "mae": 238984.22672928983,
+          "rmse": 257978.55853884417,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -107,7 +107,7 @@
         "criterio": "rmse",
         "valor": 194790.81178631884,
         "gana_seasonal_naive_a_sarima": true,
-        "nota_seasonal_naive": "seasonal_naive (rmse=253203.4) iguala o supera a sarima (rmse=273949.4): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
+        "nota_seasonal_naive": "seasonal_naive (rmse=253203.4) iguala o supera a sarima (rmse=257978.6): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
         "modelos_excluidos_sin_metrica": [
           "prophet"
         ]
@@ -126,8 +126,8 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 303.48922688544377,
-            "pvalue": 8.689375676815129e-58,
+            "stat": 303.48922688544394,
+            "pvalue": 8.689375676814505e-58,
             "alpha": 0.05,
             "independientes": false
           },
@@ -139,11 +139,11 @@
           "parametros": {
             "alpha": 0.9999999850988388
           },
-          "aic": -216.17006855248482,
-          "bic": -210.18920337892735,
+          "aic": -216.17006855248493,
+          "bic": -210.18920337892746,
           "ljung_box": {
-            "stat": 20.88881283881095,
-            "pvalue": 0.052032513153587194,
+            "stat": 20.88881271560529,
+            "pvalue": 0.05203251501092177,
             "alpha": 0.05,
             "independientes": true
           },
@@ -158,44 +158,44 @@
             "seasonal_periods": 12,
             "alpha": 0.9999999850988388,
             "beta": 0.0,
-            "gamma": 2.36914785112401e-10
+            "gamma": 2.36921881048584e-10
           },
-          "aic": -221.82345595431264,
-          "bic": -173.97653456585286,
+          "aic": -221.82345595431855,
+          "bic": -173.97653456585877,
           "ljung_box": {
-            "stat": 25.904288578637903,
-            "pvalue": 0.011073551738539062,
+            "stat": 25.90428846861884,
+            "pvalue": 0.011073552134744351,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 48043.4297255726,
-          "rmse": 52231.09228355116,
+          "mae": 48043.42362390681,
+          "rmse": 52231.08631113691,
           "n_obs_comparados": 63
         },
         "sarima": {
           "parametros": {
             "order": [
-              2,
               1,
-              2
+              0,
+              1
             ],
             "seasonal_order": [
               1,
-              1,
               0,
+              1,
               12
             ]
           },
-          "aic": 165.05536535416613,
-          "bic": 181.7803158108584,
+          "aic": 178.92920448079204,
+          "bic": 193.3809501219008,
           "ljung_box": {
-            "stat": 16.703592480227773,
-            "pvalue": 0.16109142777382537,
+            "stat": 34.30380975664548,
+            "pvalue": 0.0006039869151683614,
             "alpha": 0.05,
-            "independientes": true
+            "independientes": false
           },
-          "mae": 5.7003416582788435e+20,
-          "rmse": 4.4406751651602775e+21,
+          "mae": 68719.95167433949,
+          "rmse": 73149.55530601462,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -219,8 +219,8 @@
         "modelo": "simple_exponential",
         "criterio": "rmse",
         "valor": 41367.771593564175,
-        "gana_seasonal_naive_a_sarima": true,
-        "nota_seasonal_naive": "seasonal_naive (rmse=79077.3) iguala o supera a sarima (rmse=4440675165160277540864.0): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
+        "gana_seasonal_naive_a_sarima": false,
+        "nota_seasonal_naive": "sarima (rmse=73149.6) supera a seasonal_naive (rmse=79077.3).",
         "modelos_excluidos_sin_metrica": [
           "prophet"
         ]
@@ -239,8 +239,8 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 414.950065545546,
-            "pvalue": 2.575894220758557e-81,
+            "stat": 414.95006554554584,
+            "pvalue": 2.5758942207587786e-81,
             "alpha": 0.05,
             "independientes": false
           },
@@ -250,18 +250,18 @@
         },
         "simple_exponential": {
           "parametros": {
-            "alpha": 0.7838554307860052
+            "alpha": 0.7838550907565695
           },
-          "aic": -281.78921260537567,
-          "bic": -275.8083474318182,
+          "aic": -281.7892126053239,
+          "bic": -275.80834743176644,
           "ljung_box": {
-            "stat": 35.416128455859,
-            "pvalue": 0.00040191451110413413,
+            "stat": 35.41611953419448,
+            "pvalue": 0.00040191583111104595,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 140428.41369380837,
-          "rmse": 156309.51307947334,
+          "mae": 140428.41672989578,
+          "rmse": 156309.51652749506,
           "n_obs_comparados": 63
         },
         "holt_winters": {
@@ -271,18 +271,18 @@
             "seasonal_periods": 12,
             "alpha": 0.9999999850988388,
             "beta": 0.0,
-            "gamma": 7.63792494559366e-09
+            "gamma": 7.636394695162212e-09
           },
-          "aic": -279.0556761306996,
-          "bic": -231.20875474223985,
+          "aic": -279.05567616015304,
+          "bic": -231.20875477169326,
           "ljung_box": {
-            "stat": 29.845314398966696,
-            "pvalue": 0.002946072258353972,
+            "stat": 29.845261540709416,
+            "pvalue": 0.002946126123587941,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 148023.58757746557,
-          "rmse": 164246.33992263064,
+          "mae": 148022.65981234456,
+          "rmse": 164245.40107524925,
           "n_obs_comparados": 63
         },
         "sarima": {
@@ -294,21 +294,21 @@
             ],
             "seasonal_order": [
               1,
-              1,
               0,
+              1,
               12
             ]
           },
-          "aic": 124.17946112193178,
-          "bic": 132.59152425613155,
+          "aic": 124.27575038126565,
+          "bic": 135.80695807161112,
           "ljung_box": {
-            "stat": 10.876499648706883,
-            "pvalue": 0.5395313493724774,
+            "stat": 13.682148892588119,
+            "pvalue": 0.3214644777490759,
             "alpha": 0.05,
             "independientes": true
           },
-          "mae": 174971.00991621835,
-          "rmse": 192354.2524147406,
+          "mae": 165278.67164812252,
+          "rmse": 181597.23812089532,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -331,9 +331,9 @@
       "ganador": {
         "modelo": "simple_exponential",
         "criterio": "rmse",
-        "valor": 156309.51307947334,
+        "valor": 156309.51652749506,
         "gana_seasonal_naive_a_sarima": true,
-        "nota_seasonal_naive": "seasonal_naive (rmse=176653.0) iguala o supera a sarima (rmse=192354.3): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
+        "nota_seasonal_naive": "seasonal_naive (rmse=176653.0) iguala o supera a sarima (rmse=181597.2): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
         "modelos_excluidos_sin_metrica": [
           "prophet"
         ]
@@ -363,18 +363,18 @@
         },
         "simple_exponential": {
           "parametros": {
-            "alpha": 0.6052412691083541
+            "alpha": 0.6052412458777842
           },
-          "aic": 212.15649169096253,
-          "bic": 218.13735686452,
+          "aic": 212.15649169096633,
+          "bic": 218.1373568645238,
           "ljung_box": {
-            "stat": 59.83090767470593,
-            "pvalue": 2.4233343804434197e-08,
+            "stat": 59.83091381731319,
+            "pvalue": 2.4233281358753257e-08,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 858.364994254136,
-          "rmse": 1731.929627843785,
+          "mae": 858.3649942540756,
+          "rmse": 1731.9296278437394,
           "n_obs_comparados": 63
         },
         "holt_winters": {
@@ -382,46 +382,46 @@
             "trend": "add",
             "seasonal": "add",
             "seasonal_periods": 12,
-            "alpha": 0.36336798870525644,
+            "alpha": 0.36337000525690033,
             "beta": 0.0,
             "gamma": 0.0
           },
-          "aic": 191.68212644433137,
-          "bic": 239.52904783279115,
+          "aic": 191.68212670891157,
+          "bic": 239.52904809737134,
           "ljung_box": {
-            "stat": 30.270452435184605,
-            "pvalue": 0.0025421291572681006,
+            "stat": 30.270382144777173,
+            "pvalue": 0.002542191314159068,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 859.2412322263415,
-          "rmse": 1732.3196496246703,
+          "mae": 859.2412450764762,
+          "rmse": 1732.3196682455155,
           "n_obs_comparados": 63
         },
         "sarima": {
           "parametros": {
             "order": [
               0,
-              1,
+              2,
               2
             ],
             "seasonal_order": [
               1,
-              1,
+              0,
               1,
               12
             ]
           },
-          "aic": 505.77898126170186,
-          "bic": 519.6745987272595,
+          "aic": 551.9245978679116,
+          "bic": 566.2622701201896,
           "ljung_box": {
-            "stat": 19.590643357538642,
-            "pvalue": 0.07523677431250454,
+            "stat": 19.694495765871004,
+            "pvalue": 0.0730902970394945,
             "alpha": 0.05,
             "independientes": true
           },
-          "mae": 859.290243040767,
-          "rmse": 1732.392339232058,
+          "mae": 859.3650502061931,
+          "rmse": 1732.425522294201,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -444,7 +444,7 @@
       "ganador": {
         "modelo": "simple_exponential",
         "criterio": "rmse",
-        "valor": 1731.929627843785,
+        "valor": 1731.9296278437394,
         "gana_seasonal_naive_a_sarima": true,
         "nota_seasonal_naive": "seasonal_naive (rmse=1731.9) iguala o supera a sarima (rmse=1732.4): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
         "modelos_excluidos_sin_metrica": [
@@ -465,8 +465,8 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 233.4559519250448,
-            "pvalue": 3.81258866657002e-43,
+            "stat": 233.4559519250449,
+            "pvalue": 3.812588666569801e-43,
             "alpha": 0.05,
             "independientes": false
           },
@@ -476,18 +476,18 @@
         },
         "simple_exponential": {
           "parametros": {
-            "alpha": 0.9914560381792573
+            "alpha": 0.9914560711547445
           },
-          "aic": 66.51152113528427,
-          "bic": 72.49238630884174,
+          "aic": 66.5115211352818,
+          "bic": 72.49238630883927,
           "ljung_box": {
-            "stat": 41.556116352522125,
-            "pvalue": 3.9545008268230896e-05,
+            "stat": 41.55611780087309,
+            "pvalue": 3.9544986142825676e-05,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 94064.17740338422,
-          "rmse": 104530.77428055771,
+          "mae": 94064.177226165,
+          "rmse": 104530.77406890852,
           "n_obs_comparados": 63
         },
         "holt_winters": {
@@ -497,18 +497,18 @@
             "seasonal_periods": 12,
             "alpha": 0.9999999850988388,
             "beta": 0.0,
-            "gamma": 1.4562000099709663e-08
+            "gamma": 1.4561955946511465e-08
           },
-          "aic": 86.03140919879647,
-          "bic": 133.87833058725624,
+          "aic": 86.0314091995223,
+          "bic": 133.87833058798208,
           "ljung_box": {
-            "stat": 44.21950563869344,
-            "pvalue": 1.4010983335562675e-05,
+            "stat": 44.21950533207676,
+            "pvalue": 1.401098502273854e-05,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 101043.94809784424,
-          "rmse": 111526.55719022248,
+          "mae": 101044.21903731371,
+          "rmse": 111526.85044393853,
           "n_obs_comparados": 63
         },
         "sarima": {
@@ -519,22 +519,22 @@
               2
             ],
             "seasonal_order": [
-              1,
-              1,
+              0,
+              0,
               1,
               12
             ]
           },
-          "aic": 400.6150718289839,
-          "bic": 420.0689362807646,
+          "aic": 438.38783232695806,
+          "bic": 455.63901626616496,
           "ljung_box": {
-            "stat": 18.47111904663742,
-            "pvalue": 0.10211652163541321,
+            "stat": 15.061548077924325,
+            "pvalue": 0.23808780453163897,
             "alpha": 0.05,
             "independientes": true
           },
-          "mae": 113109.20113244253,
-          "rmse": 123010.19434230399,
+          "mae": 107540.1733755612,
+          "rmse": 117605.17694718712,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -557,9 +557,9 @@
       "ganador": {
         "modelo": "simple_exponential",
         "criterio": "rmse",
-        "valor": 104530.77428055771,
-        "gana_seasonal_naive_a_sarima": true,
-        "nota_seasonal_naive": "seasonal_naive (rmse=117633.4) iguala o supera a sarima (rmse=123010.2): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
+        "valor": 104530.77406890852,
+        "gana_seasonal_naive_a_sarima": false,
+        "nota_seasonal_naive": "sarima (rmse=117605.2) supera a seasonal_naive (rmse=117633.4).",
         "modelos_excluidos_sin_metrica": [
           "prophet"
         ]
@@ -578,8 +578,8 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 444.4519659275216,
-            "pvalue": 1.422696531827814e-87,
+            "stat": 444.4519659275218,
+            "pvalue": 1.4226965318276517e-87,
             "alpha": 0.05,
             "independientes": false
           },
@@ -594,8 +594,8 @@
           "aic": -377.2840532235291,
           "bic": -371.30318804997165,
           "ljung_box": {
-            "stat": 47.44807902758123,
-            "pvalue": 3.898182624353301e-06,
+            "stat": 47.44807861487523,
+            "pvalue": 3.8981832672679536e-06,
             "alpha": 0.05,
             "independientes": false
           },
@@ -610,44 +610,44 @@
             "seasonal_periods": 12,
             "alpha": 0.9999999850988388,
             "beta": 0.0,
-            "gamma": 1.4900106802877269e-08
+            "gamma": 1.4900207339307488e-08
           },
-          "aic": -430.73176072093315,
-          "bic": -382.88483933247335,
+          "aic": -430.73176072077473,
+          "bic": -382.884839332315,
           "ljung_box": {
-            "stat": 24.79188173870454,
-            "pvalue": 0.01584045946191418,
+            "stat": 24.79188206188764,
+            "pvalue": 0.01584045783206978,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 44222.49246582649,
-          "rmse": 54635.65751560616,
+          "mae": 44222.49144561319,
+          "rmse": 54635.656505058774,
           "n_obs_comparados": 63
         },
         "sarima": {
           "parametros": {
             "order": [
-              0,
               1,
-              1
+              1,
+              0
             ],
             "seasonal_order": [
               1,
-              1,
               0,
+              1,
               12
             ]
           },
-          "aic": -2.9470233398497623,
-          "bic": 5.465039794350007,
+          "aic": -7.316796067766994,
+          "bic": 4.244600445120021,
           "ljung_box": {
-            "stat": 7.087924291753947,
-            "pvalue": 0.8517488255302659,
+            "stat": 24.53807453082191,
+            "pvalue": 0.017170019298910908,
             "alpha": 0.05,
-            "independientes": true
+            "independientes": false
           },
-          "mae": 27978.35774198039,
-          "rmse": 57389.15211956608,
+          "mae": 35038.016732021315,
+          "rmse": 53135.829671040316,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -668,11 +668,11 @@
         }
       },
       "ganador": {
-        "modelo": "holt_winters",
+        "modelo": "sarima",
         "criterio": "rmse",
-        "valor": 54635.65751560616,
+        "valor": 53135.829671040316,
         "gana_seasonal_naive_a_sarima": false,
-        "nota_seasonal_naive": "sarima (rmse=57389.2) supera a seasonal_naive (rmse=58176.3).",
+        "nota_seasonal_naive": "sarima (rmse=53135.8) supera a seasonal_naive (rmse=58176.3).",
         "modelos_excluidos_sin_metrica": [
           "prophet"
         ]
@@ -704,11 +704,11 @@
           "parametros": {
             "alpha": 0.9999999850988388
           },
-          "aic": 20.06071804383602,
-          "bic": 26.04158321739349,
+          "aic": 20.060718043836573,
+          "bic": 26.041583217394045,
           "ljung_box": {
-            "stat": 33.638546307958705,
-            "pvalue": 0.0007689548650662071,
+            "stat": 33.63854687863793,
+            "pvalue": 0.0007689547063214539,
             "alpha": 0.05,
             "independientes": false
           },
@@ -723,18 +723,18 @@
             "seasonal_periods": 12,
             "alpha": 0.9999999850988388,
             "beta": 0.0,
-            "gamma": 1.4900930203733982e-08
+            "gamma": 1.490103431068516e-08
           },
-          "aic": 25.230350085931175,
-          "bic": 73.07727147439095,
+          "aic": 25.230350132308395,
+          "bic": 73.07727152076818,
           "ljung_box": {
-            "stat": 44.031119571440186,
-            "pvalue": 1.5086286736700919e-05,
+            "stat": 44.03112197415281,
+            "pvalue": 1.5086272516592145e-05,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 34196.715408221055,
-          "rmse": 37643.698209447124,
+          "mae": 34198.02877270252,
+          "rmse": 37645.116515322865,
           "n_obs_comparados": 63
         },
         "sarima": {
@@ -746,21 +746,21 @@
             ],
             "seasonal_order": [
               1,
-              1,
+              0,
               1,
               12
             ]
           },
-          "aic": 365.51516890093416,
-          "bic": 382.18990985960335,
+          "aic": 395.3988259577783,
+          "bic": 412.6500098969852,
           "ljung_box": {
-            "stat": 7.480065927875443,
-            "pvalue": 0.8243289759415648,
+            "stat": 18.372444904628697,
+            "pvalue": 0.10484090242651495,
             "alpha": 0.05,
             "independientes": true
           },
-          "mae": 3.5402648046784476e+24,
-          "rmse": 2.3026079137771334e+25,
+          "mae": 41134.88945889204,
+          "rmse": 44576.38683861993,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -785,7 +785,7 @@
         "criterio": "rmse",
         "valor": 28953.07765049577,
         "gana_seasonal_naive_a_sarima": true,
-        "nota_seasonal_naive": "seasonal_naive (rmse=44196.2) iguala o supera a sarima (rmse=23026079137771333556895744.0): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
+        "nota_seasonal_naive": "seasonal_naive (rmse=44196.2) iguala o supera a sarima (rmse=44576.4): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
         "modelos_excluidos_sin_metrica": [
           "prophet"
         ]
@@ -797,9 +797,9 @@
     "vias": {
       "detalle": {
         "Aérea": {
-          "fuerza_estacionalidad": 0.5581476627853182,
-          "pendiente_anual": 2237.030542774507,
-          "pct_anual_sobre_media": 2.4244879374489763,
+          "fuerza_estacionalidad": 0.5581476627853184,
+          "pendiente_anual": 2237.030542774508,
+          "pct_anual_sobre_media": 2.424487937448977,
           "cv": 0.3299535796286186,
           "impacto_pandemia": {
             "anio_base": 2019,
@@ -812,9 +812,9 @@
           "racha_ceros_max": 0
         },
         "Terrestre": {
-          "fuerza_estacionalidad": 0.386581240048646,
-          "pendiente_anual": 12373.189387481943,
-          "pct_anual_sobre_media": 8.380824533971143,
+          "fuerza_estacionalidad": 0.3865812400486459,
+          "pendiente_anual": 12373.18938748194,
+          "pct_anual_sobre_media": 8.38082453397114,
           "cv": 0.5166416297093888,
           "impacto_pandemia": {
             "anio_base": 2019,
@@ -828,8 +828,8 @@
         },
         "Marítima": {
           "fuerza_estacionalidad": 0.6143625980651215,
-          "pendiente_anual": 286.40390449712214,
-          "pct_anual_sobre_media": 3.436917883601727,
+          "pendiente_anual": 286.40390449712186,
+          "pct_anual_sobre_media": 3.4369178836017236,
           "cv": 0.8677490270631351,
           "impacto_pandemia": {
             "anio_base": 2019,
@@ -848,7 +848,7 @@
       },
       "mas_tendencia_crecimiento": {
         "serie": "Terrestre",
-        "valor": 12373.189387481943
+        "valor": 12373.18938748194
       },
       "mas_volatilidad": {
         "serie": "Marítima",
@@ -863,9 +863,9 @@
     "paises": {
       "detalle": {
         "El Salvador": {
-          "fuerza_estacionalidad": 0.31828223205090445,
-          "pendiente_anual": 5397.515520245494,
-          "pct_anual_sobre_media": 8.298912832398669,
+          "fuerza_estacionalidad": 0.31828223205090433,
+          "pendiente_anual": 5397.515520245492,
+          "pct_anual_sobre_media": 8.298912832398665,
           "cv": 0.5479172887108373,
           "impacto_pandemia": {
             "anio_base": 2019,
@@ -878,9 +878,9 @@
           "racha_ceros_max": 5
         },
         "Guatemala": {
-          "fuerza_estacionalidad": 0.5340471780190741,
-          "pendiente_anual": 6946.2426720996555,
-          "pct_anual_sobre_media": 7.632058020021482,
+          "fuerza_estacionalidad": 0.5340471780190739,
+          "pendiente_anual": 6946.24267209965,
+          "pct_anual_sobre_media": 7.632058020021476,
           "cv": 0.46008985173373745,
           "impacto_pandemia": {
             "anio_base": 2019,
@@ -893,9 +893,9 @@
           "racha_ceros_max": 0
         },
         "Estados Unidos de América": {
-          "fuerza_estacionalidad": 0.7030192049779345,
-          "pendiente_anual": 541.0252827573908,
-          "pct_anual_sobre_media": 1.8711480634405493,
+          "fuerza_estacionalidad": 0.7030192049779346,
+          "pendiente_anual": 541.0252827573913,
+          "pct_anual_sobre_media": 1.8711480634405513,
           "cv": 0.3957367722763906,
           "impacto_pandemia": {
             "anio_base": 2019,
@@ -910,11 +910,11 @@
       },
       "mas_estacionalidad": {
         "serie": "Estados Unidos de América",
-        "valor": 0.7030192049779345
+        "valor": 0.7030192049779346
       },
       "mas_tendencia_crecimiento": {
         "serie": "Guatemala",
-        "valor": 6946.2426720996555
+        "valor": 6946.24267209965
       },
       "mas_volatilidad": {
         "serie": "El Salvador",
@@ -933,6 +933,6 @@
     "Aparte de lo anterior, Marítima es la única vía que estuvo completamente cerrada durante la pandemia (12 meses consecutivos en cero): aunque su peso relativo en el total sea menor, es la que evidencia con más claridad un cierre total del canal (no solo una baja de demanda) y la que un plan de contingencia ante el cierre de fronteras debería priorizar.",
     "Guatemala aparece con la mayor pendiente de crecimiento entre los tres principales países de residencia, pero esa serie corresponde mayoritariamente a residentes guatemaltecos que regresan del extranjero (ver hallazgo del análisis exploratorio), no a un mercado turístico extranjero: no es una serie sobre la que tenga sentido recomendar promoción internacional.",
     "El Salvador (31.0% del total histórico) domina como mercado emisor casi en su totalidad por vía terrestre: si la promoción del INGUAT se diseña con el mismo enfoque que para el turismo aéreo de larga distancia, está apuntando mal a su mercado más grande.",
-    "En Total mensual de viajeros internacionales, Vía de ingreso: Aérea, Vía de ingreso: Terrestre, Vía de ingreso: Marítima, País de residencia: El Salvador, País de residencia: Estados Unidos de América, el modelo seasonal naive iguala o supera a SARIMA en el conjunto de prueba: dado que train solo vio la caída pandémica y test es toda la recuperación (más el quiebre metodológico de 2023), ningún modelo entrenado en ese tramo podía anticipar el rebote — el hallazgo en sí (que el quiebre estructural es más grande que lo que cualquier modelo de serie de tiempo puede capturar) es más útil para INGUAT que la predicción puntual."
+    "En Total mensual de viajeros internacionales, Vía de ingreso: Terrestre, Vía de ingreso: Marítima, País de residencia: Estados Unidos de América, el modelo seasonal naive iguala o supera a SARIMA en el conjunto de prueba: dado que train solo vio la caída pandémica y test es toda la recuperación (más el quiebre metodológico de 2023), ningún modelo entrenado en ese tramo podía anticipar el rebote — el hallazgo en sí (que el quiebre estructural es más grande que lo que cualquier modelo de serie de tiempo puede capturar) es más útil para INGUAT que la predicción puntual."
   ]
 }

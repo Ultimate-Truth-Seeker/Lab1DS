@@ -12,6 +12,7 @@ Opcional: --no-cache fuerza leer el Excel en vez del cache.
 """
 
 import argparse
+import json
 import subprocess
 import sys
 
@@ -38,12 +39,33 @@ def _cmd_series(args):
     pipeline.correr_series(df, paises)
 
 
+def _ordenes_guardados():
+    """
+    Lee los d/D que dejo el analisis de estacionariedad en series.json.
+
+    Si el archivo no existe todavia se devuelve None y correr_modelos usa su
+    default; conviene correr antes 'series' para no modelar con d/D arbitrarios.
+    """
+    ruta = config.RESULTSDIR / "series.json"
+    if not ruta.exists():
+        print("Aviso: falta results/series.json; los modelos usaran d/D por defecto.\n"
+              "       Corre 'python main.py series' antes para usar los reales.",
+              file=sys.stderr)
+        return None, None
+    with open(ruta, encoding="utf-8") as fh:
+        detalle = json.load(fh)["series"]
+    return ({s["clave"]: s["diferenciacion"]["d"] for s in detalle},
+            {s["clave"]: s["diferenciacion"]["D"] for s in detalle})
+
+
 def _cmd_modelos(args):
     df = data.cargar(usar_cache=not args.no_cache)
     resumen = pipeline.correr_eda(df)
     paises = [d["nombre"] for d in resumen["top_paises"][:config.TOP_N_PAISES]]
     part = pipeline.S.particion(df)
-    pipeline.correr_modelos(df, part, paises)
+    d_por_serie, D_por_serie = _ordenes_guardados()
+    pipeline.correr_modelos(df, part, paises,
+                            d_por_serie=d_por_serie, D_por_serie=D_por_serie)
 
 
 def _cmd_prediccion(args):

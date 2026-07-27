@@ -10,7 +10,7 @@ import unicodedata
 
 import pandas as pd
 
-from src import config, data, eda, plots, series as S, stationarity as St
+from src import config, data, decomposition, eda, plots, series as S, stationarity as St
 from src import comparison as Cmp, evaluation as E, models as M, transform as T
 
 # nombre para mostrar de cada serie, por clave
@@ -84,6 +84,15 @@ def _nombre_figura(clave: str) -> str:
     if clave in config.VIAS:
         return f"11_serie_via_{slug(clave)}"
     return f"12_serie_pais_{slug(clave)}"
+
+
+def _nombre_figura_completo(clave: str) -> str:
+    """Igual que _nombre_figura pero para las series del periodo completo (2x)."""
+    if clave == "total":
+        return "20_completo_total"
+    if clave in config.VIAS:
+        return f"21_completo_via_{slug(clave)}"
+    return f"22_completo_pais_{slug(clave)}"
 
 
 def correr_eda(df: pd.DataFrame) -> dict:
@@ -175,23 +184,60 @@ def correr_series(df: pd.DataFrame, paises: list) -> dict:
     print(f"\n  top-{config.TOP_N_PAISES} paises (acumulado de todo el periodo): {paises}")
     series = S.construir_series(part["train"], part["meses_train"], paises)
 
+    # Las mismas 7 series pero sobre los 210 meses. Solo para graficar el
+    # comportamiento pos-pandemia: el modelado usa unicamente entrenamiento.
+    series_completas = S.construir_series(df, part["meses"], paises)
+
     detalle = []
     for clave, s in series.items():
         nombre = _etiqueta(clave)
         base = _nombre_figura(clave)
         f_panel = config.FIGDIR / f"{base}.png"
         f_acf = config.FIGDIR / f"{base}_acf.png"
+        f_pacf = config.FIGDIR / f"{base}_pacf.png"
+        f_completo = config.FIGDIR / f"{_nombre_figura_completo(clave)}.png"
 
-        plots.panel_serie(s, nombre, f_panel)
+        # --- estacionariedad en varianza -> transformacion
+        s_t, varianza, transformacion = T.decidir(s)
+
+        # Dos descomposiciones distintas, no es un descuido:
+        #  - la del nivel es solo para dibujar el panel, que se lee mejor en
+        #    viajeros que en logaritmos (de ahi el _ que descarta sus metricas);
+        #  - la de la serie transformada es la que se cita en el informe.
+        dec_nivel, _ = decomposition.metricas_forma(s, etiqueta_base="nivel")
+        _, forma = decomposition.metricas_forma(s_t, etiqueta_base=transformacion["nombre"])
+
+        # --- estacionariedad en media -> cuantas diferenciaciones
+        ordenes = St.determinar_ordenes(s_t, forma["fuerza_estacionalidad"],
+                                        serie_base=transformacion["nombre"])
+        s_final = St.diferenciar(s_t, d=ordenes["d"], D=ordenes["D"])
+
+        plots.panel_serie(s, nombre, f_panel, dec=dec_nivel)
         plots.acf_serie(s, nombre, f_acf)
+        plots.pacf_serie(s_final, nombre, f_pacf, subtitulo=ordenes["orden_recomendado"])
+        plots.serie_periodo_completo(series_completas[clave], nombre, f_completo,
+                                     corte_train=part["corte"])
 
         desc = eda.describir_serie(s)
         adf = St.adf_test(s)
+        pruebas = {
+            "nivel": St.pruebas_conjuntas(s),
+            "transformada": St.pruebas_conjuntas(s_t),
+            "final": St.pruebas_conjuntas(s_final),
+        }
+
         print(f"  {nombre}")
         print(f"     {desc['inicio']} a {desc['fin']} | {desc['frecuencia']} | n={desc['n_obs']} "
               f"| media {desc['media']:,.1f} | sd {desc['sd']:,.1f}")
-        print(f"     ADF: stat {adf['stat']:.3f} | p {adf['pvalue']:.4f} -> "
+        print(f"     ADF nivel: stat {adf['stat']:.3f} | p {adf['pvalue']:.4f} -> "
               f"{'estacionaria' if adf['estacionaria'] else 'NO estacionaria'} en media")
+        if not forma["descomposicion_ok"]:
+            print(f"     ADVERTENCIA: descomposicion fallida")
+        else:
+            print(f"     forma: fuerza estacional {forma['fuerza_estacionalidad']:.3f} "
+                  f"| tendencia {forma['tendencia_signo']}")
+        print(f"     orden: {ordenes['orden_recomendado']} | estacionaria: "
+              f"{ordenes['estacionaria_final']}")
 
         detalle.append({
             "clave": clave,
@@ -200,13 +246,25 @@ def correr_series(df: pd.DataFrame, paises: list) -> dict:
             # manifest: el reporte lee estas rutas en vez de reconstruirlas
             "fig_panel": f_panel.relative_to(config.ROOT).as_posix(),
             "fig_acf": f_acf.relative_to(config.ROOT).as_posix(),
+            "fig_pacf": f_pacf.relative_to(config.ROOT).as_posix(),
+            "fig_periodo_completo": f_completo.relative_to(config.ROOT).as_posix(),
             **desc,
             "adf": adf,
+            "forma": forma,
+            "varianza": varianza,
+            "transformacion": transformacion,
+            "diferenciacion": ordenes,
+            "pruebas": pruebas,
         })
 
     _escribir_json("series.json", {
         "periodo_estacional": config.PERIOD,
         "lags_acf": config.LAGS_ACF,
+        "lags_pacf": config.LAGS_PACF,
+        "n_meses_periodo_completo": len(part["meses"]),
+        "umbral_estacionalidad_fuerte": config.FUERZA_ESTACIONAL_UMBRAL,
+        "umbral_corr_varianza": config.CORR_VARIANZA_UMBRAL,
+        "pre_pandemia_fin": config.PRE_PANDEMIA_FIN,
         "series": detalle,
     })
     return {"split": split, "series": detalle}
@@ -217,10 +275,9 @@ def correr_modelos(df: pd.DataFrame, part: dict, paises: list,
     """
     Ajusta los 5 modelos a las 7 series y escribe results/models.json.
 
-    d/D por defecto son 1,1 (el default de models.sarimax_grid) porque el
-    análisis de estacionariedad (series.json.d / .D, con KPSS) 
-    todavía no está conectado aquí; en cuanto lo esté, pasar d_por_serie /
-    D_por_serie con esos valores en vez de dejar el default.
+    d/D vienen del analisis de estacionariedad (series.json -> diferenciacion),
+    que correr_todo pasa por serie. El default 1,1 solo aplica si se llama a
+    esta funcion sola, sin haber corrido antes correr_series.
     """
     print("\n=== Modelos ===")
     horizon = len(part["meses"]) - part["n_train"]
@@ -336,9 +393,15 @@ def correr_todo(usar_cache: bool = True) -> None:
     df = data.cargar(usar_cache=usar_cache)
     resumen = correr_eda(df)
     paises = [d["nombre"] for d in resumen["top_paises"][:config.TOP_N_PAISES]]
-    correr_series(df, paises)
+    res_series = correr_series(df, paises)
+
+    # los d/D salen del analisis de estacionariedad, no del default 1,1: sin
+    # esto los modelos quedan sobre-diferenciados (D=1 cuando el criterio de
+    # fuerza estacional da D=0 en las 7 series)
+    d_por_serie = {s["clave"]: s["diferenciacion"]["d"] for s in res_series["series"]}
+    D_por_serie = {s["clave"]: s["diferenciacion"]["D"] for s in res_series["series"]}
 
     part = S.particion(df)
-    correr_modelos(df, part, paises)
+    correr_modelos(df, part, paises, d_por_serie=d_por_serie, D_por_serie=D_por_serie)
     correr_prediccion(df, part, paises)
     print("\nListo. Figuras en figs/ y resultados en results/")

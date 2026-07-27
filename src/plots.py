@@ -2,9 +2,8 @@
 Generacion de figuras. Es el unico modulo que toca matplotlib.
 
 Regla: aca no se produce ningun numero que el informe cite. La descomposicion
-estacional vive aca porque sus tres componentes solo existen para dibujarse:
-ninguna metrica derivada de ellas entra al reporte. Si algun dia se cita la
-fuerza de la estacionalidad, la descomposicion se muda a series.py.
+estacional se calcula en decomposition.py y llega ya resuelta como parametro,
+precisamente porque su fuerza de estacionalidad y su pendiente si se citan.
 """
 
 import matplotlib
@@ -13,8 +12,7 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mticker
 import numpy as np
 import pandas as pd
-from statsmodels.graphics.tsaplots import plot_acf
-from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
 
 from src import config
 
@@ -61,6 +59,31 @@ def temporal_comparable(serie_mensual: pd.Series, ruta):
     _guardar(fig, ruta)
 
 
+def serie_periodo_completo(s: pd.Series, nombre: str, ruta, corte_train=None):
+    """
+    Una serie sobre TODO el periodo, no solo el tramo de entrenamiento.
+
+    Sirve para ver la recuperacion pos-pandemia, que en las series de train
+    (que terminan en mar-2021) no se alcanza a ver. Es exploratoria: el
+    modelado sigue usando solo entrenamiento.
+    """
+    fig, ax = plt.subplots(figsize=(9, 3.6))
+    ax.plot(s.index, s.values, color=config.TEAL, linewidth=1.1)
+    ax.set_title(f"{nombre} — periodo completo")
+    ax.set_ylabel("Viajeros")
+
+    if corte_train is not None:
+        ax.axvspan(s.index.min(), pd.Timestamp(corte_train),
+                   color="grey", alpha=0.10, label="Entrenamiento")
+    ax.axvspan(pd.Timestamp(config.PANDEMIA_INICIO), pd.Timestamp(config.PANDEMIA_FIN),
+               color="red", alpha=0.08, label="Pandemia")
+    ax.axvline(pd.Timestamp(config.QUIEBRE_METODOLOGICO), color="orange", linestyle="--",
+               linewidth=1, label="Quiebre metodológico 2023")
+    ax.yaxis.set_major_formatter(mticker.FuncFormatter(_miles))
+    ax.legend(fontsize=7.5)
+    _guardar(fig, ruta)
+
+
 def top_paises(acumulado: pd.Series, ruta):
     fig, ax = plt.subplots(figsize=(8, 5))
     acumulado.head(15).sort_values().plot(kind="barh", ax=ax, color=config.TEAL)
@@ -99,31 +122,25 @@ def distribuciones(viajero: pd.Series, tipo_tot: pd.Series, ruta):
     _guardar(fig, ruta)
 
 
-def panel_serie(s: pd.Series, nombre: str, ruta, period: int = config.PERIOD):
+def panel_serie(s: pd.Series, nombre: str, ruta, dec=None):
     """
     Serie + tendencia + estacionalidad + residuo.
 
-    Si la descomposicion falla, el panel queda con el primer subplot dibujado y
-    los otros tres vacios: preferimos una figura degradada a perder la corrida.
+    'dec' es el resultado de decomposition.descomponer(). Si viene en None
+    (descomposicion fallida) el panel queda con el primer subplot dibujado y los
+    otros tres vacios: preferimos una figura degradada a perder la corrida.
     """
     fig, axes = plt.subplots(4, 1, figsize=(9, 9), sharex=True)
     axes[0].plot(s.index, s.values, color=config.TEAL)
     axes[0].set_title(f"{nombre} — serie mensual (train)")
 
-    # se descompone la serie tal cual. Antes se hacia replace(0, nan).interpolate(),
-    # que inventaba datos justo en los meses que de verdad valen 0 -- por ejemplo
-    # los 12 meses seguidos de la via Maritima con las fronteras cerradas, que es
-    # el evento mas interesante de esa serie.
-    try:
-        dec = seasonal_decompose(s, model="additive", period=period)
+    if dec is not None:
         axes[1].plot(dec.trend, color=config.NARANJA_OSCURO)
         axes[1].set_title("Tendencia")
         axes[2].plot(dec.seasonal, color=config.AZUL_MEDIO)
         axes[2].set_title("Estacionalidad")
         axes[3].plot(dec.resid, color=config.VERDE, marker="o", markersize=2, linestyle="None")
         axes[3].set_title("Residuo")
-    except Exception as e:
-        print("No se pudo descomponer:", e)
 
     _guardar(fig, ruta)
 
@@ -132,6 +149,26 @@ def acf_serie(s: pd.Series, nombre: str, ruta, lags: int = config.LAGS_ACF):
     fig, ax = plt.subplots(figsize=(6, 3.2))
     plot_acf(s, lags=lags, ax=ax)
     ax.set_title(f"ACF — {nombre}")
+    _guardar(fig, ruta)
+
+
+def pacf_serie(s: pd.Series, nombre: str, ruta, lags: int = config.LAGS_PACF,
+               subtitulo: str = ""):
+    """
+    Autocorrelacion parcial, sobre la serie ya transformada y diferenciada.
+
+    Se grafica asi a proposito: el PACF de una serie no estacionaria no es
+    interpretable, y su lectura sirve para proponer el orden p del modelo.
+    """
+    # con 147 obs y d/D aplicados la serie se acorta; plot_pacf exige lags < n/2
+    lags = min(lags, max(1, len(s.dropna()) // 2 - 1))
+
+    fig, ax = plt.subplots(figsize=(6, 3.2))
+    plot_pacf(s.dropna(), lags=lags, ax=ax, method="ywm")
+    titulo = f"PACF — {nombre}"
+    if subtitulo:
+        titulo += f"\n{subtitulo}"
+    ax.set_title(titulo, fontsize=8.5)
     _guardar(fig, ruta)
 
 
