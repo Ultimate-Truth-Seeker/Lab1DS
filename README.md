@@ -17,15 +17,21 @@ pip install -r requirements.txt
 ## Uso
 
 ```bash
-python main.py all       # pipeline completo: figuras + results/*.json
-python main.py eda       # solo exploratorio (6 figuras + eda.json)
-python main.py series    # partición 70/30 + las 7 series (14 figuras)
-python main.py report    # arma el PDF a partir de results/*.json
+python main.py all         # pipeline completo: 41 figuras + results/*.json
+python main.py eda         # exploratorio (6 figuras + eda.json)
+python main.py series      # partición 70/30 + las 7 series + estacionariedad
+python main.py modelos     # ajusta los 5 modelos por serie (models.json)
+python main.py prediccion  # series de prueba + MAE/RMSE + comparativo
+python main.py report      # arma el PDF a partir de results/*.json
 ```
 
 La primera corrida tarda ~45 s porque lee el Excel; después usa un cache en
 `.cache/` y baja a menos de un segundo. Con `--no-cache` se fuerza la lectura
-del Excel.
+del Excel. `modelos` tarda unos minutos: ajusta 35 combinaciones serie-modelo.
+
+Conviene correr `series` antes de `modelos`, porque de ahí salen los órdenes de
+diferenciación; si falta `results/series.json`, los modelos usan valores por
+defecto y avisan por consola.
 
 ## Estructura
 
@@ -37,6 +43,9 @@ src/eda.py            métricas del exploratorio
 src/decomposition.py  descomposición: fuerza de estacionalidad y tendencia
 src/transform.py      estacionariedad en varianza (log1p / expm1)
 src/stationarity.py   estacionariedad en media (ADF, KPSS, d y D)
+src/models.py         SARIMA, Holt-Winters, suav. exponencial, naive, Prophet
+src/evaluation.py     AIC, BIC, Ljung-Box, MAE, RMSE
+src/comparison.py     series de prueba, comparativo por categoría, hallazgos
 src/plots.py          figuras (único módulo que usa matplotlib)
 src/pipeline.py       orquestación; escribe results/*.json
 report/build.py       arma el PDF leyendo results/*.json
@@ -66,3 +75,13 @@ conjunto de entrenamiento (2009-01 a 2021-03, 147 meses):
   fronteras.
 - El dataset combina tres tramos con metodologías distintas. Para comparar en
   todo el rango se usa Turista + Excursionista, según indica el enunciado.
+- Las 7 series se modelan sobre `log1p` y las predicciones se revierten con
+  `expm1` antes de calcular MAE y RMSE, para que el error quede en viajeros.
+- Los órdenes de SARIMA se buscan por grid sobre `SARIMAX` minimizando AIC, no
+  con `auto_arima`: `pmdarima` no es compatible con numpy 2.x.
+
+## Salida
+
+- `outputs/Laboratorio1_SeriesDeTiempo.pdf` — el informe
+- `results/*.json` — todos los números del informe
+- `figs/*.png` — las 41 figuras

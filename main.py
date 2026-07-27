@@ -13,6 +13,7 @@ Opcional: --no-cache fuerza leer el Excel en vez del cache.
 
 import argparse
 import json
+import logging
 import subprocess
 import sys
 
@@ -25,6 +26,14 @@ def _stdout_utf8():
         sys.stdout.reconfigure(encoding="utf-8")
     except (AttributeError, OSError):
         pass
+
+
+def _silenciar_cmdstanpy():
+    """
+    Prophet usa cmdstanpy, que escupe dos lineas de INFO por cada ajuste.
+    Con 7 series eso son 14 lineas de ruido que tapan la salida del pipeline.
+    """
+    logging.getLogger("cmdstanpy").setLevel(logging.ERROR)
 
 
 def _cmd_eda(args):
@@ -97,6 +106,7 @@ def main():
     args = parser.parse_args()
 
     _stdout_utf8()
+    _silenciar_cmdstanpy()
     return {
         "eda": _cmd_eda,
         "series": _cmd_series,

@@ -87,18 +87,20 @@
         },
         "prophet": {
           "parametros": {
-            "disponible": false
+            "yearly_seasonality": true,
+            "weekly_seasonality": false,
+            "daily_seasonality": false
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": null,
-            "pvalue": null,
+            "stat": 263.7287274177345,
+            "pvalue": 1.8627111254919672e-49,
             "alpha": 0.05,
-            "independientes": null
+            "independientes": false
           },
-          "mae": NaN,
-          "rmse": NaN,
+          "mae": 266995.04174632294,
+          "rmse": 284418.8355844055,
           "n_obs_comparados": 63
         }
       },
@@ -108,9 +110,7 @@
         "valor": 194790.81178631884,
         "gana_seasonal_naive_a_sarima": true,
         "nota_seasonal_naive": "seasonal_naive (rmse=253203.4) iguala o supera a sarima (rmse=257978.6): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
-        "modelos_excluidos_sin_metrica": [
-          "prophet"
-        ]
+        "modelos_excluidos_sin_metrica": []
       },
       "fig_forecast": "figs/20_forecast_total.png"
     },
@@ -200,18 +200,20 @@
         },
         "prophet": {
           "parametros": {
-            "disponible": false
+            "yearly_seasonality": true,
+            "weekly_seasonality": false,
+            "daily_seasonality": false
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": null,
-            "pvalue": null,
+            "stat": 239.30145930818856,
+            "pvalue": 2.318035883735636e-44,
             "alpha": 0.05,
-            "independientes": null
+            "independientes": false
           },
-          "mae": NaN,
-          "rmse": NaN,
+          "mae": 89016.95324553501,
+          "rmse": 92230.74108284469,
           "n_obs_comparados": 63
         }
       },
@@ -221,9 +223,7 @@
         "valor": 41367.771593564175,
         "gana_seasonal_naive_a_sarima": false,
         "nota_seasonal_naive": "sarima (rmse=73149.6) supera a seasonal_naive (rmse=79077.3).",
-        "modelos_excluidos_sin_metrica": [
-          "prophet"
-        ]
+        "modelos_excluidos_sin_metrica": []
       },
       "fig_forecast": "figs/20_forecast_Aerea.png"
     },
@@ -313,18 +313,20 @@
         },
         "prophet": {
           "parametros": {
-            "disponible": false
+            "yearly_seasonality": true,
+            "weekly_seasonality": false,
+            "daily_seasonality": false
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": null,
-            "pvalue": null,
+            "stat": 212.78483497504027,
+            "pvalue": 7.420455601712915e-39,
             "alpha": 0.05,
-            "independientes": null
+            "independientes": false
           },
-          "mae": NaN,
-          "rmse": NaN,
+          "mae": 176160.27227093585,
+          "rmse": 192179.29574037972,
           "n_obs_comparados": 63
         }
       },
@@ -334,9 +336,7 @@
         "valor": 156309.51652749506,
         "gana_seasonal_naive_a_sarima": true,
         "nota_seasonal_naive": "seasonal_naive (rmse=176653.0) iguala o supera a sarima (rmse=181597.2): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
-        "modelos_excluidos_sin_metrica": [
-          "prophet"
-        ]
+        "modelos_excluidos_sin_metrica": []
       },
       "fig_forecast": "figs/20_forecast_Terrestre.png"
     },
@@ -426,30 +426,30 @@
         },
         "prophet": {
           "parametros": {
-            "disponible": false
+            "yearly_seasonality": true,
+            "weekly_seasonality": false,
+            "daily_seasonality": false
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": null,
-            "pvalue": null,
+            "stat": 191.95785856688326,
+            "pvalue": 1.4844226631555482e-34,
             "alpha": 0.05,
-            "independientes": null
+            "independientes": false
           },
-          "mae": NaN,
-          "rmse": NaN,
+          "mae": 783.6651107567681,
+          "rmse": 1644.6313619914426,
           "n_obs_comparados": 63
         }
       },
       "ganador": {
-        "modelo": "simple_exponential",
+        "modelo": "prophet",
         "criterio": "rmse",
-        "valor": 1731.9296278437394,
+        "valor": 1644.6313619914426,
         "gana_seasonal_naive_a_sarima": true,
         "nota_seasonal_naive": "seasonal_naive (rmse=1731.9) iguala o supera a sarima (rmse=1732.4): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
-        "modelos_excluidos_sin_metrica": [
-          "prophet"
-        ]
+        "modelos_excluidos_sin_metrica": []
       },
       "fig_forecast": "figs/20_forecast_Maritima.png"
     },
@@ -539,18 +539,20 @@
         },
         "prophet": {
           "parametros": {
-            "disponible": false
+            "yearly_seasonality": true,
+            "weekly_seasonality": false,
+            "daily_seasonality": false
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": null,
-            "pvalue": null,
+            "stat": 200.81876787893054,
+            "pvalue": 2.2100327437537084e-36,
             "alpha": 0.05,
-            "independientes": null
+            "independientes": false
           },
-          "mae": NaN,
-          "rmse": NaN,
+          "mae": 106869.6587992721,
+          "rmse": 117602.52245177452,
           "n_obs_comparados": 63
         }
       },
@@ -560,9 +562,7 @@
         "valor": 104530.77406890852,
         "gana_seasonal_naive_a_sarima": false,
         "nota_seasonal_naive": "sarima (rmse=117605.2) supera a seasonal_naive (rmse=117633.4).",
-        "modelos_excluidos_sin_metrica": [
-          "prophet"
-        ]
+        "modelos_excluidos_sin_metrica": []
       },
       "fig_forecast": "figs/20_forecast_El_Salvador.png"
     },
@@ -652,18 +652,20 @@
         },
         "prophet": {
           "parametros": {
-            "disponible": false
+            "yearly_seasonality": true,
+            "weekly_seasonality": false,
+            "daily_seasonality": false
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": null,
-            "pvalue": null,
+            "stat": 267.6596807537869,
+            "pvalue": 2.808213349580545e-50,
             "alpha": 0.05,
-            "independientes": null
+            "independientes": false
           },
-          "mae": NaN,
-          "rmse": NaN,
+          "mae": 29031.64435960683,
+          "rmse": 57646.31979439853,
           "n_obs_comparados": 63
         }
       },
@@ -673,9 +675,7 @@
         "valor": 53135.829671040316,
         "gana_seasonal_naive_a_sarima": false,
         "nota_seasonal_naive": "sarima (rmse=53135.8) supera a seasonal_naive (rmse=58176.3).",
-        "modelos_excluidos_sin_metrica": [
-          "prophet"
-        ]
+        "modelos_excluidos_sin_metrica": []
       },
       "fig_forecast": "figs/20_forecast_Guatemala.png"
     },
@@ -765,18 +765,20 @@
         },
         "prophet": {
           "parametros": {
-            "disponible": false
+            "yearly_seasonality": true,
+            "weekly_seasonality": false,
+            "daily_seasonality": false
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": null,
-            "pvalue": null,
+            "stat": 207.90238350585312,
+            "pvalue": 7.598509933885609e-38,
             "alpha": 0.05,
-            "independientes": null
+            "independientes": false
           },
-          "mae": NaN,
-          "rmse": NaN,
+          "mae": 43723.82199041123,
+          "rmse": 46906.18360592822,
           "n_obs_comparados": 63
         }
       },
@@ -786,9 +788,7 @@
         "valor": 28953.07765049577,
         "gana_seasonal_naive_a_sarima": true,
         "nota_seasonal_naive": "seasonal_naive (rmse=44196.2) iguala o supera a sarima (rmse=44576.4): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
-        "modelos_excluidos_sin_metrica": [
-          "prophet"
-        ]
+        "modelos_excluidos_sin_metrica": []
       },
       "fig_forecast": "figs/20_forecast_Estados_Unidos_de_America.png"
     }
