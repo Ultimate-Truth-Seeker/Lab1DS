@@ -10,7 +10,7 @@ import unicodedata
 
 import pandas as pd
 
-from src import (config, data, decomposition, eda, plots, series as S,
+from src import (config, data, decomposition, eda, evaluation, models, plots, series as S,
                  stationarity as St, transform as T)
 
 # nombre para mostrar de cada serie, por clave
@@ -26,6 +26,27 @@ def _escribir_json(nombre: str, payload: dict) -> None:
         json.dump(payload, fh, ensure_ascii=False, indent=2)
     print(f"  -> {ruta.relative_to(config.ROOT)}")
 
+def _serializar_modelo(resultado: dict) -> dict:
+    """
+    Convierte un resultado de models.py a un formato serializable a JSON.
+    """
+
+    salida = resultado.copy()
+
+    if "forecast" in salida and salida["forecast"] is not None:
+        salida["forecast"] = {
+            fecha.strftime("%Y-%m"): float(valor)
+            for fecha, valor in salida["forecast"].items()
+        }
+
+    if "residuos" in salida and salida["residuos"] is not None:
+        salida["residuos"] = list(
+            map(float, salida["residuos"].dropna().values)
+        )
+
+    salida.pop("fit", None)
+
+    return salida
 
 def _etiqueta(clave: str) -> str:
     if clave in _ETIQUETAS:
@@ -250,10 +271,87 @@ def correr_series(df: pd.DataFrame, paises: list) -> dict:
     })
     return {"split": split, "series": detalle}
 
+def correr_modelos(df: pd.DataFrame, paises: list) -> dict:
+    """
+    Ajusta todos los modelos para las siete series de entrenamiento.
+
+    Consume los parámetros calculados por stationarity.py
+    (transformación, d y D) y genera results/models.json.
+    """
+
+    print("\n=== Modelos ===")
+
+    part = S.particion(df)
+
+    series = S.construir_series(
+        part["train"],
+        part["meses_train"],
+        paises,
+    )
+
+    with open(
+        config.RESULTSDIR / "series.json",
+        encoding="utf-8",
+    ) as fh:
+        series_info = json.load(fh)
+
+    horizon = part["test"]["Fecha"].nunique()
+
+    salida = {
+        "series": []
+    }
+
+    for info in series_info["series"]:
+
+        clave = info["clave"]
+
+        serie = series[clave]
+
+        transformacion = info["transformacion"]["nombre"]
+
+        d = info["diferenciacion"]["d"]
+
+        D = info["diferenciacion"]["D"]
+
+        resultados = models.ajustar_todos(
+            serie,
+            horizon=horizon,
+            transformacion=transformacion,
+            d=d,
+            D=D,
+        )
+
+        for nombre_modelo in resultados:
+
+            resultados[nombre_modelo] = evaluation.agregar_diagnostico(
+                resultados[nombre_modelo]
+            )
+
+            resultados[nombre_modelo] = _serializar_modelo(
+                resultados[nombre_modelo]
+            )
+
+        salida["series"].append(
+            {
+                "clave": clave,
+                "nombre": info["nombre"],
+                "modelos": resultados,
+            }
+        )
+
+        print(f"  {info['nombre']}  ✓")
+
+    _escribir_json(
+        "models.json",
+        salida,
+    )
+
+    return salida
 
 def correr_todo(usar_cache: bool = True) -> None:
     df = data.cargar(usar_cache=usar_cache)
     resumen = correr_eda(df)
     paises = [d["nombre"] for d in resumen["top_paises"][:config.TOP_N_PAISES]]
     correr_series(df, paises)
+    correr_modelos(df, paises)
     print("\nListo. Figuras en figs/ y resultados en results/")
