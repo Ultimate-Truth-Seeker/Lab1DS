@@ -16,6 +16,7 @@ from statsmodels.tsa.holtwinters import (
 )
 
 from src import config
+from src import transform
 
 
 # ---------------------------------------------------------------------
@@ -381,37 +382,53 @@ def prophet_model(
 def ajustar_todos(
     serie: pd.Series,
     horizon: int,
-    d: int = 1,
-    D: int = 1,
+    transformacion: str = "none",
+    d: int = 0,
+    D: int = 0,
 ) -> dict:
+
+    if transformacion != "none":
+        serie_modelo = transform.aplicar(
+            serie,
+            nombre=transformacion,
+        )
+    else:
+        serie_modelo = serie
 
     resultados = {}
 
     resultados["seasonal_naive"] = seasonal_naive(
-        serie,
+        serie_modelo,
         horizon,
     )
 
     resultados["simple_exponential"] = simple_exponential(
-        serie,
+        serie_modelo,
         horizon,
     )
 
     resultados["holt_winters"] = holt_winters(
-        serie,
+        serie_modelo,
         horizon,
     )
 
     resultados["sarima"] = sarimax_grid(
-        serie,
+        serie_modelo,
         horizon,
         d=d,
         D=D,
     )
 
     resultados["prophet"] = prophet_model(
-        serie,
+        serie_modelo,
         horizon,
     )
+
+    if transformacion != "none":
+        for resultado in resultados.values():
+            resultado["forecast"] = transform.invertir(
+                resultado["forecast"],
+                nombre=transformacion,
+            )
 
     return resultados
