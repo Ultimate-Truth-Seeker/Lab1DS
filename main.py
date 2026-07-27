@@ -2,7 +2,7 @@
 Punto de entrada del laboratorio.
 
     python main.py eda      solo el analisis exploratorio (6 figuras + eda.json)
-    python main.py series    particion + 7 series (14 figuras + split/series.json)
+    python main.py series    particion + 7 series (28 figuras + split/series.json)
     python main.py all       todo el pipeline
     python main.py report    arma el PDF a partir de results/*.json
 

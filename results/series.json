@@ -1,6 +1,11 @@
 {
   "periodo_estacional": 12,
   "lags_acf": 36,
+  "lags_pacf": 36,
+  "n_meses_periodo_completo": 210,
+  "umbral_estacionalidad_fuerte": 0.64,
+  "umbral_corr_varianza": 0.5,
+  "pre_pandemia_fin": "2020-02-01",
   "series": [
     {
       "clave": "total",
@@ -8,6 +13,8 @@
       "categoria": "obligatoria",
       "fig_panel": "figs/10_serie_total.png",
       "fig_acf": "figs/10_serie_total_acf.png",
+      "fig_pacf": "figs/10_serie_total_pacf.png",
+      "fig_periodo_completo": "figs/20_completo_total.png",
       "inicio": "2009-01",
       "fin": "2021-03",
       "frecuencia": "Mensual (MS)",
@@ -23,6 +30,122 @@
         "pvalue": 0.29984314212502194,
         "alpha": 0.05,
         "estacionaria": false
+      },
+      "forma": {
+        "descomposicion_ok": true,
+        "modelo": "additive",
+        "periodo": 12,
+        "serie_base": "log1p",
+        "fuerza_estacionalidad": 0.22385935291579384,
+        "umbral_estacionalidad_fuerte": 0.64,
+        "estacionalidad_fuerte": false,
+        "pendiente_mensual": 0.001580588004510694,
+        "pendiente_anual": 0.01896705605412833,
+        "pct_anual_sobre_media": 0.15426261885019388,
+        "tendencia_signo": "positiva",
+        "n_puntos_tendencia": 135
+      },
+      "varianza": {
+        "necesita_transformacion": true,
+        "criterio": "corr(sd, media) de tramos de 12 meses sobre el tramo pre-pandemia; se transforma si supera 0.5",
+        "tramo_evaluado": {
+          "inicio": "2009-01",
+          "fin": "2020-01",
+          "n_meses": 133
+        },
+        "umbral_corr": 0.5,
+        "corr_nivel_pre_pandemia": 0.9497699924279925,
+        "corr_nivel_completo": -0.21102440784516677,
+        "nota_pandemia": "medida sobre la serie completa la correlacion baja o cambia de signo: el colapso de 2020-2021 enmascara la dependencia varianza-nivel",
+        "corr_post_transformacion": -0.18210283496372923
+      },
+      "transformacion": {
+        "nombre": "log1p",
+        "inversa": "expm1",
+        "motivo": "corr(sd, media) pre-pandemia = 0.95 > 0.5: la dispersion crece con el nivel",
+        "boxcox_descartado": true,
+        "boxcox_motivo": "el lambda optimo es inestable segun se incluya o no la pandemia (pre-pandemia da -0.41 a 0.54; con pandemia da 0.36 a 1.26, o sea 'casi no transformar', contrario a la evidencia), y scipy.stats.boxcox_normmax con su metodo por defecto falla con BracketError en 5 de las 7 series. log1p es estable y admite los ceros exactos sin desplazar la serie."
+      },
+      "diferenciacion": {
+        "serie_base": "log1p",
+        "d": 1,
+        "D": 0,
+        "s": 12,
+        "criterio_D": "fuerza de estacionalidad 0.224 < 0.64 (umbral fpp3)",
+        "criterio_d": "se incrementa d hasta que ADF p < 0.05 y KPSS p > 0.05 simultaneamente (tope 2)",
+        "d_max_permitido": 2,
+        "orden_recomendado": "log1p + (1-B)^1 (1-B^12)^0",
+        "estacionaria_final": true,
+        "pruebas_por_d": [
+          {
+            "d": 0,
+            "adf_pvalue": 0.19358137884673693,
+            "kpss_pvalue_reportable": ">0.1",
+            "ambas_estacionaria": false
+          },
+          {
+            "d": 1,
+            "adf_pvalue": 0.026531787801159574,
+            "kpss_pvalue_reportable": ">0.1",
+            "ambas_estacionaria": true
+          }
+        ]
+      },
+      "pruebas": {
+        "nivel": {
+          "adf": {
+            "stat": -1.9700820414677906,
+            "pvalue": 0.29984314212502194,
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "kpss": {
+            "stat": 0.47619427769737227,
+            "pvalue": 0.04702831583392517,
+            "pvalue_topado": false,
+            "limite": "=",
+            "pvalue_reportable": "0.0470",
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "ambas_estacionaria": false
+        },
+        "transformada": {
+          "adf": {
+            "stat": -2.235593980326036,
+            "pvalue": 0.19358137884673693,
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "kpss": {
+            "stat": 0.16760788672892193,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": false
+        },
+        "final": {
+          "adf": {
+            "stat": -3.1002892809892333,
+            "pvalue": 0.026531787801159574,
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "kpss": {
+            "stat": 0.041147922835071356,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": true
+        }
       }
     },
     {
@@ -31,6 +154,8 @@
       "categoria": "via",
       "fig_panel": "figs/11_serie_via_Aerea.png",
       "fig_acf": "figs/11_serie_via_Aerea_acf.png",
+      "fig_pacf": "figs/11_serie_via_Aerea_pacf.png",
+      "fig_periodo_completo": "figs/21_completo_via_Aerea.png",
       "inicio": "2009-01",
       "fin": "2021-03",
       "frecuencia": "Mensual (MS)",
@@ -46,6 +171,116 @@
         "pvalue": 0.15223331912213406,
         "alpha": 0.05,
         "estacionaria": false
+      },
+      "forma": {
+        "descomposicion_ok": true,
+        "modelo": "additive",
+        "periodo": 12,
+        "serie_base": "log1p",
+        "fuerza_estacionalidad": 0.14623191535099833,
+        "umbral_estacionalidad_fuerte": 0.64,
+        "estacionalidad_fuerte": false,
+        "pendiente_mensual": -0.0032490077659465795,
+        "pendiente_anual": -0.03898809319135896,
+        "pct_anual_sobre_media": -0.34542158828455266,
+        "tendencia_signo": "negativa",
+        "n_puntos_tendencia": 135
+      },
+      "varianza": {
+        "necesita_transformacion": true,
+        "criterio": "corr(sd, media) de tramos de 12 meses sobre el tramo pre-pandemia; se transforma si supera 0.5",
+        "tramo_evaluado": {
+          "inicio": "2009-01",
+          "fin": "2020-01",
+          "n_meses": 133
+        },
+        "umbral_corr": 0.5,
+        "corr_nivel_pre_pandemia": 0.891111488139169,
+        "corr_nivel_completo": -0.584148676383713,
+        "nota_pandemia": "medida sobre la serie completa la correlacion baja o cambia de signo: el colapso de 2020-2021 enmascara la dependencia varianza-nivel",
+        "corr_post_transformacion": -0.21437267633379076
+      },
+      "transformacion": {
+        "nombre": "log1p",
+        "inversa": "expm1",
+        "motivo": "corr(sd, media) pre-pandemia = 0.89 > 0.5: la dispersion crece con el nivel",
+        "boxcox_descartado": true,
+        "boxcox_motivo": "el lambda optimo es inestable segun se incluya o no la pandemia (pre-pandemia da -0.41 a 0.54; con pandemia da 0.36 a 1.26, o sea 'casi no transformar', contrario a la evidencia), y scipy.stats.boxcox_normmax con su metodo por defecto falla con BracketError en 5 de las 7 series. log1p es estable y admite los ceros exactos sin desplazar la serie."
+      },
+      "diferenciacion": {
+        "serie_base": "log1p",
+        "d": 0,
+        "D": 0,
+        "s": 12,
+        "criterio_D": "fuerza de estacionalidad 0.146 < 0.64 (umbral fpp3)",
+        "criterio_d": "se incrementa d hasta que ADF p < 0.05 y KPSS p > 0.05 simultaneamente (tope 2)",
+        "d_max_permitido": 2,
+        "orden_recomendado": "log1p + (1-B)^0 (1-B^12)^0",
+        "estacionaria_final": true,
+        "pruebas_por_d": [
+          {
+            "d": 0,
+            "adf_pvalue": 0.001319708860650759,
+            "kpss_pvalue_reportable": ">0.1",
+            "ambas_estacionaria": true
+          }
+        ]
+      },
+      "pruebas": {
+        "nivel": {
+          "adf": {
+            "stat": -2.3637391826888505,
+            "pvalue": 0.15223331912213406,
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "kpss": {
+            "stat": 0.23339926816979695,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": false
+        },
+        "transformada": {
+          "adf": {
+            "stat": -4.017883585810241,
+            "pvalue": 0.001319708860650759,
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "kpss": {
+            "stat": 0.2483210139282369,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": true
+        },
+        "final": {
+          "adf": {
+            "stat": -4.017883585810241,
+            "pvalue": 0.001319708860650759,
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "kpss": {
+            "stat": 0.2483210139282369,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": true
+        }
       }
     },
     {
@@ -54,6 +289,8 @@
       "categoria": "via",
       "fig_panel": "figs/11_serie_via_Terrestre.png",
       "fig_acf": "figs/11_serie_via_Terrestre_acf.png",
+      "fig_pacf": "figs/11_serie_via_Terrestre_pacf.png",
+      "fig_periodo_completo": "figs/21_completo_via_Terrestre.png",
       "inicio": "2009-01",
       "fin": "2021-03",
       "frecuencia": "Mensual (MS)",
@@ -69,6 +306,122 @@
         "pvalue": 0.3450740877252113,
         "alpha": 0.05,
         "estacionaria": false
+      },
+      "forma": {
+        "descomposicion_ok": true,
+        "modelo": "additive",
+        "periodo": 12,
+        "serie_base": "log1p",
+        "fuerza_estacionalidad": 0.24458006494546047,
+        "umbral_estacionalidad_fuerte": 0.64,
+        "estacionalidad_fuerte": false,
+        "pendiente_mensual": 0.003966132868387859,
+        "pendiente_anual": 0.047593594420654306,
+        "pct_anual_sobre_media": 0.40490015027129034,
+        "tendencia_signo": "positiva",
+        "n_puntos_tendencia": 135
+      },
+      "varianza": {
+        "necesita_transformacion": true,
+        "criterio": "corr(sd, media) de tramos de 12 meses sobre el tramo pre-pandemia; se transforma si supera 0.5",
+        "tramo_evaluado": {
+          "inicio": "2009-01",
+          "fin": "2020-01",
+          "n_meses": 133
+        },
+        "umbral_corr": 0.5,
+        "corr_nivel_pre_pandemia": 0.9441113509691389,
+        "corr_nivel_completo": 0.06671812817541782,
+        "nota_pandemia": "medida sobre la serie completa la correlacion baja o cambia de signo: el colapso de 2020-2021 enmascara la dependencia varianza-nivel",
+        "corr_post_transformacion": 0.15774107358566863
+      },
+      "transformacion": {
+        "nombre": "log1p",
+        "inversa": "expm1",
+        "motivo": "corr(sd, media) pre-pandemia = 0.94 > 0.5: la dispersion crece con el nivel",
+        "boxcox_descartado": true,
+        "boxcox_motivo": "el lambda optimo es inestable segun se incluya o no la pandemia (pre-pandemia da -0.41 a 0.54; con pandemia da 0.36 a 1.26, o sea 'casi no transformar', contrario a la evidencia), y scipy.stats.boxcox_normmax con su metodo por defecto falla con BracketError en 5 de las 7 series. log1p es estable y admite los ceros exactos sin desplazar la serie."
+      },
+      "diferenciacion": {
+        "serie_base": "log1p",
+        "d": 1,
+        "D": 0,
+        "s": 12,
+        "criterio_D": "fuerza de estacionalidad 0.245 < 0.64 (umbral fpp3)",
+        "criterio_d": "se incrementa d hasta que ADF p < 0.05 y KPSS p > 0.05 simultaneamente (tope 2)",
+        "d_max_permitido": 2,
+        "orden_recomendado": "log1p + (1-B)^1 (1-B^12)^0",
+        "estacionaria_final": true,
+        "pruebas_por_d": [
+          {
+            "d": 0,
+            "adf_pvalue": 0.5618963338518638,
+            "kpss_pvalue_reportable": ">0.1",
+            "ambas_estacionaria": false
+          },
+          {
+            "d": 1,
+            "adf_pvalue": 0.009070833750134207,
+            "kpss_pvalue_reportable": ">0.1",
+            "ambas_estacionaria": true
+          }
+        ]
+      },
+      "pruebas": {
+        "nivel": {
+          "adf": {
+            "stat": -1.8725677323453351,
+            "pvalue": 0.3450740877252113,
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "kpss": {
+            "stat": 0.6271857501473533,
+            "pvalue": 0.020164931804786058,
+            "pvalue_topado": false,
+            "limite": "=",
+            "pvalue_reportable": "0.0202",
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "ambas_estacionaria": false
+        },
+        "transformada": {
+          "adf": {
+            "stat": -1.4421791294963593,
+            "pvalue": 0.5618963338518638,
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "kpss": {
+            "stat": 0.21033718213239014,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": false
+        },
+        "final": {
+          "adf": {
+            "stat": -3.4601726392412733,
+            "pvalue": 0.009070833750134207,
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "kpss": {
+            "stat": 0.10139234383347018,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": true
+        }
       }
     },
     {
@@ -77,6 +430,8 @@
       "categoria": "via",
       "fig_panel": "figs/11_serie_via_Maritima.png",
       "fig_acf": "figs/11_serie_via_Maritima_acf.png",
+      "fig_pacf": "figs/11_serie_via_Maritima_pacf.png",
+      "fig_periodo_completo": "figs/21_completo_via_Maritima.png",
       "inicio": "2009-01",
       "fin": "2021-03",
       "frecuencia": "Mensual (MS)",
@@ -92,6 +447,128 @@
         "pvalue": 0.7571172873966927,
         "alpha": 0.05,
         "estacionaria": false
+      },
+      "forma": {
+        "descomposicion_ok": true,
+        "modelo": "additive",
+        "periodo": 12,
+        "serie_base": "log1p",
+        "fuerza_estacionalidad": 0.39512349409542014,
+        "umbral_estacionalidad_fuerte": 0.64,
+        "estacionalidad_fuerte": false,
+        "pendiente_mensual": -0.018313573456614704,
+        "pendiente_anual": -0.21976288147937645,
+        "pct_anual_sobre_media": -2.738075975808557,
+        "tendencia_signo": "negativa",
+        "n_puntos_tendencia": 135
+      },
+      "varianza": {
+        "necesita_transformacion": true,
+        "criterio": "corr(sd, media) de tramos de 12 meses sobre el tramo pre-pandemia; se transforma si supera 0.5",
+        "tramo_evaluado": {
+          "inicio": "2009-01",
+          "fin": "2020-01",
+          "n_meses": 133
+        },
+        "umbral_corr": 0.5,
+        "corr_nivel_pre_pandemia": 0.9642482642492625,
+        "corr_nivel_completo": 0.7225532791217645,
+        "nota_pandemia": "medida sobre la serie completa la correlacion baja o cambia de signo: el colapso de 2020-2021 enmascara la dependencia varianza-nivel",
+        "corr_post_transformacion": -0.8285448157880895
+      },
+      "transformacion": {
+        "nombre": "log1p",
+        "inversa": "expm1",
+        "motivo": "corr(sd, media) pre-pandemia = 0.96 > 0.5: la dispersion crece con el nivel",
+        "boxcox_descartado": true,
+        "boxcox_motivo": "el lambda optimo es inestable segun se incluya o no la pandemia (pre-pandemia da -0.41 a 0.54; con pandemia da 0.36 a 1.26, o sea 'casi no transformar', contrario a la evidencia), y scipy.stats.boxcox_normmax con su metodo por defecto falla con BracketError en 5 de las 7 series. log1p es estable y admite los ceros exactos sin desplazar la serie."
+      },
+      "diferenciacion": {
+        "serie_base": "log1p",
+        "d": 2,
+        "D": 0,
+        "s": 12,
+        "criterio_D": "fuerza de estacionalidad 0.395 < 0.64 (umbral fpp3)",
+        "criterio_d": "se incrementa d hasta que ADF p < 0.05 y KPSS p > 0.05 simultaneamente (tope 2)",
+        "d_max_permitido": 2,
+        "orden_recomendado": "log1p + (1-B)^2 (1-B^12)^0",
+        "estacionaria_final": true,
+        "pruebas_por_d": [
+          {
+            "d": 0,
+            "adf_pvalue": 1.0,
+            "kpss_pvalue_reportable": "0.0167",
+            "ambas_estacionaria": false
+          },
+          {
+            "d": 1,
+            "adf_pvalue": 0.5749719689733668,
+            "kpss_pvalue_reportable": ">0.1",
+            "ambas_estacionaria": false
+          },
+          {
+            "d": 2,
+            "adf_pvalue": 1.5878661557231832e-16,
+            "kpss_pvalue_reportable": ">0.1",
+            "ambas_estacionaria": true
+          }
+        ]
+      },
+      "pruebas": {
+        "nivel": {
+          "adf": {
+            "stat": -0.9893818845320322,
+            "pvalue": 0.7571172873966927,
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "kpss": {
+            "stat": 0.12147716443176187,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": false
+        },
+        "transformada": {
+          "adf": {
+            "stat": 4.889211946675647,
+            "pvalue": 1.0,
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "kpss": {
+            "stat": 0.66556880419531,
+            "pvalue": 0.01667556325497182,
+            "pvalue_topado": false,
+            "limite": "=",
+            "pvalue_reportable": "0.0167",
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "ambas_estacionaria": false
+        },
+        "final": {
+          "adf": {
+            "stat": -9.633624200941727,
+            "pvalue": 1.5878661557231832e-16,
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "kpss": {
+            "stat": 0.2546008850410646,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": true
+        }
       }
     },
     {
@@ -100,6 +577,8 @@
       "categoria": "pais",
       "fig_panel": "figs/12_serie_pais_El_Salvador.png",
       "fig_acf": "figs/12_serie_pais_El_Salvador_acf.png",
+      "fig_pacf": "figs/12_serie_pais_El_Salvador_pacf.png",
+      "fig_periodo_completo": "figs/22_completo_pais_El_Salvador.png",
       "inicio": "2009-01",
       "fin": "2021-03",
       "frecuencia": "Mensual (MS)",
@@ -115,6 +594,122 @@
         "pvalue": 0.3900809274184229,
         "alpha": 0.05,
         "estacionaria": false
+      },
+      "forma": {
+        "descomposicion_ok": true,
+        "modelo": "additive",
+        "periodo": 12,
+        "serie_base": "log1p",
+        "fuerza_estacionalidad": 0.08828818995800125,
+        "umbral_estacionalidad_fuerte": 0.64,
+        "estacionalidad_fuerte": false,
+        "pendiente_mensual": -0.006547000057489028,
+        "pendiente_anual": -0.07856400068986834,
+        "pct_anual_sobre_media": -0.7356952347873613,
+        "tendencia_signo": "negativa",
+        "n_puntos_tendencia": 135
+      },
+      "varianza": {
+        "necesita_transformacion": true,
+        "criterio": "corr(sd, media) de tramos de 12 meses sobre el tramo pre-pandemia; se transforma si supera 0.5",
+        "tramo_evaluado": {
+          "inicio": "2009-01",
+          "fin": "2020-01",
+          "n_meses": 133
+        },
+        "umbral_corr": 0.5,
+        "corr_nivel_pre_pandemia": 0.9364196788680307,
+        "corr_nivel_completo": 0.14920934611562942,
+        "nota_pandemia": "medida sobre la serie completa la correlacion baja o cambia de signo: el colapso de 2020-2021 enmascara la dependencia varianza-nivel",
+        "corr_post_transformacion": 0.12411861224982158
+      },
+      "transformacion": {
+        "nombre": "log1p",
+        "inversa": "expm1",
+        "motivo": "corr(sd, media) pre-pandemia = 0.94 > 0.5: la dispersion crece con el nivel",
+        "boxcox_descartado": true,
+        "boxcox_motivo": "el lambda optimo es inestable segun se incluya o no la pandemia (pre-pandemia da -0.41 a 0.54; con pandemia da 0.36 a 1.26, o sea 'casi no transformar', contrario a la evidencia), y scipy.stats.boxcox_normmax con su metodo por defecto falla con BracketError en 5 de las 7 series. log1p es estable y admite los ceros exactos sin desplazar la serie."
+      },
+      "diferenciacion": {
+        "serie_base": "log1p",
+        "d": 1,
+        "D": 0,
+        "s": 12,
+        "criterio_D": "fuerza de estacionalidad 0.088 < 0.64 (umbral fpp3)",
+        "criterio_d": "se incrementa d hasta que ADF p < 0.05 y KPSS p > 0.05 simultaneamente (tope 2)",
+        "d_max_permitido": 2,
+        "orden_recomendado": "log1p + (1-B)^1 (1-B^12)^0",
+        "estacionaria_final": true,
+        "pruebas_por_d": [
+          {
+            "d": 0,
+            "adf_pvalue": 0.43247871057598564,
+            "kpss_pvalue_reportable": ">0.1",
+            "ambas_estacionaria": false
+          },
+          {
+            "d": 1,
+            "adf_pvalue": 2.25390922307677e-07,
+            "kpss_pvalue_reportable": ">0.1",
+            "ambas_estacionaria": true
+          }
+        ]
+      },
+      "pruebas": {
+        "nivel": {
+          "adf": {
+            "stat": -1.780707786559189,
+            "pvalue": 0.3900809274184229,
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "kpss": {
+            "stat": 0.5877551740857534,
+            "pvalue": 0.02374952962856787,
+            "pvalue_topado": false,
+            "limite": "=",
+            "pvalue_reportable": "0.0237",
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "ambas_estacionaria": false
+        },
+        "transformada": {
+          "adf": {
+            "stat": -1.6973493030854112,
+            "pvalue": 0.43247871057598564,
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "kpss": {
+            "stat": 0.23335586827607746,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": false
+        },
+        "final": {
+          "adf": {
+            "stat": -5.94162031058413,
+            "pvalue": 2.25390922307677e-07,
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "kpss": {
+            "stat": 0.02366118882149672,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": true
+        }
       }
     },
     {
@@ -123,6 +718,8 @@
       "categoria": "pais",
       "fig_panel": "figs/12_serie_pais_Guatemala.png",
       "fig_acf": "figs/12_serie_pais_Guatemala_acf.png",
+      "fig_pacf": "figs/12_serie_pais_Guatemala_pacf.png",
+      "fig_periodo_completo": "figs/22_completo_pais_Guatemala.png",
       "inicio": "2009-01",
       "fin": "2021-03",
       "frecuencia": "Mensual (MS)",
@@ -138,6 +735,122 @@
         "pvalue": 0.24808949785954382,
         "alpha": 0.05,
         "estacionaria": false
+      },
+      "forma": {
+        "descomposicion_ok": true,
+        "modelo": "additive",
+        "periodo": 12,
+        "serie_base": "log1p",
+        "fuerza_estacionalidad": 0.3371436710984852,
+        "umbral_estacionalidad_fuerte": 0.64,
+        "estacionalidad_fuerte": false,
+        "pendiente_mensual": 0.0044420173325950656,
+        "pendiente_anual": 0.05330420799114079,
+        "pct_anual_sobre_media": 0.4715430479081266,
+        "tendencia_signo": "positiva",
+        "n_puntos_tendencia": 135
+      },
+      "varianza": {
+        "necesita_transformacion": true,
+        "criterio": "corr(sd, media) de tramos de 12 meses sobre el tramo pre-pandemia; se transforma si supera 0.5",
+        "tramo_evaluado": {
+          "inicio": "2009-01",
+          "fin": "2020-01",
+          "n_meses": 133
+        },
+        "umbral_corr": 0.5,
+        "corr_nivel_pre_pandemia": 0.928186580625603,
+        "corr_nivel_completo": -0.06680251648814957,
+        "nota_pandemia": "medida sobre la serie completa la correlacion baja o cambia de signo: el colapso de 2020-2021 enmascara la dependencia varianza-nivel",
+        "corr_post_transformacion": -0.7061638329666476
+      },
+      "transformacion": {
+        "nombre": "log1p",
+        "inversa": "expm1",
+        "motivo": "corr(sd, media) pre-pandemia = 0.93 > 0.5: la dispersion crece con el nivel",
+        "boxcox_descartado": true,
+        "boxcox_motivo": "el lambda optimo es inestable segun se incluya o no la pandemia (pre-pandemia da -0.41 a 0.54; con pandemia da 0.36 a 1.26, o sea 'casi no transformar', contrario a la evidencia), y scipy.stats.boxcox_normmax con su metodo por defecto falla con BracketError en 5 de las 7 series. log1p es estable y admite los ceros exactos sin desplazar la serie."
+      },
+      "diferenciacion": {
+        "serie_base": "log1p",
+        "d": 1,
+        "D": 0,
+        "s": 12,
+        "criterio_D": "fuerza de estacionalidad 0.337 < 0.64 (umbral fpp3)",
+        "criterio_d": "se incrementa d hasta que ADF p < 0.05 y KPSS p > 0.05 simultaneamente (tope 2)",
+        "d_max_permitido": 2,
+        "orden_recomendado": "log1p + (1-B)^1 (1-B^12)^0",
+        "estacionaria_final": true,
+        "pruebas_por_d": [
+          {
+            "d": 0,
+            "adf_pvalue": 0.38465990433317776,
+            "kpss_pvalue_reportable": ">0.1",
+            "ambas_estacionaria": false
+          },
+          {
+            "d": 1,
+            "adf_pvalue": 0.03654043100153716,
+            "kpss_pvalue_reportable": ">0.1",
+            "ambas_estacionaria": true
+          }
+        ]
+      },
+      "pruebas": {
+        "nivel": {
+          "adf": {
+            "stat": -2.0911465270168637,
+            "pvalue": 0.24808949785954382,
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "kpss": {
+            "stat": 0.6674082616090277,
+            "pvalue": 0.016508339853724754,
+            "pvalue_topado": false,
+            "limite": "=",
+            "pvalue_reportable": "0.0165",
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "ambas_estacionaria": false
+        },
+        "transformada": {
+          "adf": {
+            "stat": -1.7915599854479143,
+            "pvalue": 0.38465990433317776,
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "kpss": {
+            "stat": 0.296818737396944,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": false
+        },
+        "final": {
+          "adf": {
+            "stat": -2.98271505412849,
+            "pvalue": 0.03654043100153716,
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "kpss": {
+            "stat": 0.06767028534671116,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": true
+        }
       }
     },
     {
@@ -146,6 +859,8 @@
       "categoria": "pais",
       "fig_panel": "figs/12_serie_pais_Estados_Unidos_de_America.png",
       "fig_acf": "figs/12_serie_pais_Estados_Unidos_de_America_acf.png",
+      "fig_pacf": "figs/12_serie_pais_Estados_Unidos_de_America_pacf.png",
+      "fig_periodo_completo": "figs/22_completo_pais_Estados_Unidos_de_America.png",
       "inicio": "2009-01",
       "fin": "2021-03",
       "frecuencia": "Mensual (MS)",
@@ -161,6 +876,122 @@
         "pvalue": 0.024944736205908643,
         "alpha": 0.05,
         "estacionaria": true
+      },
+      "forma": {
+        "descomposicion_ok": true,
+        "modelo": "additive",
+        "periodo": 12,
+        "serie_base": "log1p",
+        "fuerza_estacionalidad": 0.09175301440309025,
+        "umbral_estacionalidad_fuerte": 0.64,
+        "estacionalidad_fuerte": false,
+        "pendiente_mensual": -0.010481021062682042,
+        "pendiente_anual": -0.1257722527521845,
+        "pct_anual_sobre_media": -1.2652432032300693,
+        "tendencia_signo": "negativa",
+        "n_puntos_tendencia": 135
+      },
+      "varianza": {
+        "necesita_transformacion": true,
+        "criterio": "corr(sd, media) de tramos de 12 meses sobre el tramo pre-pandemia; se transforma si supera 0.5",
+        "tramo_evaluado": {
+          "inicio": "2009-01",
+          "fin": "2020-01",
+          "n_meses": 133
+        },
+        "umbral_corr": 0.5,
+        "corr_nivel_pre_pandemia": 0.9015914621562812,
+        "corr_nivel_completo": -0.32435697854184575,
+        "nota_pandemia": "medida sobre la serie completa la correlacion baja o cambia de signo: el colapso de 2020-2021 enmascara la dependencia varianza-nivel",
+        "corr_post_transformacion": -0.13275180741254586
+      },
+      "transformacion": {
+        "nombre": "log1p",
+        "inversa": "expm1",
+        "motivo": "corr(sd, media) pre-pandemia = 0.90 > 0.5: la dispersion crece con el nivel",
+        "boxcox_descartado": true,
+        "boxcox_motivo": "el lambda optimo es inestable segun se incluya o no la pandemia (pre-pandemia da -0.41 a 0.54; con pandemia da 0.36 a 1.26, o sea 'casi no transformar', contrario a la evidencia), y scipy.stats.boxcox_normmax con su metodo por defecto falla con BracketError en 5 de las 7 series. log1p es estable y admite los ceros exactos sin desplazar la serie."
+      },
+      "diferenciacion": {
+        "serie_base": "log1p",
+        "d": 1,
+        "D": 0,
+        "s": 12,
+        "criterio_D": "fuerza de estacionalidad 0.092 < 0.64 (umbral fpp3)",
+        "criterio_d": "se incrementa d hasta que ADF p < 0.05 y KPSS p > 0.05 simultaneamente (tope 2)",
+        "d_max_permitido": 2,
+        "orden_recomendado": "log1p + (1-B)^1 (1-B^12)^0",
+        "estacionaria_final": true,
+        "pruebas_por_d": [
+          {
+            "d": 0,
+            "adf_pvalue": 0.05011616428827316,
+            "kpss_pvalue_reportable": ">0.1",
+            "ambas_estacionaria": false
+          },
+          {
+            "d": 1,
+            "adf_pvalue": 0.030718364095309158,
+            "kpss_pvalue_reportable": ">0.1",
+            "ambas_estacionaria": true
+          }
+        ]
+      },
+      "pruebas": {
+        "nivel": {
+          "adf": {
+            "stat": -3.1223223442498798,
+            "pvalue": 0.024944736205908643,
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "kpss": {
+            "stat": 0.19053256835124321,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": true
+        },
+        "transformada": {
+          "adf": {
+            "stat": -2.8606720708448723,
+            "pvalue": 0.05011616428827316,
+            "alpha": 0.05,
+            "estacionaria": false
+          },
+          "kpss": {
+            "stat": 0.31631670363228054,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": false
+        },
+        "final": {
+          "adf": {
+            "stat": -3.0471657323537684,
+            "pvalue": 0.030718364095309158,
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "kpss": {
+            "stat": 0.019988695761869263,
+            "pvalue": 0.1,
+            "pvalue_topado": true,
+            "limite": ">",
+            "pvalue_reportable": ">0.1",
+            "alpha": 0.05,
+            "estacionaria": true
+          },
+          "ambas_estacionaria": true
+        }
       }
     }
   ]

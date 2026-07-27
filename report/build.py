@@ -63,10 +63,11 @@ INTERPRETACIONES = {
         "corresponde en su mayoría a residentes guatemaltecos que regresan del extranjero, por lo que su lectura "
         "como \"mercado emisor\" debe hacerse con cautela.",
     "Estados Unidos de América":
-        "Es la única de las {n_series} series cuya prueba ADF preliminar rechaza la hipótesis nula al 5% "
-        "(p = {pvalue:.4f}), es decir, el único caso donde el resultado preliminar apunta a estacionariedad en media "
-        "sin diferenciar; aun así se observa un quiebre de nivel claro en 2020 que debe evaluarse con más detalle "
-        "en el documento final.",
+        "Es la única de las {n_series} series cuya prueba ADF sobre el nivel rechaza la hipótesis nula al 5% "
+        "(p = {pvalue:.4f}), el único caso que ya en nivel apuntaría a estacionariedad en media sin diferenciar. "
+        "Es un resultado al filo del umbral: al estabilizar la varianza el p-valor sube por encima del 5% y la "
+        "serie deja de pasar la prueba, de modo que sí requiere una diferenciación regular. Conviene no leer el "
+        "0.05 como una frontera dura cuando el estadístico queda tan cerca.",
 }
 
 
@@ -166,14 +167,16 @@ def construir(datos: dict) -> None:
     story.append(Paragraph("Laboratorio 1: Series de Tiempo", styles["TitleUVG"]))
     story.append(Paragraph("Ingreso de viajeros internacionales a Guatemala (2009 – junio 2026)", styles["Heading2"]))
     story.append(Spacer(1, 10))
-    story.append(Paragraph("AVANCE — Análisis Exploratorio y Análisis Preliminar de Series de Tiempo", styles["SubtitleUVG"]))
+    story.append(Paragraph("Análisis Exploratorio, Análisis de Series y Determinación de Estacionariedad",
+                           styles["SubtitleUVG"]))
     story.append(Spacer(1, 6))
-    story.append(Paragraph("Entrega de avance: 23 de julio de 2026", styles["SubtitleUVG"]))
+    story.append(Paragraph("Julio de 2026", styles["SubtitleUVG"]))
     story.append(Spacer(1, 40))
-    note("<b>Nota:</b> este documento corresponde al avance solicitado (análisis exploratorio general y análisis "
-         "preliminar de al menos dos series de tiempo). La estacionariedad formal, el modelado ARIMA/Prophet/"
-         "Holt-Winters, las predicciones y el análisis comparativo completo se desarrollarán en el documento final "
-         "(entrega del 26 de julio de 2026), siguiendo la estructura de la guía de laboratorio.")
+    note("<b>Contenido de este documento:</b> análisis exploratorio del conjunto de datos, construcción de las "
+         "series de tiempo, análisis de sus componentes y determinación formal de estacionariedad en varianza y en "
+         "media (con la transformación aplicada y el número de diferenciaciones por serie). El modelado "
+         "ARIMA/Prophet/Holt-Winters, las predicciones sobre el conjunto de prueba y el análisis comparativo se "
+         "desarrollan en las secciones siguientes del informe, siguiendo la estructura de la guía de laboratorio.")
     note("<b>Nota de la fuente:</b> los datos son de uso exclusivamente académico; no corresponden a cifras "
          "oficiales del INGUAT ni del Instituto Guatemalteco de Migración.")
     story.append(PageBreak())
@@ -327,6 +330,30 @@ def construir(datos: dict) -> None:
       f"{tipo['Cruceristas']:.1f}% — coherente con la recomendación del enunciado de usar Turista + Excursionista "
       f"({comparable:.1f}% del total) como medida comparable de flujo turístico en todo el período.")
 
+    # ------------------------------- 1.7 comportamiento durante y post pandemia
+    h2("1.7 Comportamiento de cada serie durante y después de la pandemia")
+    p(f"Las series que se usan para modelar terminan en {tr['fin']} por la partición cronológica, de modo que la "
+      f"recuperación posterior no es visible en ellas. Para documentar el comportamiento completo se grafica cada "
+      f"una de las {len(series_doc['series'])} series sobre los {series_doc['n_meses_periodo_completo']} meses del "
+      f"período de estudio, sombreando el tramo de entrenamiento y marcando la pandemia y el quiebre metodológico "
+      f"de 2023.")
+    note("<b>Alcance:</b> estas figuras son exclusivamente exploratorias. Todas las series de modelado, "
+         "estacionariedad y predicción se mantienen sobre el tramo de entrenamiento, porque el conjunto de prueba "
+         "debe permanecer sin observar hasta la evaluación de los modelos.")
+
+    for s in series_doc["series"]:
+        story.append(sized_image(ROOT / s["fig_periodo_completo"], 5.9))
+        story.append(Paragraph(f"Figura. {s['nombre']} — período completo "
+                               f"({series_doc['n_meses_periodo_completo']} meses).", styles["Caption"]))
+
+    p("La lectura conjunta muestra tres comportamientos distintos tras la pandemia. La vía Aérea es la que se "
+      "recupera con más fuerza: vuelve a superar su nivel pre-pandemia y mantiene la estacionalidad anual marcada, "
+      "lo que la convierte en la serie más informativa para planificación turística. La vía Terrestre conserva un "
+      "piso positivo incluso en 2020 —nunca se cerró del todo— y se recupera de forma más plana. La vía Marítima "
+      "no regresa a los niveles de 2009-2016, consistente con la pérdida de detalle de registro que la fuente "
+      "documenta desde 2017. En la serie total se aprecia además el salto de nivel de 2023 correspondiente al "
+      "cambio de metodología, que no aparece al aislar Turista + Excursionista (figura 2).")
+
     story.append(PageBreak())
 
     # --------------------------------------------------- 2. entrenamiento/prueba
@@ -371,16 +398,29 @@ def construir(datos: dict) -> None:
          f"ningún registro se reflejen como 0 en vez de recortar la serie. Esto fue clave para la vía Marítima, "
          f"{detalle_mar}: sin este ajuste la serie parecía terminar antes de tiempo.")
 
-    # ------------------------------------------------ 4. analisis preliminar
-    h1("4. Análisis preliminar de las series")
-    p("A continuación se presenta el análisis preliminar (inicio/fin/frecuencia, gráfico, descomposición y una "
-      "primera lectura de estacionariedad con ACF y la prueba de Dickey-Fuller Aumentada) para la serie obligatoria "
-      "y para las seis series de las dos categorías seleccionadas. El análisis formal de estacionariedad "
-      "(transformaciones, número de diferenciaciones) y el modelado ARIMA/Prophet/Holt-Winters se completan en el "
-      "documento final.")
+    # ------------------------- 4. analisis de las series y estacionariedad
+    h1("4. Análisis de las series y determinación de estacionariedad")
+    p(f"Para cada serie se presenta: inicio, fin y frecuencia; el gráfico de la serie con su descomposición en "
+      f"tendencia, estacionalidad y residuo; las funciones de autocorrelación (ACF) y autocorrelación parcial "
+      f"(PACF); la cuantificación de la fuerza de la estacionalidad y de la tendencia; el diagnóstico de "
+      f"estacionariedad en varianza con la transformación aplicada; y la determinación del número de "
+      f"diferenciaciones necesarias para alcanzar estacionariedad en media, contrastada con las pruebas de "
+      f"Dickey-Fuller Aumentada (ADF) y KPSS.")
+    note("<b>Nota sobre las dos pruebas:</b> ADF y KPSS plantean hipótesis nulas opuestas y por eso se usan "
+         "juntas. En ADF la H0 es que existe una raíz unitaria (la serie <i>no</i> es estacionaria), así que "
+         "interesa <i>rechazar</i>. En KPSS la H0 es que la serie <i>sí</i> es estacionaria, así que interesa "
+         "<i>no</i> rechazar. Una serie se declara estacionaria solo cuando ambas coinciden. Cuando el "
+         "estadístico KPSS cae fuera del rango tabulado, statsmodels satura el p-valor; en esos casos se reporta "
+         "el límite (por ejemplo &gt;0.1) y no el valor saturado, que sería engañoso.")
 
     for s in lista:
         adf = s["adf"]
+        forma = s["forma"]
+        var = s["varianza"]
+        tr_s = s["transformacion"]
+        dif = s["diferenciacion"]
+        pr = s["pruebas"]
+
         bloque = [
             Paragraph(s["nombre"], styles["H2"]),
             Paragraph(
@@ -393,33 +433,110 @@ def construir(datos: dict) -> None:
                       styles["Caption"]),
         ]
         story.append(KeepTogether(bloque))
-        story.append(sized_image(ROOT / s["fig_acf"], 4.3))
-        story.append(Paragraph(f"Figura. Función de autocorrelación (ACF, {series_doc['lags_acf']} rezagos).",
-                               styles["Caption"]))
 
         if s["clave"] in INTERPRETACIONES:
             p(INTERPRETACIONES[s["clave"]].format(
                 sd=s["sd"], pvalue=adf["pvalue"], n_series=len(lista),
                 meses_en_cero=s["meses_en_cero"], racha_ceros_max=s["racha_ceros_max"]))
 
-        conclusion = ("se rechaza H0 (estacionaria en media)" if adf["estacionaria"]
-                      else "no se rechaza H0 (no estacionaria en media)")
-        p(f"<b>Prueba ADF preliminar</b> (sobre el nivel, sin diferenciar): estadístico = {adf['stat']:.3f}, "
-          f"p-valor = {adf['pvalue']:.4f} → {conclusion}. La ACF decae lentamente y con un patrón oscilante de "
-          f"periodo aproximadamente anual, consistente con la presencia de tendencia y estacionalidad — ambos "
-          f"síntomas típicos de no estacionariedad en media, que en el documento final se abordarán con "
-          f"diferenciación regular y/o estacional según corresponda, además de confirmar la necesidad (o no) de una "
-          f"transformación (p. ej. logarítmica) para estabilizar la varianza.")
+        # --- forma: estacionalidad y tendencia cuantificadas
+        if forma["descomposicion_ok"]:
+            calificacion = ("por encima" if forma["estacionalidad_fuerte"] else "por debajo")
+            implicacion = ("la estacionalidad domina la variación y justifica una diferenciación estacional"
+                           if forma["estacionalidad_fuerte"] else
+                           "la estacionalidad es visible y regular pero explica una fracción menor de la "
+                           "variación no atribuible a la tendencia: hay que modelarla con términos estacionales, "
+                           "pero por sí sola no justifica una diferenciación estacional")
+            p(f"<b>Estacionalidad y tendencia.</b> Medida sobre la serie en {forma['serie_base']}, la fuerza de la "
+              f"estacionalidad (criterio de Hyndman, 1 − Var(residuo)/Var(estacional+residuo)) es "
+              f"<b>{forma['fuerza_estacionalidad']:.3f}</b>, {calificacion} del umbral de "
+              f"{forma['umbral_estacionalidad_fuerte']} usado como referencia de estacionalidad fuerte: "
+              f"{implicacion}. La pendiente de la tendencia es <b>{forma['pendiente_anual']:+.4f}</b> por año en "
+              f"escala {forma['serie_base']} ({forma['pct_anual_sobre_media']:+.2f}% anual sobre el nivel medio de "
+              f"la tendencia), es decir una tendencia <b>{forma['tendencia_signo']}</b> en el tramo analizado.")
+        else:
+            note("<b>Descomposición no disponible</b> para esta serie, de modo que la fuerza de la estacionalidad "
+                 "y la pendiente de la tendencia no se reportan.")
+
+        # --- ACF y PACF
+        story.append(sized_image(ROOT / s["fig_acf"], 4.3))
+        story.append(Paragraph(f"Figura. Función de autocorrelación (ACF, {series_doc['lags_acf']} rezagos) "
+                               f"sobre la serie en nivel.", styles["Caption"]))
+        story.append(sized_image(ROOT / s["fig_pacf"], 4.3))
+        story.append(Paragraph(f"Figura. Función de autocorrelación parcial (PACF, "
+                               f"{series_doc['lags_pacf']} rezagos) sobre la serie ya transformada y diferenciada "
+                               f"({dif['orden_recomendado']}).", styles["Caption"]))
+
+        # --- varianza y transformacion
+        p(f"<b>Estacionariedad en varianza.</b> Para diagnosticarla se divide la serie en tramos de 12 meses y se "
+          f"mide la correlación entre la desviación estándar y la media de cada tramo. Sobre el tramo "
+          f"pre-pandemia ({var['tramo_evaluado']['inicio']} a {var['tramo_evaluado']['fin']}) esa correlación es "
+          f"<b>{var['corr_nivel_pre_pandemia']:+.3f}</b>: la dispersión crece junto con el nivel, así que la serie "
+          f"<b>no</b> es estacionaria en varianza. Medida sobre el tramo completo de entrenamiento la correlación "
+          f"cae a {var['corr_nivel_completo']:+.3f}, porque el colapso de 2020-2021 introduce un tramo de nivel "
+          f"bajo y dispersión alta que rompe la relación monótona y <b>enmascara el diagnóstico</b>; por eso el "
+          f"chequeo se hace sobre el tramo pre-pandemia. Se aplica la transformación "
+          f"<b>{tr_s['nombre']}</b> (inversa: {tr_s['inversa']}), tras la cual la correlación baja a "
+          f"<b>{var['corr_post_transformacion']:+.3f}</b>: la varianza deja de depender del nivel.")
+
+        # --- tabla de pruebas en las tres etapas
+        filas = [["Etapa de la serie", "ADF estad.", "ADF p", "KPSS estad.", "KPSS p", "¿Estacionaria?"]]
+        etapas = [("Nivel original", "nivel"),
+                  (f"Transformada ({tr_s['nombre']})", "transformada"),
+                  (f"Transformada + d={dif['d']}, D={dif['D']}", "final")]
+        for etiqueta, llave in etapas:
+            e = pr[llave]
+            filas.append([etiqueta,
+                          f"{e['adf']['stat']:.3f}", f"{e['adf']['pvalue']:.4f}",
+                          f"{e['kpss']['stat']:.3f}", e["kpss"]["pvalue_reportable"],
+                          "Sí" if e["ambas_estacionaria"] else "No"])
+        tabla(filas, [1.9 * inch, 0.8 * inch, 0.7 * inch, 0.85 * inch, 0.7 * inch, 0.95 * inch],
+              font_size=8, align="CENTER")
+
+        # --- diferenciacion
+        conclusion_nivel = ("se rechaza H0" if adf["estacionaria"] else "no se rechaza H0")
+        p(f"<b>Estacionariedad en media y diferenciaciones.</b> Sobre el nivel, el ADF da un p-valor de "
+          f"{adf['pvalue']:.4f} ({conclusion_nivel}) y la ACF decae lentamente con un patrón oscilante de periodo "
+          f"aproximadamente anual — ambos síntomas de no estacionariedad en media. Para la componente estacional, "
+          f"<b>D = {dif['D']}</b>: {dif['criterio_D']}. El ADF no se usa para decidir <i>D</i> porque contrasta una "
+          f"raíz unitaria en el rezago 1 y no está diseñado para raíces unitarias estacionales. Para la componente "
+          f"regular, <b>d = {dif['d']}</b>, aplicando el criterio de {dif['criterio_d']}. La especificación "
+          f"resultante es <b>{dif['orden_recomendado']}</b>, y sobre ella ambas pruebas coinciden en "
+          f"estacionariedad (última fila de la tabla), lo que confirma que el número de diferenciaciones es "
+          f"suficiente y no excesivo.")
         hr()
+
+    # --------------------------------------- 4.8 resumen de ordenes de integracion
+    h2("4.8 Resumen: transformación y órdenes de integración por serie")
+    filas = [["Serie", "Transf.", "d", "D", "s", "Fuerza estac.", "Pendiente anual", "Estacionaria"]]
+    for s in lista:
+        dif, forma = s["diferenciacion"], s["forma"]
+        filas.append([
+            s["clave"], s["transformacion"]["nombre"], str(dif["d"]), str(dif["D"]), str(dif["s"]),
+            f"{forma['fuerza_estacionalidad']:.3f}" if forma["fuerza_estacionalidad"] is not None else "n/d",
+            f"{forma['pendiente_anual']:+.4f}" if forma["pendiente_anual"] is not None else "n/d",
+            "Sí" if dif["estacionaria_final"] else "No",
+        ])
+    tabla(filas, [1.55 * inch, 0.65 * inch, 0.3 * inch, 0.3 * inch, 0.3 * inch, 0.8 * inch,
+                  0.95 * inch, 0.85 * inch], font_size=7.5, align="CENTER")
+    p(f"Las {len(lista)} series requieren la misma transformación de varianza, lo que simplifica la comparación "
+      f"posterior entre ellas: todas se modelan en escala logarítmica y las predicciones deben revertirse con la "
+      f"función inversa antes de calcular cualquier métrica de error, para que los resultados queden en viajeros y "
+      f"sean interpretables. Ninguna serie requiere diferenciación estacional, y la diferenciación regular varía "
+      f"entre 0 y {max(s['diferenciacion']['d'] for s in lista)} según la serie. Esta tabla es la especificación de "
+      f"partida para la identificación de los órdenes p y q de los modelos ARIMA.")
+    note("<b>Sobre el signo de la pendiente:</b> cuatro de las siete series presentan pendiente negativa. Esto "
+         "<b>no</b> indica un declive estructural del turismo, sino que el tramo de entrenamiento termina en marzo "
+         "de 2021 y el ajuste lineal queda dominado por el colapso pandémico. La sección 1.7 muestra que, sobre el "
+         "período completo, la mayoría de las series se recupera a partir de 2022. La pendiente debe leerse como "
+         "descriptor del tramo de entrenamiento, no como proyección.")
 
     story.append(PageBreak())
 
     # ------------------------------------------------------- 5. proximos pasos
-    h1("5. Próximos pasos (documento final — 26 de julio de 2026)")
+    h1("5. Próximos pasos")
     bullet(f"Completar la construcción de las {len(lista)} series también para el conjunto de prueba, para poder "
            f"evaluar predicciones fuera de muestra.")
-    bullet(f"Determinar formalmente la estacionariedad en varianza (transformación Box-Cox/log si corresponde) y en "
-           f"media (número de diferenciaciones regulares y estacionales) para cada una de las {len(lista)} series.")
     bullet("Seleccionar p, d, q (y componente estacional P, D, Q, s si aplica) con base en ACF/PACF, contrastar con "
            "auto_arima/auto.arima, y ajustar varios modelos ARIMA por serie, comparando residuos, AIC y BIC.")
     bullet("Ajustar y comparar modelos Prophet, Holt-Winters, suavizamiento exponencial y seasonal naive frente a "

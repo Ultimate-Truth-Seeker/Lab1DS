@@ -28,7 +28,28 @@ FREQ = "MS"  # inicio de mes
 # --- analisis de series -----------------------------------------------------
 PERIOD = 12       # periodo estacional (datos mensuales)
 LAGS_ACF = 36     # rezagos en el grafico de autocorrelacion
-ALPHA = 0.05      # nivel de significancia para ADF
+LAGS_PACF = 36    # rezagos en el grafico de autocorrelacion parcial
+ALPHA = 0.05      # nivel de significancia para ADF y KPSS
+
+# --- estacionariedad --------------------------------------------------------
+# umbral de estacionalidad fuerte (Hyndman, fpp3). Por encima de esto se
+# justifica una diferenciacion estacional; aca las 7 series quedan por debajo.
+FUERZA_ESTACIONAL_UMBRAL = 0.64
+
+# si corr(sd_anual, media_anual) supera esto, la varianza depende del nivel
+CORR_VARIANZA_UMBRAL = 0.50
+TRAMO_VARIANZA = 12   # tamaño del tramo para medir sd y media (12 meses = 1 año)
+
+# El chequeo de varianza se hace SOLO hasta esta fecha, a proposito. Medido
+# sobre la serie completa de train, corr(sd,media) sale baja o negativa en 6 de
+# las 7 series, o sea "no transformar"; excluyendo la pandemia sale 0.89-0.96 en
+# las 7. El colapso de 2020-2021 mete un tramo de nivel bajo y varianza alta que
+# rompe la relacion monotona y enmascara el diagnostico.
+PRE_PANDEMIA_FIN = "2020-02-01"
+
+TRANSFORMACION = "log1p"  # log(1+x): admite los ceros exactos de Marítima
+D_MAX = 1        # tope de diferenciaciones estacionales
+DIFF_MAX = 2     # tope de diferenciaciones regulares
 
 # --- categorias -------------------------------------------------------------
 VIAS = ["Aérea", "Terrestre", "Marítima"]

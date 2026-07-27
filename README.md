@@ -30,15 +30,17 @@ del Excel.
 ## Estructura
 
 ```
-src/config.py        rutas y constantes
-src/data.py          carga del Excel + cache
-src/series.py        partición temporal y construcción de las series
-src/eda.py           métricas del exploratorio
-src/stationarity.py  pruebas de estacionariedad (ADF)
-src/plots.py         figuras (único módulo que usa matplotlib)
-src/pipeline.py      orquestación; escribe results/*.json
-report/build.py      arma el PDF leyendo results/*.json
-main.py              CLI
+src/config.py         rutas y constantes
+src/data.py           carga del Excel + cache
+src/series.py         partición temporal y construcción de las series
+src/eda.py            métricas del exploratorio
+src/decomposition.py  descomposición: fuerza de estacionalidad y tendencia
+src/transform.py      estacionariedad en varianza (log1p / expm1)
+src/stationarity.py   estacionariedad en media (ADF, KPSS, d y D)
+src/plots.py          figuras (único módulo que usa matplotlib)
+src/pipeline.py       orquestación; escribe results/*.json
+report/build.py       arma el PDF leyendo results/*.json
+main.py               CLI
 ```
 
 `results/*.json` es la única fuente de verdad de los números del informe: el
