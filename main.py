@@ -1,10 +1,12 @@
 """
 Punto de entrada del laboratorio.
 
-    python main.py eda      solo el analisis exploratorio (6 figuras + eda.json)
-    python main.py series    particion + 7 series (28 figuras + split/series.json)
-    python main.py all       todo el pipeline
-    python main.py report    arma el PDF a partir de results/*.json
+    python main.py eda        solo el analisis exploratorio (6 figuras + eda.json)
+    python main.py series     particion + 7 series (14 figuras + split/series.json)
+    python main.py modelos    ajusta los 5 modelos a las 7 series (models.json)
+    python main.py prediccion series de prueba + MAE/RMSE + comparativo (comparison.json)
+    python main.py all        todo el pipeline
+    python main.py report     arma el PDF a partir de results/*.json
 
 Opcional: --no-cache fuerza leer el Excel en vez del cache.
 """
@@ -36,6 +38,22 @@ def _cmd_series(args):
     pipeline.correr_series(df, paises)
 
 
+def _cmd_modelos(args):
+    df = data.cargar(usar_cache=not args.no_cache)
+    resumen = pipeline.correr_eda(df)
+    paises = [d["nombre"] for d in resumen["top_paises"][:config.TOP_N_PAISES]]
+    part = pipeline.S.particion(df)
+    pipeline.correr_modelos(df, part, paises)
+
+
+def _cmd_prediccion(args):
+    df = data.cargar(usar_cache=not args.no_cache)
+    resumen = pipeline.correr_eda(df)
+    paises = [d["nombre"] for d in resumen["top_paises"][:config.TOP_N_PAISES]]
+    part = pipeline.S.particion(df)
+    pipeline.correr_prediccion(df, part, paises)
+
+
 def _cmd_all(args):
     pipeline.correr_todo(usar_cache=not args.no_cache)
 
@@ -51,7 +69,7 @@ def _cmd_report(args):
 
 def main():
     parser = argparse.ArgumentParser(description="Laboratorio 1 - Series de Tiempo")
-    parser.add_argument("comando", choices=["eda", "series", "all", "report"])
+    parser.add_argument("comando", choices=["eda", "series", "modelos", "prediccion", "all", "report"])
     parser.add_argument("--no-cache", action="store_true",
                         help="lee el Excel directo, ignorando el cache")
     args = parser.parse_args()
@@ -60,6 +78,8 @@ def main():
     return {
         "eda": _cmd_eda,
         "series": _cmd_series,
+        "modelos": _cmd_modelos,
+        "prediccion": _cmd_prediccion,
         "all": _cmd_all,
         "report": _cmd_report,
     }[args.comando](args) or 0

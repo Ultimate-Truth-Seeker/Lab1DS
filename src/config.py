@@ -76,3 +76,19 @@ AZUL_MEDIO = "#4c72b0"
 VERDE = "#55a868"
 MORADO = "#8172b2"
 DURAZNO = "#dd8452"
+
+# --- forma de la serie: estacionalidad y tendencia (usado por decomposition.py) ---
+# FUERZA_ESTACIONAL_UMBRAL: umbral de Hyndman (fpp3) para llamar "fuerte" a la
+# estacionalidad (F = max(0, 1 - Var(resid)/Var(estacional+resid))). 0.6 es el
+# valor de referencia estandar en la literatura.
+FUERZA_ESTACIONAL_UMBRAL = 0.6
+
+# --- estacionariedad en varianza (usado por transform.py) -------------------
+TRAMO_VARIANZA = 12                 # meses por tramo al correlacionar sd vs media
+PRE_PANDEMIA_FIN = "2020-03-01"     # tramo pre-pandemia: hasta aqui (exclusive)
+CORR_VARIANZA_UMBRAL = 0.5          # corr(sd, media) > esto -> se transforma
+TRANSFORMACION = "log1p"            # transformacion a aplicar si hace falta
+
+# --- prediccion y comparacion de modelos --------------------------
+CRITERIO_GANADOR = "rmse"           # metrica que decide el mejor modelo por serie
+HORIZON_TEST = None                 # None = usar todos los meses de prueba disponibles

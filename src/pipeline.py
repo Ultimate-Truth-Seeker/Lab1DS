@@ -10,8 +10,8 @@ import unicodedata
 
 import pandas as pd
 
-from src import (config, data, decomposition, eda, evaluation, models, plots, series as S,
-                 stationarity as St, transform as T)
+from src import config, data, eda, plots, series as S, stationarity as St
+from src import comparison as Cmp, evaluation as E, models as M, transform as T
 
 # nombre para mostrar de cada serie, por clave
 _ETIQUETAS = {"total": "Total mensual de viajeros internacionales"}
@@ -86,15 +86,6 @@ def _nombre_figura(clave: str) -> str:
     return f"12_serie_pais_{slug(clave)}"
 
 
-def _nombre_figura_completo(clave: str) -> str:
-    """Igual que _nombre_figura pero para las series del periodo completo (2x)."""
-    if clave == "total":
-        return "20_completo_total"
-    if clave in config.VIAS:
-        return f"21_completo_via_{slug(clave)}"
-    return f"22_completo_pais_{slug(clave)}"
-
-
 def correr_eda(df: pd.DataFrame) -> dict:
     """Metricas y las 6 figuras exploratorias."""
     print("\n=== Analisis exploratorio ===")
@@ -148,7 +139,7 @@ def correr_eda(df: pd.DataFrame) -> dict:
 
 
 def correr_series(df: pd.DataFrame, paises: list) -> dict:
-    """Particion, 7 series, sus 28 figuras y el analisis de estacionariedad."""
+    """Particion, 7 series, sus 14 figuras y el analisis preliminar."""
     print("\n=== Particion y series ===")
     part = S.particion(df)
 
@@ -184,62 +175,23 @@ def correr_series(df: pd.DataFrame, paises: list) -> dict:
     print(f"\n  top-{config.TOP_N_PAISES} paises (acumulado de todo el periodo): {paises}")
     series = S.construir_series(part["train"], part["meses_train"], paises)
 
-    # Las mismas 7 series pero sobre los 210 meses. Solo para graficar el
-    # comportamiento pos-pandemia: el modelado usa unicamente entrenamiento.
-    series_completas = S.construir_series(df, part["meses"], paises)
-
     detalle = []
     for clave, s in series.items():
         nombre = _etiqueta(clave)
         base = _nombre_figura(clave)
         f_panel = config.FIGDIR / f"{base}.png"
         f_acf = config.FIGDIR / f"{base}_acf.png"
-        f_pacf = config.FIGDIR / f"{base}_pacf.png"
-        f_completo = config.FIGDIR / f"{_nombre_figura_completo(clave)}.png"
 
-        # --- estacionariedad en varianza -> transformacion
-        s_t, varianza, transformacion = T.decidir(s)
-
-        # Dos descomposiciones distintas, no es un descuido:
-        #  - la del nivel es solo para dibujar el panel, que se lee mejor en
-        #    viajeros que en logaritmos (de ahi el _ que descarta sus metricas);
-        #  - la de la serie transformada es la que se cita en el informe.
-        dec_nivel, _ = decomposition.metricas_forma(s, etiqueta_base="nivel")
-        _, forma = decomposition.metricas_forma(s_t, etiqueta_base=transformacion["nombre"])
-
-        # --- estacionariedad en media -> cuantas diferenciaciones
-        ordenes = St.determinar_ordenes(s_t, forma["fuerza_estacionalidad"],
-                                        serie_base=transformacion["nombre"])
-        s_final = St.diferenciar(s_t, d=ordenes["d"], D=ordenes["D"])
-
-        plots.panel_serie(s, nombre, f_panel, dec=dec_nivel)
+        plots.panel_serie(s, nombre, f_panel)
         plots.acf_serie(s, nombre, f_acf)
-        plots.pacf_serie(s_final, nombre, f_pacf, subtitulo=ordenes["orden_recomendado"])
-        plots.serie_periodo_completo(series_completas[clave], nombre, f_completo,
-                                     corte_train=part["corte"])
 
         desc = eda.describir_serie(s)
         adf = St.adf_test(s)
-        pruebas = {
-            "nivel": St.pruebas_conjuntas(s),
-            "transformada": St.pruebas_conjuntas(s_t),
-            "final": St.pruebas_conjuntas(s_final),
-        }
-
         print(f"  {nombre}")
         print(f"     {desc['inicio']} a {desc['fin']} | {desc['frecuencia']} | n={desc['n_obs']} "
               f"| media {desc['media']:,.1f} | sd {desc['sd']:,.1f}")
-        print(f"     ADF nivel: stat {adf['stat']:.3f} | p {adf['pvalue']:.4f} -> "
+        print(f"     ADF: stat {adf['stat']:.3f} | p {adf['pvalue']:.4f} -> "
               f"{'estacionaria' if adf['estacionaria'] else 'NO estacionaria'} en media")
-        if not forma["descomposicion_ok"]:
-            print(f"     ADVERTENCIA: descomposicion fallida")
-        else:
-            print(f"     forma: fuerza estacional {forma['fuerza_estacionalidad']:.3f} "
-                  f"| tendencia {forma['tendencia_signo']}")
-        print(f"     varianza: {transformacion['nombre']} "
-              f"(corr pre-pandemia {varianza['corr_nivel_pre_pandemia']:.2f})")
-        print(f"     orden: {ordenes['orden_recomendado']} | estacionaria: "
-              f"{ordenes['estacionaria_final']}")
 
         detalle.append({
             "clave": clave,
@@ -248,110 +200,145 @@ def correr_series(df: pd.DataFrame, paises: list) -> dict:
             # manifest: el reporte lee estas rutas en vez de reconstruirlas
             "fig_panel": f_panel.relative_to(config.ROOT).as_posix(),
             "fig_acf": f_acf.relative_to(config.ROOT).as_posix(),
-            "fig_pacf": f_pacf.relative_to(config.ROOT).as_posix(),
-            "fig_periodo_completo": f_completo.relative_to(config.ROOT).as_posix(),
             **desc,
             "adf": adf,
-            "forma": forma,
-            "varianza": varianza,
-            "transformacion": transformacion,
-            "diferenciacion": ordenes,
-            "pruebas": pruebas,
         })
 
     _escribir_json("series.json", {
         "periodo_estacional": config.PERIOD,
         "lags_acf": config.LAGS_ACF,
-        "lags_pacf": config.LAGS_PACF,
-        "n_meses_periodo_completo": len(part["meses"]),
-        "umbral_estacionalidad_fuerte": config.FUERZA_ESTACIONAL_UMBRAL,
-        "umbral_corr_varianza": config.CORR_VARIANZA_UMBRAL,
-        "pre_pandemia_fin": config.PRE_PANDEMIA_FIN,
         "series": detalle,
     })
     return {"split": split, "series": detalle}
 
-def correr_modelos(df: pd.DataFrame, paises: list) -> dict:
-    """
-    Ajusta todos los modelos para las siete series de entrenamiento.
 
-    Consume los parámetros calculados por stationarity.py
-    (transformación, d y D) y genera results/models.json.
+def correr_modelos(df: pd.DataFrame, part: dict, paises: list,
+                   d_por_serie: dict | None = None, D_por_serie: dict | None = None) -> dict:
     """
+    Ajusta los 5 modelos a las 7 series y escribe results/models.json.
 
+    d/D por defecto son 1,1 (el default de models.sarimax_grid) porque el
+    análisis de estacionariedad (series.json.d / .D, con KPSS) 
+    todavía no está conectado aquí; en cuanto lo esté, pasar d_por_serie /
+    D_por_serie con esos valores en vez de dejar el default.
+    """
     print("\n=== Modelos ===")
+    horizon = len(part["meses"]) - part["n_train"]
+    series_train = S.construir_series(part["train"], part["meses_train"], paises)
 
-    part = S.particion(df)
+    detalle = []
+    for clave, s in series_train.items():
+        d = (d_por_serie or {}).get(clave, 1)
+        D = (D_por_serie or {}).get(clave, 1)
 
-    series = S.construir_series(
-        part["train"],
-        part["meses_train"],
-        paises,
-    )
+        # se ajusta sobre la serie transformada (si transform.decidir lo pide)
+        # y se invierte SOLO el forecast antes de guardarlo: el resto del
+        # pipeline compara contra la serie real, en viajeros, no en
+        # escala logaritmica.
+        s_transformada, _, transf = T.decidir(s)
+        ajustes = M.ajustar_todos(s_transformada, horizon, d=d, D=D)
 
-    with open(
-        config.RESULTSDIR / "series.json",
-        encoding="utf-8",
-    ) as fh:
-        series_info = json.load(fh)
+        modelos_json = {}
+        for nombre_modelo, res in ajustes.items():
+            res = E.agregar_diagnostico(res)
+            forecast_real = T.invertir(res["forecast"], transf["nombre"])
+            modelos_json[nombre_modelo] = {
+                "parametros": res["parametros"],
+                "aic": res["aic"],
+                "bic": res["bic"],
+                "ljung_box": res["ljung_box"],
+                "forecast": {ts.strftime("%Y-%m"): float(v) for ts, v in forecast_real.items()},
+            }
 
-    horizon = part["test"]["Fecha"].nunique()
+        nombre = _etiqueta(clave)
+        print(f"  {nombre}: {', '.join(modelos_json)} | transformación: {transf['nombre']} (d={d}, D={D})")
 
-    salida = {
-        "series": []
+        detalle.append({
+            "clave": clave,
+            "nombre": nombre,
+            "transformacion": transf["nombre"],
+            "d": d,
+            "D": D,
+            "modelos": modelos_json,
+        })
+
+    payload = {"horizon": horizon, "series": detalle}
+    _escribir_json("models.json", payload)
+    return payload
+
+
+def correr_prediccion(df: pd.DataFrame, part: dict, paises: list) -> dict:
+    """
+    Predicción y análisis comparativo 
+
+    Requiere que exista results/models.json (ver correr_modelos). Construye
+    las series de PRUEBA -- nadie las había armado --, calcula MAE/RMSE de
+    cada modelo contra esas series, arma la tabla comparativa por serie
+    (AIC/BIC + MAE/RMSE propios) y responde las 4 preguntas de la
+    sección 6 para vías y países. Escribe results/comparison.json.
+    """
+    ruta_modelos = config.RESULTSDIR / "models.json"
+    if not ruta_modelos.exists():
+        raise FileNotFoundError(
+            f"No existe {ruta_modelos}. Hay que correr el paso de modelos "
+            "(correr_modelos) antes de la predicción."
+        )
+    with open(ruta_modelos, encoding="utf-8") as fh:
+        models_json = json.load(fh)
+    modelos_por_clave = {s["clave"]: s["modelos"] for s in models_json["series"]}
+
+    print("\n=== Predicción y comparativo ===")
+    series_test = Cmp.construir_series_test(df, part, paises)
+    series_train = S.construir_series(part["train"], part["meses_train"], paises)
+
+    tablas = []
+    for clave, s_test in series_test.items():
+        if clave not in modelos_por_clave:
+            print(f"  (sin modelos para '{clave}' en models.json, se omite)")
+            continue
+
+        nombre = _etiqueta(clave)
+        tabla = Cmp.tabla_comparativa(clave, nombre, _categoria(clave), s_test, modelos_por_clave[clave])
+
+        forecasts = {m: Cmp.forecast_a_serie(info.get("forecast", {}))
+                    for m, info in modelos_por_clave[clave].items()}
+        f_forecast = config.FIGDIR / f"20_forecast_{slug(clave)}.png"
+        plots.forecast_vs_real(series_train[clave], s_test, forecasts, nombre, f_forecast)
+        tabla["fig_forecast"] = f_forecast.relative_to(config.ROOT).as_posix()
+        tablas.append(tabla)
+
+        g = tabla["ganador"]
+        if g.get("modelo"):
+            print(f"  {nombre}: gana {g['modelo']} ({g['criterio']}={g['valor']:.1f})")
+        else:
+            print(f"  {nombre}: {g.get('nota', 'sin ganador')}")
+
+    comparativo = {
+        "vias": Cmp.comparativo_categoria(df, series_train, config.VIAS, "Vía"),
+        "paises": Cmp.comparativo_categoria(df, series_train, paises, "País"),
     }
 
-    for info in series_info["series"]:
+    with open(config.RESULTSDIR / "eda.json", encoding="utf-8") as fh:
+        eda_json = json.load(fh)
+    hallazgos = Cmp.hallazgos_inguat(eda_json, comparativo, tablas)
 
-        clave = info["clave"]
+    payload = {
+        "criterio_ganador": config.CRITERIO_GANADOR,
+        "series": tablas,
+        "comparativo": comparativo,
+        "hallazgos_inguat": hallazgos,
+    }
+    _escribir_json("comparison.json", payload)
+    return payload
 
-        serie = series[clave]
-
-        transformacion = info["transformacion"]["nombre"]
-
-        d = info["diferenciacion"]["d"]
-
-        D = info["diferenciacion"]["D"]
-
-        resultados = models.ajustar_todos(
-            serie,
-            horizon=horizon,
-            transformacion=transformacion,
-            d=d,
-            D=D,
-        )
-
-        for nombre_modelo in resultados:
-
-            resultados[nombre_modelo] = evaluation.agregar_diagnostico(
-                resultados[nombre_modelo]
-            )
-
-            resultados[nombre_modelo] = _serializar_modelo(
-                resultados[nombre_modelo]
-            )
-
-        salida["series"].append(
-            {
-                "clave": clave,
-                "nombre": info["nombre"],
-                "modelos": resultados,
-            }
-        )
-
-        print(f"  {info['nombre']}  ✓")
-
-    _escribir_json(
-        "models.json",
-        salida,
-    )
-
-    return salida
 
 def correr_todo(usar_cache: bool = True) -> None:
     df = data.cargar(usar_cache=usar_cache)
     resumen = correr_eda(df)
     paises = [d["nombre"] for d in resumen["top_paises"][:config.TOP_N_PAISES]]
     correr_series(df, paises)
-    correr_modelos(df, paises)
+
+    part = S.particion(df)
+    correr_modelos(df, part, paises)
+    correr_prediccion(df, part, paises)
     print("\nListo. Figuras en figs/ y resultados en results/")

@@ -148,3 +148,48 @@ def agregar_diagnostico(
     resultado_modelo["ljung_box"] = diag["ljung_box"]
 
     return resultado_modelo
+
+
+# ---------------------------------------------------------------------
+# Métricas de error de pronóstico
+# ---------------------------------------------------------------------
+#
+# mae/rmse siempre alinean por INDICE (fecha), nunca por posicion: un
+# pronostico que arranca un mes corrido del real pasaria desapercibido si
+# se comparara por posicion, y ambas series viven en el mismo eje de fechas
+# (ver series.py). Si el pronostico viene vacio (p. ej. prophet no
+# instalado, ver models.py) el resultado es NaN, no un error, para que la
+# tabla comparativa lo pueda mostrar como "no disponible" en vez de
+# romperse.
+
+def mae(y_real: pd.Series, y_pred: pd.Series) -> float:
+    """Error absoluto medio entre pronostico y valor real, alineado por fecha."""
+    y_real_al, y_pred_al = y_real.align(y_pred, join="inner")
+    if y_real_al.empty:
+        return float("nan")
+    return float(np.mean(np.abs(y_real_al - y_pred_al)))
+
+
+def rmse(y_real: pd.Series, y_pred: pd.Series) -> float:
+    """Raiz del error cuadratico medio entre pronostico y valor real."""
+    y_real_al, y_pred_al = y_real.align(y_pred, join="inner")
+    if y_real_al.empty:
+        return float("nan")
+    return float(np.sqrt(np.mean((y_real_al - y_pred_al) ** 2)))
+
+
+def metricas_error(y_real: pd.Series, y_pred: pd.Series) -> dict:
+    """
+    MAE y RMSE juntos, mas cuantos meses se pudieron comparar.
+
+    n_obs_comparados por debajo del horizonte esperado (63 meses de prueba)
+    es la señal de que el pronostico no cubre todo el rango de prueba (p.
+    ej. un modelo que fallo a mitad de camino); el llamador decide si eso
+    invalida al modelo para la tabla comparativa.
+    """
+    y_real_al, _ = y_real.align(y_pred, join="inner")
+    return {
+        "mae": mae(y_real, y_pred),
+        "rmse": rmse(y_real, y_pred),
+        "n_obs_comparados": int(len(y_real_al)),
+    }
