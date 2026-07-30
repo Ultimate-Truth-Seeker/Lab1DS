@@ -43,10 +43,8 @@ CONFIGS: dict[str, ConfigLSTM] = {
     # Config 1 (Diego): red chica, ventana de un ciclo estacional.
     "lstm_c1": ConfigLSTM(nombre="lstm_c1", ventana=12, unidades=32, capas=1, dropout=0.1),
 
-    # Config 2 (Nelson): agregar aca abajo, sin tocar nada mas del modulo.
-    # ajustar_todas_configs itera sobre este dict, asi que con eso ya aparece en
-    # results/lstm.json, en comparison.json y en la figura de pronostico.
-    # "lstm_c2": ConfigLSTM(nombre="lstm_c2", ventana=24, unidades=64, capas=2, dropout=0.3),
+    # Config 2 (Nelson):
+    "lstm_c2": ConfigLSTM(nombre="lstm_c2", ventana=24, unidades=64, capas=2, dropout=0.3),
 }
 
 

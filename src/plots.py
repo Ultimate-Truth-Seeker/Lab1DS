@@ -182,6 +182,7 @@ _ESTILO_MODELO = {
     "prophet": dict(color=config.DURAZNO, linestyle="-."),
     # Lab 2. Nelson: agrega "lstm_c2" en la linea siguiente con otro color.
     "lstm_c1": dict(color=config.TEAL, linestyle="-"),
+    "lstm_c2": dict(color=config.AZUL, linestyle="--"),
 }
 
 
