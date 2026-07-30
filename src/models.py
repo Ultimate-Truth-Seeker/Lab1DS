@@ -46,9 +46,12 @@ def _resultado(
     }
 
 
-def _pronostico_index(serie: pd.Series, horizon: int) -> pd.DatetimeIndex:
+def pronostico_index(serie: pd.Series, horizon: int) -> pd.DatetimeIndex:
     """
     Índice mensual para el horizonte de predicción.
+
+    Publica porque lstm.py tambien la necesita: el LSTM debe pronosticar sobre
+    exactamente los mismos meses que los modelos de este modulo.
     """
     inicio = serie.index[-1] + pd.offsets.MonthBegin()
     return pd.date_range(
@@ -56,6 +59,10 @@ def _pronostico_index(serie: pd.Series, horizon: int) -> pd.DatetimeIndex:
         periods=horizon,
         freq=config.FREQ,
     )
+
+
+# los modelos de abajo la llaman con el nombre privado original
+_pronostico_index = pronostico_index
 
 
 # ---------------------------------------------------------------------

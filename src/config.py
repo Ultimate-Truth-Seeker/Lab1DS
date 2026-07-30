@@ -85,3 +85,24 @@ DURAZNO = "#dd8452"
 # --- prediccion y comparacion de modelos --------------------------
 CRITERIO_GANADOR = "rmse"           # metrica que decide el mejor modelo por serie
 HORIZON_TEST = None                 # None = usar todos los meses de prueba disponibles
+
+# --- LSTM (Lab 2) -----------------------------------------------------------
+LSTM_SEMILLA = 42       # el enunciado exige reproducibilidad; con esto el JSON sale igual siempre
+LSTM_EPOCHS = 300       # default; el valor real por serie lo decide el tuneo
+LSTM_LR = 1e-2
+
+# Las 2 series del inciso 1.1. Maritima quedo fuera a proposito: sus ultimos 12
+# meses de entrenamiento son cero exacto (cierre de fronteras), asi que una red
+# con ventana 12 solo ve ceros y su prediccion recursiva colapsa a cero. Se
+# probaron 5 configuraciones y ninguna lo evita.
+LSTM_SERIES = ["total", "Aérea"]
+
+# El tuneo valida contra la cola del entrenamiento, nunca contra el test. Ojo al
+# interpretar: esos 12 meses (2020-04 a 2021-03) son justo el colapso pandemico.
+LSTM_VAL_MESES = 12
+LSTM_REJILLA_EPOCHS = (50, 100, 200, 300, 500)
+
+# Una prediccion recursiva puede converger a un punto fijo y quedar plana. No es
+# un error, es un resultado que hay que medir y reportar.
+LSTM_COLA_APLANAMIENTO = 20   # meses del final que se miran
+LSTM_CV_APLANADO = 0.01       # coef. de variacion por debajo de esto = plana

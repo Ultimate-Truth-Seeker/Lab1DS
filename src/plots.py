@@ -180,6 +180,8 @@ _ESTILO_MODELO = {
     "simple_exponential": dict(color=config.MORADO, linestyle="--"),
     "seasonal_naive": dict(color=config.VERDE, linestyle=":"),
     "prophet": dict(color=config.DURAZNO, linestyle="-."),
+    # Lab 2. Nelson: agrega "lstm_c2" en la linea siguiente con otro color.
+    "lstm_c1": dict(color=config.TEAL, linestyle="-"),
 }
 
 

@@ -102,12 +102,92 @@
           "mae": 266995.04174632294,
           "rmse": 284418.8355844055,
           "n_obs_comparados": 63
+        },
+        "lstm_c1": {
+          "parametros": {
+            "config": "lstm_c1",
+            "ventana": 12,
+            "unidades": 32,
+            "capas": 1,
+            "dropout": 0.1,
+            "epochs": 300,
+            "lr": 0.01,
+            "epochs_usadas": 50,
+            "semilla": 42,
+            "n_muestras_train": 135,
+            "loss_inicial": 1.0728880167007446,
+            "loss_final": 0.14194045960903168,
+            "escalado": "z-score sobre la serie transformada",
+            "prediccion": "recursiva a un paso",
+            "aplanamiento": {
+              "meses_cola": 20,
+              "escala": "log1p",
+              "media_cola": 12.361627027352231,
+              "sd_cola": 0.0007638206796515515,
+              "cv_cola": 6.178965584072926e-05,
+              "rango_cola": 0.0025022563125656205,
+              "umbral_cv": 0.01,
+              "aplanado": true
+            },
+            "tuneo": {
+              "hiperparametro": "epochs",
+              "rejilla": [
+                50,
+                100,
+                200,
+                300,
+                500
+              ],
+              "criterio": "rmse_validacion",
+              "escala_criterio": "log1p",
+              "val_meses": 12,
+              "val_inicio": "2020-04",
+              "val_fin": "2021-03",
+              "n_muestras_interno": 123,
+              "resultados": [
+                {
+                  "epochs": 50,
+                  "rmse_val": 2.63546909748379
+                },
+                {
+                  "epochs": 100,
+                  "rmse_val": 2.6501689644592035
+                },
+                {
+                  "epochs": 200,
+                  "rmse_val": 2.6827906595988744
+                },
+                {
+                  "epochs": 300,
+                  "rmse_val": 2.7030102959564646
+                },
+                {
+                  "epochs": 500,
+                  "rmse_val": 2.7276317487633643
+                }
+              ],
+              "mejor": 50,
+              "rmse_val_mejor": 2.63546909748379,
+              "nota": "la validacion es la cola del entrenamiento; el conjunto de prueba nunca se usa para elegir hiperparametros"
+            }
+          },
+          "aic": null,
+          "bic": null,
+          "ljung_box": {
+            "stat": 46.71086703316994,
+            "pvalue": 5.230823864072754e-06,
+            "alpha": 0.05,
+            "independientes": false
+          },
+          "mae": 76028.4459585417,
+          "rmse": 95563.76702070335,
+          "n_obs_comparados": 63
         }
       },
       "ganador": {
-        "modelo": "simple_exponential",
+        "modelo": "lstm_c1",
         "criterio": "rmse",
-        "valor": 194790.81178631884,
+        "valor": 95563.76702070335,
         "gana_seasonal_naive_a_sarima": true,
         "nota_seasonal_naive": "seasonal_naive (rmse=253203.4) iguala o supera a sarima (rmse=257978.6): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
         "modelos_excluidos_sin_metrica": []
@@ -215,12 +295,92 @@
           "mae": 89016.95324553501,
           "rmse": 92230.74108284469,
           "n_obs_comparados": 63
+        },
+        "lstm_c1": {
+          "parametros": {
+            "config": "lstm_c1",
+            "ventana": 12,
+            "unidades": 32,
+            "capas": 1,
+            "dropout": 0.1,
+            "epochs": 300,
+            "lr": 0.01,
+            "epochs_usadas": 500,
+            "semilla": 42,
+            "n_muestras_train": 135,
+            "loss_inicial": 1.0823382139205933,
+            "loss_final": 0.02270074374973774,
+            "escalado": "z-score sobre la serie transformada",
+            "prediccion": "recursiva a un paso",
+            "aplanamiento": {
+              "meses_cola": 20,
+              "escala": "log1p",
+              "media_cola": 11.16824055407572,
+              "sd_cola": 0.004769407954837658,
+              "cv_cola": 0.00042705096937557623,
+              "rango_cola": 0.015427119662140498,
+              "umbral_cv": 0.01,
+              "aplanado": true
+            },
+            "tuneo": {
+              "hiperparametro": "epochs",
+              "rejilla": [
+                50,
+                100,
+                200,
+                300,
+                500
+              ],
+              "criterio": "rmse_validacion",
+              "escala_criterio": "log1p",
+              "val_meses": 12,
+              "val_inicio": "2020-04",
+              "val_fin": "2021-03",
+              "n_muestras_interno": 123,
+              "resultados": [
+                {
+                  "epochs": 50,
+                  "rmse_val": 3.392203536309034
+                },
+                {
+                  "epochs": 100,
+                  "rmse_val": 3.4036030483515063
+                },
+                {
+                  "epochs": 200,
+                  "rmse_val": 3.4228652147705354
+                },
+                {
+                  "epochs": 300,
+                  "rmse_val": 3.3168590093577923
+                },
+                {
+                  "epochs": 500,
+                  "rmse_val": 3.212601358631181
+                }
+              ],
+              "mejor": 500,
+              "rmse_val_mejor": 3.212601358631181,
+              "nota": "la validacion es la cola del entrenamiento; el conjunto de prueba nunca se usa para elegir hiperparametros"
+            }
+          },
+          "aic": null,
+          "bic": null,
+          "ljung_box": {
+            "stat": 52.94972431316695,
+            "pvalue": 4.2050720795136986e-07,
+            "alpha": 0.05,
+            "independientes": false
+          },
+          "mae": 29183.36722153259,
+          "rmse": 34700.950045961676,
+          "n_obs_comparados": 63
         }
       },
       "ganador": {
-        "modelo": "simple_exponential",
+        "modelo": "lstm_c1",
         "criterio": "rmse",
-        "valor": 41367.771593564175,
+        "valor": 34700.950045961676,
         "gana_seasonal_naive_a_sarima": false,
         "nota_seasonal_naive": "sarima (rmse=73149.6) supera a seasonal_naive (rmse=79077.3).",
         "modelos_excluidos_sin_metrica": []

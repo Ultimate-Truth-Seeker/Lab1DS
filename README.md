@@ -21,6 +21,7 @@ python main.py all         # pipeline completo
 python main.py eda         # análisis exploratorio
 python main.py series      # series, componentes y estacionariedad
 python main.py modelos     # ARIMA, Holt-Winters, exponencial, naive, Prophet
+python main.py lstm        # redes LSTM con tuneo de épocas
 python main.py prediccion  # conjunto de prueba, MAE/RMSE, comparativo
 ```
 
@@ -45,5 +46,6 @@ Serie obligatoria (total mensual) más dos categorías:
 | `src/models.py` | ARIMA, Holt-Winters, suavizamiento exponencial, naive, Prophet |
 | `src/evaluation.py` | AIC, BIC, Ljung-Box, MAE, RMSE |
 | `src/comparison.py` | comparación entre series y hallazgos |
+| `src/lstm.py` | redes LSTM y tuneo de épocas |
 | `src/plots.py` | gráficos |
 | `src/pipeline.py` | orquesta el análisis completo |
