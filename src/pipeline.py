@@ -12,6 +12,7 @@ import pandas as pd
 
 from src import config, data, decomposition, eda, plots, series as S, stationarity as St
 from src import comparison as Cmp, evaluation as E, models as M, transform as T
+from src import lstm as L
 
 # nombre para mostrar de cada serie, por clave
 _ETIQUETAS = {"total": "Total mensual de viajeros internacionales"}
@@ -324,6 +325,65 @@ def correr_modelos(df: pd.DataFrame, part: dict, paises: list,
     return payload
 
 
+def correr_lstm(df: pd.DataFrame, part: dict, paises: list,
+                claves: list | None = None) -> dict:
+    """
+    Ajusta las redes LSTM del Laboratorio 2 y escribe results/lstm.json.
+
+    Va en un JSON aparte y no dentro de models.json por dos razones: models.json
+    es el artefacto ya entregado del laboratorio anterior (regenerarlo implicaria
+    repetir el grid de SARIMA de las 7 series), y el LSTM solo cubre 2 series, asi
+    que meterlo ahi dejaria un archivo con 5 series incompletas.
+
+    El horizonte y la particion son los mismos del Lab 1, que es justo lo que pide
+    el enunciado para poder comparar.
+    """
+    print("\n=== LSTM ===")
+    horizon = len(part["meses"]) - part["n_train"]
+    series_train = S.construir_series(part["train"], part["meses_train"], paises)
+    objetivo = claves if claves is not None else config.LSTM_SERIES
+
+    detalle = []
+    for clave in objetivo:
+        if clave not in series_train:
+            print(f"  (no existe la serie '{clave}', se omite)")
+            continue
+
+        s_transformada, _, transf = T.decidir(series_train[clave])
+        ajustes = L.ajustar_todas_configs(s_transformada, horizon)
+
+        modelos_json = {}
+        for nombre_modelo, res in ajustes.items():
+            # se llama a ljung_box directo y no a agregar_diagnostico: ese helper
+            # espera un modelo de statsmodels y pisaria aic/bic con None
+            lb = E.ljung_box(res["residuos"])
+            forecast_real = T.invertir(res["forecast"], transf["nombre"])
+            modelos_json[nombre_modelo] = {
+                "parametros": res["parametros"],
+                "aic": res["aic"],
+                "bic": res["bic"],
+                "ljung_box": lb,
+                "forecast": {ts.strftime("%Y-%m"): float(v) for ts, v in forecast_real.items()},
+            }
+
+            p = res["parametros"]
+            ap = p["aplanamiento"]
+            print(f"  {_etiqueta(clave)} / {nombre_modelo}: "
+                  f"epochs={p['epochs_usadas']} (tuneo sobre {p['tuneo']['val_meses']} meses) "
+                  f"| loss={p['loss_final']:.4f} | aplanado={ap['aplanado']}")
+
+        detalle.append({
+            "clave": clave,
+            "nombre": _etiqueta(clave),
+            "transformacion": transf["nombre"],
+            "modelos": modelos_json,
+        })
+
+    payload = {"horizon": horizon, "semilla": config.LSTM_SEMILLA, "series": detalle}
+    _escribir_json("lstm.json", payload)
+    return payload
+
+
 def correr_prediccion(df: pd.DataFrame, part: dict, paises: list) -> dict:
     """
     Predicción y análisis comparativo 
@@ -342,7 +402,16 @@ def correr_prediccion(df: pd.DataFrame, part: dict, paises: list) -> dict:
         )
     with open(ruta_modelos, encoding="utf-8") as fh:
         models_json = json.load(fh)
-    modelos_por_clave = {s["clave"]: s["modelos"] for s in models_json["series"]}
+    modelos_por_clave = {s["clave"]: dict(s["modelos"]) for s in models_json["series"]}
+
+    # Los LSTM del Lab 2 se suman a la comparacion si ya se corrieron. Comparten
+    # el esquema por modelo con models.json, asi que comparison.py los evalua sin
+    # cambio alguno y elegir_ganador compite LSTM contra los modelos del Lab 1.
+    ruta_lstm = config.RESULTSDIR / "lstm.json"
+    if ruta_lstm.exists():
+        with open(ruta_lstm, encoding="utf-8") as fh:
+            for s in json.load(fh)["series"]:
+                modelos_por_clave.setdefault(s["clave"], {}).update(s["modelos"])
 
     print("\n=== Predicción y comparativo ===")
     series_test = Cmp.construir_series_test(df, part, paises)
@@ -403,5 +472,6 @@ def correr_todo(usar_cache: bool = True) -> None:
 
     part = S.particion(df)
     correr_modelos(df, part, paises, d_por_serie=d_por_serie, D_por_serie=D_por_serie)
+    correr_lstm(df, part, paises)
     correr_prediccion(df, part, paises)
     print("\nListo. Figuras en figs/ y resultados en results/")
