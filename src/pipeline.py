@@ -13,6 +13,7 @@ import pandas as pd
 from src import config, data, decomposition, eda, plots, series as S, stationarity as St
 from src import comparison as Cmp, evaluation as E, models as M, transform as T
 from src import lstm as L
+from src import catch22 as C22
 
 # nombre para mostrar de cada serie, por clave
 _ETIQUETAS = {"total": "Total mensual de viajeros internacionales"}
@@ -384,6 +385,35 @@ def correr_lstm(df: pd.DataFrame, part: dict, paises: list,
     return payload
 
 
+def correr_catch22(df: pd.DataFrame, part: dict, paises: list,
+                   claves: list | None = None) -> dict:
+    """
+    Extrae las 22 caracteristicas de catch22 y escribe results/catch22.json.
+
+    A diferencia del LSTM, que trabaja dos series, aca van las 7: el enunciado
+    pide las caracteristicas de cada serie temporal construida.
+
+    Se usan las series de entrenamiento, las mismas del laboratorio anterior, en
+    su escala original (sin log1p): catch22 ya normaliza internamente lo que
+    necesita, y transformarlas cambiaria caracteristicas como la asimetria.
+    """
+    print("\n=== catch22 ===")
+    series_train = S.construir_series(part["train"], part["meses_train"], paises)
+
+    objetivo = claves if claves is not None else config.CATCH22_SERIES
+    if objetivo is not None:
+        series_train = {k: v for k, v in series_train.items() if k in objetivo}
+
+    payload = C22.matriz(series_train)
+    print(f"  {payload['n_series']} series x {payload['n_features']} caracteristicas")
+    if payload["estandarizacion"]["columnas_constantes"]:
+        print(f"  aviso: {payload['estandarizacion']['columnas_constantes']} "
+              f"caracteristicas constantes entre series")
+
+    _escribir_json("catch22.json", payload)
+    return payload
+
+
 def correr_prediccion(df: pd.DataFrame, part: dict, paises: list) -> dict:
     """
     Predicción y análisis comparativo 
@@ -473,5 +503,6 @@ def correr_todo(usar_cache: bool = True) -> None:
     part = S.particion(df)
     correr_modelos(df, part, paises, d_por_serie=d_por_serie, D_por_serie=D_por_serie)
     correr_lstm(df, part, paises)
+    correr_catch22(df, part, paises)
     correr_prediccion(df, part, paises)
     print("\nListo. Figuras en figs/ y resultados en results/")

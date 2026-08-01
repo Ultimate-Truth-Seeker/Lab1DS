@@ -21,3 +21,6 @@ pillow==11.3.0
 
 # deep learning (Lab 2)
 torch==2.13.0
+
+# extraccion de caracteristicas de series (Lab 2)
+pycatch22==0.4.5

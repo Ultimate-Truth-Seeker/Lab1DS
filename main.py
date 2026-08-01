@@ -5,6 +5,7 @@ Punto de entrada del laboratorio.
     python main.py series     particion + 7 series (14 figuras + split/series.json)
     python main.py modelos    ajusta los 5 modelos a las 7 series (models.json)
     python main.py lstm       redes LSTM del Lab 2 con tuneo (lstm.json)
+    python main.py catch22    22 caracteristicas de las 7 series (catch22.json)
     python main.py prediccion series de prueba + MAE/RMSE + comparativo (comparison.json)
     python main.py all        todo el pipeline
     python main.py report     arma el PDF a partir de results/*.json
@@ -86,6 +87,14 @@ def _cmd_lstm(args):
     pipeline.correr_lstm(df, part, paises)
 
 
+def _cmd_catch22(args):
+    df = data.cargar(usar_cache=not args.no_cache)
+    resumen = pipeline.correr_eda(df)
+    paises = [d["nombre"] for d in resumen["top_paises"][:config.TOP_N_PAISES]]
+    part = pipeline.S.particion(df)
+    pipeline.correr_catch22(df, part, paises)
+
+
 def _cmd_prediccion(args):
     df = data.cargar(usar_cache=not args.no_cache)
     resumen = pipeline.correr_eda(df)
@@ -110,7 +119,7 @@ def _cmd_report(args):
 def main():
     parser = argparse.ArgumentParser(description="Laboratorio 1 - Series de Tiempo")
     parser.add_argument("comando", choices=["eda", "series", "modelos", "lstm",
-                                            "prediccion", "all", "report"])
+                                            "catch22", "prediccion", "all", "report"])
     parser.add_argument("--no-cache", action="store_true",
                         help="lee el Excel directo, ignorando el cache")
     args = parser.parse_args()
@@ -122,6 +131,7 @@ def main():
         "series": _cmd_series,
         "modelos": _cmd_modelos,
         "lstm": _cmd_lstm,
+        "catch22": _cmd_catch22,
         "prediccion": _cmd_prediccion,
         "all": _cmd_all,
         "report": _cmd_report,

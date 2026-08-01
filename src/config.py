@@ -106,3 +106,13 @@ LSTM_REJILLA_EPOCHS = (50, 100, 200, 300, 500)
 # un error, es un resultado que hay que medir y reportar.
 LSTM_COLA_APLANAMIENTO = 20   # meses del final que se miran
 LSTM_CV_APLANADO = 0.01       # coef. de variacion por debajo de esto = plana
+
+# --- catch22 (Lab 2) --------------------------------------------------------
+# None = las 7 series. El enunciado 2.2 pide las caracteristicas de "cada serie
+# temporal", a diferencia del ejercicio 1 que solo pedia dos.
+CATCH22_SERIES = None
+
+# El z-score va POR COLUMNA, no global: las 22 caracteristicas viven en escalas
+# muy distintas (en estas series van de -0.94 a 49), asi que estandarizar con una
+# sola media haria que unas pocas dominen cualquier distancia o PCA.
+CATCH22_DDOF = 0

@@ -6,5 +6,8 @@ docs/temp/*
 __pycache__/
 *.pyc
 
+# checkpoints de jupyter: se regeneran solos
+.ipynb_checkpoints/
+
 
 report/build.py
