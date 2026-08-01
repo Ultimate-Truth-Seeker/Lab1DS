@@ -116,16 +116,16 @@
             "semilla": 42,
             "n_muestras_train": 135,
             "loss_inicial": 1.0728880167007446,
-            "loss_final": 0.14194044470787048,
+            "loss_final": 0.14194045960903168,
             "escalado": "z-score sobre la serie transformada",
             "prediccion": "recursiva a un paso",
             "aplanamiento": {
               "meses_cola": 20,
               "escala": "log1p",
-              "media_cola": 12.36162699819253,
-              "sd_cola": 0.0007638436537578966,
-              "cv_cola": 6.17915144883099e-05,
-              "rango_cola": 0.0025022979692792546,
+              "media_cola": 12.361627027352231,
+              "sd_cola": 0.0007638206796515515,
+              "cv_cola": 6.178965584072926e-05,
+              "rango_cola": 0.0025022563125656205,
               "umbral_cv": 0.01,
               "aplanado": true
             },
@@ -147,40 +147,40 @@
               "resultados": [
                 {
                   "epochs": 50,
-                  "rmse_val": 2.63546913892522
+                  "rmse_val": 2.63546909748379
                 },
                 {
                   "epochs": 100,
-                  "rmse_val": 2.650168535028687
+                  "rmse_val": 2.6501689644592035
                 },
                 {
                   "epochs": 200,
-                  "rmse_val": 2.697646142888874
+                  "rmse_val": 2.6827906595988744
                 },
                 {
                   "epochs": 300,
-                  "rmse_val": 2.696554229427125
+                  "rmse_val": 2.7030102959564646
                 },
                 {
                   "epochs": 500,
-                  "rmse_val": 2.726393737433656
+                  "rmse_val": 2.7276317487633643
                 }
               ],
               "mejor": 50,
-              "rmse_val_mejor": 2.63546913892522,
+              "rmse_val_mejor": 2.63546909748379,
               "nota": "la validacion es la cola del entrenamiento; el conjunto de prueba nunca se usa para elegir hiperparametros"
             }
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 46.7108353383189,
-            "pvalue": 5.230889870153109e-06,
+            "stat": 46.71086703316994,
+            "pvalue": 5.230823864072754e-06,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 76028.45089253773,
-          "rmse": 95563.77180052601,
+          "mae": 76028.4459585417,
+          "rmse": 95563.76702070335,
           "n_obs_comparados": 63
         },
         "lstm_c2": {
@@ -196,16 +196,16 @@
             "semilla": 42,
             "n_muestras_train": 123,
             "loss_inicial": 1.1841760873794556,
-            "loss_final": 0.11658819764852524,
+            "loss_final": 0.11658786237239838,
             "escalado": "z-score sobre la serie transformada",
             "prediccion": "recursiva a un paso",
             "aplanamiento": {
               "meses_cola": 20,
               "escala": "log1p",
-              "media_cola": 11.754981882110838,
-              "sd_cola": 0.019161325396396676,
-              "cv_cola": 0.0016300599684936207,
-              "rango_cola": 0.061801234078112444,
+              "media_cola": 11.754749954191118,
+              "sd_cola": 0.01912683304185125,
+              "cv_cola": 0.001627157797178973,
+              "rango_cola": 0.06168971905528409,
               "umbral_cv": 0.01,
               "aplanado": true
             },
@@ -227,47 +227,47 @@
               "resultados": [
                 {
                   "epochs": 50,
-                  "rmse_val": 2.6260304331307522
+                  "rmse_val": 2.626030459438061
                 },
                 {
                   "epochs": 100,
-                  "rmse_val": 2.6896782590318766
+                  "rmse_val": 2.6896798526971892
                 },
                 {
                   "epochs": 200,
-                  "rmse_val": 2.737933874460191
+                  "rmse_val": 2.7345814763091685
                 },
                 {
                   "epochs": 300,
-                  "rmse_val": 2.7461203474912392
+                  "rmse_val": 2.7110415222604507
                 },
                 {
                   "epochs": 500,
-                  "rmse_val": 2.719959438856451
+                  "rmse_val": 2.739039066958059
                 }
               ],
               "mejor": 50,
-              "rmse_val_mejor": 2.6260304331307522,
+              "rmse_val_mejor": 2.626030459438061,
               "nota": "la validacion es la cola del entrenamiento; el conjunto de prueba nunca se usa para elegir hiperparametros"
             }
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 44.25467586147048,
-            "pvalue": 1.3818768112842542e-05,
+            "stat": 44.25081708067421,
+            "pvalue": 1.3839729898484747e-05,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 163123.3634083515,
-          "rmse": 183475.1425735671,
+          "mae": 163139.7901498905,
+          "rmse": 183490.93733000185,
           "n_obs_comparados": 63
         }
       },
       "ganador": {
         "modelo": "lstm_c1",
         "criterio": "rmse",
-        "valor": 95563.77180052601,
+        "valor": 95563.76702070335,
         "gana_seasonal_naive_a_sarima": true,
         "nota_seasonal_naive": "seasonal_naive (rmse=253203.4) iguala o supera a sarima (rmse=257978.6): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
         "modelos_excluidos_sin_metrica": []
@@ -389,16 +389,16 @@
             "semilla": 42,
             "n_muestras_train": 135,
             "loss_inicial": 1.0823382139205933,
-            "loss_final": 0.022816738113760948,
+            "loss_final": 0.02270074374973774,
             "escalado": "z-score sobre la serie transformada",
             "prediccion": "recursiva a un paso",
             "aplanamiento": {
               "meses_cola": 20,
               "escala": "log1p",
-              "media_cola": 14.638180420334475,
-              "sd_cola": 2.3470134935490932e-07,
-              "cv_cola": 1.603350571010017e-08,
-              "rango_cola": 1.3161761192037602e-06,
+              "media_cola": 11.16824055407572,
+              "sd_cola": 0.004769407954837658,
+              "cv_cola": 0.00042705096937557623,
+              "rango_cola": 0.015427119662140498,
               "umbral_cv": 0.01,
               "aplanado": true
             },
@@ -420,40 +420,40 @@
               "resultados": [
                 {
                   "epochs": 50,
-                  "rmse_val": 3.392203539949649
+                  "rmse_val": 3.392203536309034
                 },
                 {
                   "epochs": 100,
-                  "rmse_val": 3.403602225832243
+                  "rmse_val": 3.4036030483515063
                 },
                 {
                   "epochs": 200,
-                  "rmse_val": 3.4126879093484837
+                  "rmse_val": 3.4228652147705354
                 },
                 {
                   "epochs": 300,
-                  "rmse_val": 3.382194129673638
+                  "rmse_val": 3.3168590093577923
                 },
                 {
                   "epochs": 500,
-                  "rmse_val": 3.2132723165461874
+                  "rmse_val": 3.212601358631181
                 }
               ],
               "mejor": 500,
-              "rmse_val_mejor": 3.2132723165461874,
+              "rmse_val_mejor": 3.212601358631181,
               "nota": "la validacion es la cola del entrenamiento; el conjunto de prueba nunca se usa para elegir hiperparametros"
             }
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 16.407879048673536,
-            "pvalue": 0.17326037688660662,
+            "stat": 52.94972431316695,
+            "pvalue": 4.2050720795136986e-07,
             "alpha": 0.05,
-            "independientes": true
+            "independientes": false
           },
-          "mae": 1836336.63249238,
-          "rmse": 1988252.062154066,
+          "mae": 29183.36722153259,
+          "rmse": 34700.950045961676,
           "n_obs_comparados": 63
         },
         "lstm_c2": {
@@ -469,16 +469,16 @@
             "semilla": 42,
             "n_muestras_train": 123,
             "loss_inicial": 1.1882551908493042,
-            "loss_final": 0.03444668650627136,
+            "loss_final": 0.045256778597831726,
             "escalado": "z-score sobre la serie transformada",
             "prediccion": "recursiva a un paso",
             "aplanamiento": {
               "meses_cola": 20,
               "escala": "log1p",
-              "media_cola": 11.578516824023502,
-              "sd_cola": 0.03669179039782208,
-              "cv_cola": 0.003168954275878643,
-              "rango_cola": 0.12505691274232156,
+              "media_cola": 11.604585207048476,
+              "sd_cola": 0.05543325345990926,
+              "cv_cola": 0.004776840573865562,
+              "rango_cola": 0.16873279141837827,
               "umbral_cv": 0.01,
               "aplanado": true
             },
@@ -500,47 +500,47 @@
               "resultados": [
                 {
                   "epochs": 50,
-                  "rmse_val": 3.4139665947213977
+                  "rmse_val": 3.413966598062129
                 },
                 {
                   "epochs": 100,
-                  "rmse_val": 3.4222564654563516
+                  "rmse_val": 3.4222477888886136
                 },
                 {
                   "epochs": 200,
-                  "rmse_val": 3.2796312614186083
+                  "rmse_val": 3.1938332044578086
                 },
                 {
                   "epochs": 300,
-                  "rmse_val": 3.1559088490755594
+                  "rmse_val": 3.1936317874529703
                 },
                 {
                   "epochs": 500,
-                  "rmse_val": 3.254881282618595
+                  "rmse_val": 3.1992095608247335
                 }
               ],
               "mejor": 300,
-              "rmse_val_mejor": 3.1559088490755594,
+              "rmse_val_mejor": 3.1936317874529703,
               "nota": "la validacion es la cola del entrenamiento; el conjunto de prueba nunca se usa para elegir hiperparametros"
             }
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 21.248559675175276,
-            "pvalue": 0.04685702710593443,
+            "stat": 22.792006763604636,
+            "pvalue": 0.02954454161817795,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 17691.397758791063,
-          "rmse": 23574.246734528137,
+          "mae": 17093.154988116024,
+          "rmse": 22233.924568097944,
           "n_obs_comparados": 63
         }
       },
       "ganador": {
         "modelo": "lstm_c2",
         "criterio": "rmse",
-        "valor": 23574.246734528137,
+        "valor": 22233.924568097944,
         "gana_seasonal_naive_a_sarima": false,
         "nota_seasonal_naive": "sarima (rmse=73149.6) supera a seasonal_naive (rmse=79077.3).",
         "modelos_excluidos_sin_metrica": []
@@ -1117,9 +1117,9 @@
     "vias": {
       "detalle": {
         "Aérea": {
-          "fuerza_estacionalidad": 0.5581476627853182,
-          "pendiente_anual": 2237.0305427745106,
-          "pct_anual_sobre_media": 2.4244879374489803,
+          "fuerza_estacionalidad": 0.5581476627853184,
+          "pendiente_anual": 2237.030542774508,
+          "pct_anual_sobre_media": 2.424487937448977,
           "cv": 0.3299535796286186,
           "impacto_pandemia": {
             "anio_base": 2019,
@@ -1132,7 +1132,7 @@
           "racha_ceros_max": 0
         },
         "Terrestre": {
-          "fuerza_estacionalidad": 0.386581240048646,
+          "fuerza_estacionalidad": 0.3865812400486459,
           "pendiente_anual": 12373.18938748194,
           "pct_anual_sobre_media": 8.38082453397114,
           "cv": 0.5166416297093888,
@@ -1148,8 +1148,8 @@
         },
         "Marítima": {
           "fuerza_estacionalidad": 0.6143625980651215,
-          "pendiente_anual": 286.40390449712197,
-          "pct_anual_sobre_media": 3.436917883601725,
+          "pendiente_anual": 286.40390449712186,
+          "pct_anual_sobre_media": 3.4369178836017236,
           "cv": 0.8677490270631351,
           "impacto_pandemia": {
             "anio_base": 2019,
@@ -1198,7 +1198,7 @@
           "racha_ceros_max": 5
         },
         "Guatemala": {
-          "fuerza_estacionalidad": 0.534047178019074,
+          "fuerza_estacionalidad": 0.5340471780190739,
           "pendiente_anual": 6946.24267209965,
           "pct_anual_sobre_media": 7.632058020021476,
           "cv": 0.46008985173373745,
@@ -1213,7 +1213,7 @@
           "racha_ceros_max": 0
         },
         "Estados Unidos de América": {
-          "fuerza_estacionalidad": 0.7030192049779345,
+          "fuerza_estacionalidad": 0.7030192049779346,
           "pendiente_anual": 541.0252827573913,
           "pct_anual_sobre_media": 1.8711480634405513,
           "cv": 0.3957367722763906,
@@ -1230,7 +1230,7 @@
       },
       "mas_estacionalidad": {
         "serie": "Estados Unidos de América",
-        "valor": 0.7030192049779345
+        "valor": 0.7030192049779346
       },
       "mas_tendencia_crecimiento": {
         "serie": "Guatemala",
