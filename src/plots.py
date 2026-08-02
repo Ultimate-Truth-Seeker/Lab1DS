@@ -13,6 +13,7 @@ import matplotlib.ticker as mticker
 import numpy as np
 import pandas as pd
 from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+import seaborn as sns
 
 from src import config
 
@@ -212,4 +213,193 @@ def forecast_vs_real(serie_train: pd.Series, serie_test: pd.Series,
     ax.set_title(f"{nombre} — pronóstico vs. real (conjunto de prueba)")
     ax.set_ylabel("Viajeros")
     ax.legend(fontsize=7, ncol=2)
+    _guardar(fig, ruta)
+
+
+# ---------------------------------------------------------------------
+# Lab 2 - catch22
+# ---------------------------------------------------------------------
+
+def plot_pca(
+    proyeccion: dict,
+    ruta,
+):
+    """
+    Proyección PCA de las series.
+    """
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+
+    for nombre, (x, y) in proyeccion.items():
+
+        ax.scatter(
+            x,
+            y,
+            s=50,
+        )
+
+        ax.text(
+            x,
+            y,
+            nombre,
+            fontsize=8,
+        )
+
+    ax.set_xlabel("PC1")
+
+    ax.set_ylabel("PC2")
+
+    ax.set_title("PCA de las características catch22")
+
+    ax.grid(alpha=0.3)
+
+    _guardar(fig, ruta)
+
+
+def plot_clusters(
+    proyeccion: dict,
+    clusters: dict,
+    ruta,
+):
+    """
+    Clustering sobre la proyección PCA.
+    """
+
+    fig, ax = plt.subplots(figsize=(6, 5))
+
+    for nombre, (x, y) in proyeccion.items():
+
+        ax.scatter(
+            x,
+            y,
+            s=60,
+            label=f"Grupo {clusters[nombre]}",
+        )
+
+        ax.text(
+            x,
+            y,
+            nombre,
+            fontsize=8,
+        )
+
+    handles, labels = ax.get_legend_handles_labels()
+
+    unico = dict(zip(labels, handles))
+
+    ax.legend(
+        unico.values(),
+        unico.keys(),
+        fontsize=8,
+    )
+
+    ax.set_xlabel("PC1")
+
+    ax.set_ylabel("PC2")
+
+    ax.set_title("Clustering de las series")
+
+    ax.grid(alpha=0.3)
+
+    _guardar(fig, ruta)
+
+def plot_heatmap(
+    matriz,
+    series,
+    features,
+    ruta,
+):
+    """
+    Heatmap de las 22 características.
+    """
+
+    fig, ax = plt.subplots(
+        figsize=(12, 5)
+    )
+
+    sns.heatmap(
+        matriz,
+        cmap="coolwarm",
+        xticklabels=features,
+        yticklabels=series,
+        ax=ax,
+    )
+
+    ax.set_title(
+        "Heatmap de características catch22"
+    )
+
+    plt.xticks(
+        rotation=90,
+        fontsize=7,
+    )
+
+    _guardar(fig, ruta)
+
+
+def plot_correlaciones(
+    correlaciones,
+    features,
+    ruta,
+):
+    """
+    Matriz de correlaciones entre características.
+    """
+
+    fig, ax = plt.subplots(
+        figsize=(10, 8)
+    )
+
+    sns.heatmap(
+        correlaciones,
+        cmap="coolwarm",
+        center=0,
+        xticklabels=features,
+        yticklabels=features,
+        ax=ax,
+    )
+
+    ax.set_title(
+        "Correlación entre características catch22"
+    )
+
+    plt.xticks(
+        rotation=90,
+        fontsize=6,
+    )
+
+    plt.yticks(
+        fontsize=6,
+    )
+
+    _guardar(fig, ruta)
+
+
+def plot_distancias(
+    distancias,
+    series,
+    ruta,
+):
+    """
+    Matriz de distancias entre series.
+    """
+
+    fig, ax = plt.subplots(
+        figsize=(6, 5)
+    )
+
+    sns.heatmap(
+        distancias,
+        cmap="viridis",
+        xticklabels=series,
+        yticklabels=series,
+        annot=True,
+        fmt=".2f",
+        ax=ax,
+    )
+
+    ax.set_title(
+        "Distancias entre series"
+    )
+
     _guardar(fig, ruta)

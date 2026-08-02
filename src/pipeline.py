@@ -14,6 +14,7 @@ from src import config, data, decomposition, eda, plots, series as S, stationari
 from src import comparison as Cmp, evaluation as E, models as M, transform as T
 from src import lstm as L
 from src import catch22 as C22
+from src import catch22_analysis as C22A
 
 # nombre para mostrar de cada serie, por clave
 _ETIQUETAS = {"total": "Total mensual de viajeros internacionales"}
@@ -413,6 +414,95 @@ def correr_catch22(df: pd.DataFrame, part: dict, paises: list,
     _escribir_json("catch22.json", payload)
     return payload
 
+def correr_catch22_analysis() -> dict:
+    """
+    Análisis estadístico de las características catch22.
+
+    Requiere que exista results/catch22.json.
+    """
+
+    print("\n=== Análisis catch22 ===")
+
+    ruta = config.RESULTSDIR / "catch22.json"
+
+    if not ruta.exists():
+        raise FileNotFoundError(
+            f"No existe {ruta}. Ejecute primero correr_catch22()."
+        )
+
+    with open(ruta, encoding="utf-8") as fh:
+        payload = json.load(fh)
+
+    resultado = C22A.analizar(payload)
+
+    figs = {}
+
+    figs["pca"] = (
+        config.FIGDIR /
+        "30_pca.png"
+    )
+
+    figs["clusters"] = (
+        config.FIGDIR /
+        "31_clusters.png"
+    )
+
+    figs["heatmap"] = (
+        config.FIGDIR /
+        "32_heatmap.png"
+    )
+
+    figs["correlaciones"] = (
+        config.FIGDIR /
+        "33_correlaciones.png"
+    )
+
+    figs["distancias"] = (
+        config.FIGDIR /
+        "34_distancias.png"
+    )
+
+    plots.plot_pca(
+        resultado["pca"]["proyeccion"],
+        figs["pca"],
+    )
+
+    plots.plot_clusters(
+        resultado["pca"]["proyeccion"],
+        resultado["clustering"]["asignacion"],
+        figs["clusters"],
+    )
+
+    plots.plot_heatmap(
+        payload["matriz_estandarizada"],
+        payload["series"],
+        payload["features"],
+        figs["heatmap"],
+    )
+
+    plots.plot_correlaciones(
+        resultado["correlaciones"],
+        payload["features"],
+        figs["correlaciones"],
+    )
+
+    plots.plot_distancias(
+        resultado["distancias"]["matriz"],
+        payload["series"],
+        figs["distancias"],
+    )
+
+    resultado["figuras"] = {
+        nombre: ruta.relative_to(config.ROOT).as_posix()
+        for nombre, ruta in figs.items()
+    }
+
+    _escribir_json(
+        "catch22_analysis.json",
+        resultado,
+    )
+
+    return resultado
 
 def correr_prediccion(df: pd.DataFrame, part: dict, paises: list) -> dict:
     """
@@ -504,5 +594,6 @@ def correr_todo(usar_cache: bool = True) -> None:
     correr_modelos(df, part, paises, d_por_serie=d_por_serie, D_por_serie=D_por_serie)
     correr_lstm(df, part, paises)
     correr_catch22(df, part, paises)
+    correr_catch22_analysis()
     correr_prediccion(df, part, paises)
     print("\nListo. Figuras en figs/ y resultados en results/")
