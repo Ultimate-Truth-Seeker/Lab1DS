@@ -102,6 +102,12 @@ def _cmd_prediccion(args):
     part = pipeline.S.particion(df)
     pipeline.correr_prediccion(df, part, paises)
 
+def _cmd_catch22_modelo(args):
+        df = data.cargar(usar_cache=not args.no_cache)
+        resumen = pipeline.correr_eda(df)
+        paises = [d["nombre"] for d in resumen["top_paises"][:config.TOP_N_PAISES]]
+        part = pipeline.S.particion(df)
+        pipeline.correr_catch22_modelo(df, part, paises)
 
 def _cmd_all(args):
     pipeline.correr_todo(usar_cache=not args.no_cache)
@@ -119,7 +125,7 @@ def _cmd_report(args):
 def main():
     parser = argparse.ArgumentParser(description="Laboratorio 1 - Series de Tiempo")
     parser.add_argument("comando", choices=["eda", "series", "modelos", "lstm",
-                                            "catch22", "prediccion", "all", "report"])
+                                                "catch22", "prediccion", "catch22_modelo","all", "report"])
     parser.add_argument("--no-cache", action="store_true",
                         help="lee el Excel directo, ignorando el cache")
     args = parser.parse_args()
@@ -133,6 +139,7 @@ def main():
         "lstm": _cmd_lstm,
         "catch22": _cmd_catch22,
         "prediccion": _cmd_prediccion,
+        "catch22_modelo": _cmd_catch22_modelo,
         "all": _cmd_all,
         "report": _cmd_report,
     }[args.comando](args) or 0

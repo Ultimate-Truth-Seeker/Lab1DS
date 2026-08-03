@@ -504,6 +504,122 @@ def correr_catch22_analysis() -> dict:
 
     return resultado
 
+def correr_catch22_modelo(df: pd.DataFrame, part: dict, paises: list,
+                          claves: list | None = None) -> dict:
+    """
+    Inciso 2.14: LSTM con las features de catch22 como entrada extra.
+
+    Para cada serie en 'claves' (default: config.LSTM_SERIES, o sea las
+    mismas 2 series del inciso 1.1) entrena lstm_catch22 y lo compara contra
+    el mejor de lstm_c1/lstm_c2 YA guardado en results/lstm.json, evaluando
+    ambos con el mismo conjunto de prueba (mismo criterio que comparison.py,
+    para que la comparacion sea justa). Escribe results/catch22_modelo.json.
+    """
+    print("\n=== catch22 + LSTM (2.14) ===")
+
+    ruta_c22 = config.RESULTSDIR / "catch22.json"
+    if not ruta_c22.exists():
+        raise FileNotFoundError(f"No existe {ruta_c22}. Ejecute primero 'catch22'.")
+    with open(ruta_c22, encoding="utf-8") as fh:
+        c22 = json.load(fh)
+    vector_por_serie = dict(zip(c22["series"], c22["matriz_estandarizada"]))
+
+    objetivo = claves if claves is not None else config.LSTM_SERIES
+    horizon = len(part["meses"]) - part["n_train"]
+    series_train = S.construir_series(part["train"], part["meses_train"], paises)
+    series_test = Cmp.construir_series_test(df, part, paises)
+
+    ruta_lstm = config.RESULTSDIR / "lstm.json"
+    modelos_existentes = {}
+    if ruta_lstm.exists():
+        with open(ruta_lstm, encoding="utf-8") as fh:
+            for s in json.load(fh)["series"]:
+                modelos_existentes[s["clave"]] = s["modelos"]
+    else:
+        print("  aviso: no existe results/lstm.json; se entrena lstm_catch22 "
+              "pero no se puede comparar contra lstm_c1/lstm_c2.")
+
+    detalle = []
+    for clave in objetivo:
+        if clave not in vector_por_serie:
+            print(f"  (no hay vector catch22 para '{clave}', se omite)")
+            continue
+        if clave not in series_train:
+            print(f"  (no existe la serie '{clave}', se omite)")
+            continue
+
+        vector = vector_por_serie[clave]
+        s_transformada, _, transf = T.decidir(series_train[clave])
+
+        tuneo = L.tunear_epochs_catch22(s_transformada, vector)
+        res = L.ajustar_lstm_catch22(s_transformada, horizon, vector,
+                                     epochs_override=tuneo["mejor"], tuneo=tuneo)
+
+        lb = E.ljung_box(res["residuos"])
+        forecast_real = T.invertir(res["forecast"], transf["nombre"])
+
+        err_nuevo = None
+        if clave in series_test:
+            err_nuevo = E.metricas_error(series_test[clave], forecast_real)
+
+        # el/los mejor(es) LSTM ya existentes para esta serie, evaluados
+        # contra el MISMO conjunto de prueba (no se reusa el mae/rmse de
+        # comparison.json a ciegas: si ese JSON quedo desactualizado,
+        # aca se recalcula igual que hace comparison.py)
+        comparables = {}
+        for nombre_modelo, info in modelos_existentes.get(clave, {}).items():
+            if clave not in series_test:
+                break
+            f = Cmp.forecast_a_serie(info.get("forecast", {}))
+            err = E.metricas_error(series_test[clave], f)
+            comparables[nombre_modelo] = err
+
+        mejor_existente = (min(comparables, key=lambda m: comparables[m]["rmse"])
+                           if comparables else None)
+
+        modelo_json = {
+            "parametros": res["parametros"],
+            "aic": res["aic"],
+            "bic": res["bic"],
+            "ljung_box": lb,
+            "forecast": {ts.strftime("%Y-%m"): float(v) for ts, v in forecast_real.items()},
+            "mae": err_nuevo["mae"] if err_nuevo else None,
+            "rmse": err_nuevo["rmse"] if err_nuevo else None,
+            "n_obs_comparados": err_nuevo["n_obs_comparados"] if err_nuevo else None,
+        }
+
+        gana_catch22 = None
+        if err_nuevo and mejor_existente:
+            gana_catch22 = bool(err_nuevo["rmse"] < comparables[mejor_existente]["rmse"])
+
+        registro = {
+            "clave": clave,
+            "nombre": _etiqueta(clave),
+            "transformacion": transf["nombre"],
+            "lstm_catch22": modelo_json,
+            "mejor_lstm_existente": {
+                "modelo": mejor_existente,
+                "mae": comparables[mejor_existente]["mae"] if mejor_existente else None,
+                "rmse": comparables[mejor_existente]["rmse"] if mejor_existente else None,
+            },
+            "gana_lstm_catch22": gana_catch22,
+        }
+        detalle.append(registro)
+
+        if err_nuevo and mejor_existente:
+            print(f"  {_etiqueta(clave)}: lstm_catch22 rmse={err_nuevo['rmse']:.1f} "
+                  f"vs {mejor_existente} rmse={comparables[mejor_existente]['rmse']:.1f} "
+                  f"-> {'gana lstm_catch22' if gana_catch22 else 'gana el existente'}")
+        else:
+            print(f"  {_etiqueta(clave)}: lstm_catch22 entrenado "
+                  f"(epochs={tuneo['mejor']}, loss={res['parametros']['loss_final']:.4f}); "
+                  "comparacion incompleta por falta de lstm.json o serie de prueba")
+
+    payload = {"horizon": horizon, "semilla": config.LSTM_SEMILLA, "series": detalle}
+    _escribir_json("catch22_modelo.json", payload)
+    return payload
+
+
 def correr_prediccion(df: pd.DataFrame, part: dict, paises: list) -> dict:
     """
     Predicción y análisis comparativo 
@@ -595,5 +711,6 @@ def correr_todo(usar_cache: bool = True) -> None:
     correr_lstm(df, part, paises)
     correr_catch22(df, part, paises)
     correr_catch22_analysis()
+    correr_catch22_modelo(df, part, paises)
     correr_prediccion(df, part, paises)
     print("\nListo. Figuras en figs/ y resultados en results/")

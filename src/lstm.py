@@ -372,3 +372,243 @@ def ajustar_todas_configs(serie: pd.Series, horizon: int,
         )
 
     return resultados
+
+# ---------------------------------------------------------------------------
+# config y red para lstm_catch22
+# ---------------------------------------------------------------------------
+
+@dataclass(frozen=True)
+class ConfigLSTMCatch22:
+    """
+    Analoga a ConfigLSTM, pero para la red que recibe el vector catch22.
+
+    No hereda de ConfigLSTM a proposito: comparten campos por convencion, no
+    por sustitucion (una ConfigLSTM no le sirve a esta red sin un vector
+    catch22, asi que mezclarlas en el mismo tipo invitaria a pasar la una por
+    la otra).
+    """
+    nombre: str = "lstm_catch22"
+    ventana: int = 12
+    unidades: int = 32
+    capas: int = 1
+    dropout: float = 0.1
+    epochs: int = config.LSTM_EPOCHS
+    lr: float = config.LSTM_LR
+
+
+class RedLSTMCatch22(nn.Module):
+    """
+    LSTM sobre la ventana temporal + vector catch22 concatenado al final.
+
+    El vector catch22 NO entra en cada paso de tiempo (no es una secuencia,
+    es un resumen de toda la serie): se concatena una sola vez, al estado
+    oculto final, junto antes de la capa lineal. Con eso la red aprende un
+    ajuste/calibracion condicionado en la "forma" global de la serie, no un
+    insumo que varie mes a mes.
+    """
+
+    def __init__(self, unidades: int, capas: int, dropout: float, n_catch22: int = 22) -> None:
+        super().__init__()
+        self.lstm = nn.LSTM(input_size=1, hidden_size=unidades,
+                            num_layers=capas, batch_first=True)
+        self.dropout = nn.Dropout(dropout)
+        self.salida = nn.Linear(unidades + n_catch22, 1)
+
+    def forward(self, x: torch.Tensor, catch22_vec: torch.Tensor) -> torch.Tensor:
+        secuencia, _ = self.lstm(x)
+        h = self.dropout(secuencia[:, -1])
+        combinado = torch.cat([h, catch22_vec], dim=1)
+        return self.salida(combinado).squeeze(-1)
+
+
+# ---------------------------------------------------------------------------
+# ventaneo + vector catch22 repetido por muestra
+# ---------------------------------------------------------------------------
+
+def _ventanas_catch22(valores: np.ndarray, ventana: int,
+                      catch22_vec: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """
+    Igual que _ventanas(), y ademas repite el vector catch22 una vez por
+    cada muestra (es constante para todas: son features de LA MISMA serie).
+    """
+    x, y = _ventanas(valores, ventana)
+    c = np.repeat(catch22_vec[None, :], x.shape[0], axis=0).astype("float32")
+    return x, c, y
+
+
+# ---------------------------------------------------------------------------
+# entrenamiento y prediccion (misma forma que _entrenar/_predecir_*, con
+# el argumento extra 'catch22')
+# ---------------------------------------------------------------------------
+
+def _entrenar_catch22(red: nn.Module, x: torch.Tensor, c: torch.Tensor, y: torch.Tensor,
+                      epochs: int, lr: float, checkpoints: tuple[int, ...] = ()) -> dict:
+    opt = torch.optim.Adam(red.parameters(), lr=lr)
+    perdida = nn.MSELoss()
+    historial: list[float] = []
+    estados: dict[int, dict] = {}
+
+    for epoca in range(1, epochs + 1):
+        red.train()
+        opt.zero_grad()
+        error = perdida(red(x, c), y)
+        error.backward()
+        opt.step()
+        historial.append(float(error.item()))
+
+        if epoca in checkpoints:
+            estados[epoca] = {k: v.clone() for k, v in red.state_dict().items()}
+
+    return {"historial": historial, "estados": estados}
+
+
+def _predecir_recursivo_catch22(red: nn.Module, ultima_ventana: np.ndarray,
+                                catch22_vec: np.ndarray, horizon: int) -> np.ndarray:
+    """Identico a _predecir_recursivo(), pero el vector catch22 (constante)
+    se pasa en cada paso junto con la ventana que se va reinyectando."""
+    red.eval()
+    ventana = list(ultima_ventana)
+    c = torch.from_numpy(catch22_vec[None, :].astype("float32"))
+    predicciones = []
+
+    with torch.no_grad():
+        for _ in range(horizon):
+            entrada = np.array(ventana[-len(ultima_ventana):], dtype="float32")
+            valor = float(red(torch.from_numpy(entrada[None, :, None]), c).item())
+            predicciones.append(valor)
+            ventana.append(valor)
+
+    return np.array(predicciones)
+
+
+def _predecir_un_paso_catch22(red: nn.Module, x: torch.Tensor, c: torch.Tensor) -> np.ndarray:
+    red.eval()
+    with torch.no_grad():
+        return red(x, c).numpy()
+
+
+# ---------------------------------------------------------------------------
+# tuneo de epocas (misma logica que tunear_epochs, con el vector catch22)
+# ---------------------------------------------------------------------------
+
+def tunear_epochs_catch22(serie: pd.Series, catch22_vec,
+                          cfg: ConfigLSTMCatch22 = ConfigLSTMCatch22(),
+                          rejilla: tuple[int, ...] = config.LSTM_REJILLA_EPOCHS,
+                          val_meses: int = config.LSTM_VAL_MESES,
+                          semilla: int = config.LSTM_SEMILLA) -> dict:
+    """
+    Igual criterio que tunear_epochs(): valida contra la cola del
+    entrenamiento, nunca contra prueba. Misma limitacion documentada alla
+    (los 12 meses de validacion caen en el colapso pandemico).
+    """
+    _fijar_semilla(semilla)
+    catch22_vec = np.asarray(catch22_vec, dtype="float64")
+
+    interno = serie.iloc[:-val_meses]
+    validacion = serie.iloc[-val_meses:]
+
+    media, sd = _ajustar_escalador(interno)
+    z = _escalar(interno.to_numpy(dtype="float64"), media, sd)
+    x, c, y = _ventanas_catch22(z, cfg.ventana, catch22_vec)
+
+    red = RedLSTMCatch22(cfg.unidades, cfg.capas, cfg.dropout, n_catch22=len(catch22_vec))
+    entreno = _entrenar_catch22(red, torch.from_numpy(x), torch.from_numpy(c),
+                                torch.from_numpy(y), epochs=max(rejilla), lr=cfg.lr,
+                                checkpoints=tuple(rejilla))
+
+    real = validacion.to_numpy(dtype="float64")
+    resultados = []
+    for epocas in rejilla:
+        red.load_state_dict(entreno["estados"][epocas])
+        pred_z = _predecir_recursivo_catch22(red, z[-cfg.ventana:], catch22_vec, val_meses)
+        pred = _desescalar(pred_z, media, sd)
+        rmse = float(np.sqrt(np.mean((real - pred) ** 2)))
+        resultados.append({"epochs": int(epocas), "rmse_val": rmse})
+
+    mejor = min(resultados, key=lambda r: r["rmse_val"])
+
+    return {
+        "hiperparametro": "epochs",
+        "rejilla": [int(e) for e in rejilla],
+        "criterio": "rmse_validacion",
+        "escala_criterio": "log1p",
+        "val_meses": int(val_meses),
+        "val_inicio": validacion.index.min().strftime("%Y-%m"),
+        "val_fin": validacion.index.max().strftime("%Y-%m"),
+        "n_muestras_interno": int(len(y)),
+        "resultados": resultados,
+        "mejor": mejor["epochs"],
+        "rmse_val_mejor": mejor["rmse_val"],
+        "nota": ("la validacion es la cola del entrenamiento; el conjunto de prueba "
+                 "nunca se usa para elegir hiperparametros"),
+    }
+
+
+# ---------------------------------------------------------------------------
+# API publica: ajustar_lstm_catch22
+# ---------------------------------------------------------------------------
+
+def ajustar_lstm_catch22(serie: pd.Series, horizon: int, catch22_vec,
+                         cfg: ConfigLSTMCatch22 = ConfigLSTMCatch22(),
+                         semilla: int = config.LSTM_SEMILLA,
+                         epochs_override: int | None = None,
+                         tuneo: dict | None = None) -> dict:
+    """
+    Ajusta la LSTM con catch22 como entrada extra y pronostica 'horizon'
+    meses de forma recursiva.
+
+    'catch22_vec' es la fila de matriz_estandarizada (results/catch22.json)
+    correspondiente a esta serie -- ya viene z-scoreada entre las 7 series,
+    no hace falta re-estandarizarla aca.
+
+    Devuelve las mismas 7 claves que models._resultado / ajustar_lstm(), para
+    que pipeline.py y comparison.py lo traten igual que cualquier otro
+    modelo.
+    """
+    _fijar_semilla(semilla)
+    epochs = epochs_override or cfg.epochs
+    catch22_vec = np.asarray(catch22_vec, dtype="float64")
+
+    media, sd = _ajustar_escalador(serie)
+    z = _escalar(serie.to_numpy(dtype="float64"), media, sd)
+    x, c, y = _ventanas_catch22(z, cfg.ventana, catch22_vec)
+    xt, ct, yt = torch.from_numpy(x), torch.from_numpy(c), torch.from_numpy(y)
+
+    red = RedLSTMCatch22(cfg.unidades, cfg.capas, cfg.dropout, n_catch22=len(catch22_vec))
+    entreno = _entrenar_catch22(red, xt, ct, yt, epochs=epochs, lr=cfg.lr)
+
+    pred = _desescalar(_predecir_recursivo_catch22(red, z[-cfg.ventana:], catch22_vec, horizon),
+                       media, sd)
+    forecast = pd.Series(pred, index=pronostico_index(serie, horizon), name="forecast")
+
+    ajustado = _desescalar(_predecir_un_paso_catch22(red, xt, ct), media, sd)
+    residuos = pd.Series(serie.to_numpy(dtype="float64")[cfg.ventana:] - ajustado,
+                         index=serie.index[cfg.ventana:], name="residuos")
+
+    parametros = {
+        "config": cfg.nombre,
+        **{k: v for k, v in asdict(cfg).items() if k != "nombre"},
+        "epochs_usadas": int(epochs),
+        "semilla": int(semilla),
+        "n_muestras_train": int(len(y)),
+        "n_catch22_features": int(len(catch22_vec)),
+        "loss_inicial": entreno["historial"][0],
+        "loss_final": entreno["historial"][-1],
+        "escalado": "z-score sobre la serie transformada; catch22 llega ya "
+                    "estandarizado desde catch22.json (matriz_estandarizada)",
+        "prediccion": "recursiva a un paso",
+        "entrada_extra": "vector catch22 (22) concatenado al ultimo estado "
+                         "oculto de la LSTM antes de la capa lineal",
+        "aplanamiento": diagnostico_aplanamiento(forecast),
+        "tuneo": tuneo,
+    }
+
+    return {
+        "modelo": cfg.nombre,
+        "parametros": parametros,
+        "forecast": forecast,
+        "residuos": residuos,
+        "aic": None,
+        "bic": None,
+        "fit": None,
+    }
