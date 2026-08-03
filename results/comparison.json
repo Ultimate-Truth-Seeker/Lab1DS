@@ -13,8 +13,8 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 410.0511562332968,
-            "pvalue": 2.812228101534791e-80,
+            "stat": 410.0511562332967,
+            "pvalue": 2.8122281015349517e-80,
             "alpha": 0.05,
             "independientes": false
           },
@@ -26,11 +26,11 @@
           "parametros": {
             "alpha": 0.9999999850988388
           },
-          "aic": -324.8726246830522,
-          "bic": -318.89175950949476,
+          "aic": -324.87262468305204,
+          "bic": -318.8917595094946,
           "ljung_box": {
-            "stat": 23.115903422461006,
-            "pvalue": 0.02675792008659316,
+            "stat": 23.115903422460963,
+            "pvalue": 0.026757920086593515,
             "alpha": 0.05,
             "independientes": false
           },
@@ -45,18 +45,18 @@
             "seasonal_periods": 12,
             "alpha": 0.9999999850988388,
             "beta": 0.0,
-            "gamma": 2.8483160859552593e-10
+            "gamma": 2.8483583872298906e-10
           },
-          "aic": -347.99863530334926,
-          "bic": -300.15171391488946,
+          "aic": -347.9986352950576,
+          "bic": -300.1517139065978,
           "ljung_box": {
-            "stat": 16.7014589448812,
-            "pvalue": 0.16117668711917454,
+            "stat": 16.701463485884556,
+            "pvalue": 0.16117650561495442,
             "alpha": 0.05,
             "independientes": true
           },
-          "mae": 196956.51222466503,
-          "rmse": 216457.59930032396,
+          "mae": 196957.3687147252,
+          "rmse": 216458.4791344858,
           "n_obs_comparados": 63
         },
         "sarima": {
@@ -73,16 +73,16 @@
               12
             ]
           },
-          "aic": 72.09484893472867,
-          "bic": 89.34603287393557,
+          "aic": 72.09484898716248,
+          "bic": 89.34603292636939,
           "ljung_box": {
-            "stat": 36.39470623926303,
-            "pvalue": 0.00027988723296605615,
+            "stat": 36.394820575640594,
+            "pvalue": 0.0002798753480737129,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 238984.22672928983,
-          "rmse": 257978.55853884417,
+          "mae": 238984.68870097044,
+          "rmse": 257979.01009322563,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -94,13 +94,13 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 263.7287274177345,
-            "pvalue": 1.8627111254919672e-49,
+            "stat": 264.0171072090402,
+            "pvalue": 1.6213597261196223e-49,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 266995.04174632294,
-          "rmse": 284418.8355844055,
+          "mae": 266783.2703198711,
+          "rmse": 284245.82763882197,
           "n_obs_comparados": 63
         },
         "lstm_c1": {
@@ -116,16 +116,16 @@
             "semilla": 42,
             "n_muestras_train": 135,
             "loss_inicial": 1.0728880167007446,
-            "loss_final": 0.14194045960903168,
+            "loss_final": 0.14194044470787048,
             "escalado": "z-score sobre la serie transformada",
             "prediccion": "recursiva a un paso",
             "aplanamiento": {
               "meses_cola": 20,
               "escala": "log1p",
-              "media_cola": 12.361627027352231,
-              "sd_cola": 0.0007638206796515515,
-              "cv_cola": 6.178965584072926e-05,
-              "rango_cola": 0.0025022563125656205,
+              "media_cola": 12.361627110665657,
+              "sd_cola": 0.0007638467326002474,
+              "cv_cola": 6.179176299058542e-05,
+              "rango_cola": 0.0025023396259928887,
               "umbral_cv": 0.01,
               "aplanado": true
             },
@@ -147,40 +147,40 @@
               "resultados": [
                 {
                   "epochs": 50,
-                  "rmse_val": 2.63546909748379
+                  "rmse_val": 2.635469085302092
                 },
                 {
                   "epochs": 100,
-                  "rmse_val": 2.6501689644592035
+                  "rmse_val": 2.650169730154895
                 },
                 {
                   "epochs": 200,
-                  "rmse_val": 2.6827906595988744
+                  "rmse_val": 2.6826411245784856
                 },
                 {
                   "epochs": 300,
-                  "rmse_val": 2.7030102959564646
+                  "rmse_val": 2.701505148453194
                 },
                 {
                   "epochs": 500,
-                  "rmse_val": 2.7276317487633643
+                  "rmse_val": 2.7422297635545454
                 }
               ],
               "mejor": 50,
-              "rmse_val_mejor": 2.63546909748379,
+              "rmse_val_mejor": 2.635469085302092,
               "nota": "la validacion es la cola del entrenamiento; el conjunto de prueba nunca se usa para elegir hiperparametros"
             }
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 46.71086703316994,
-            "pvalue": 5.230823864072754e-06,
+            "stat": 46.71089079925989,
+            "pvalue": 5.2307743705651945e-06,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 76028.4459585417,
-          "rmse": 95563.76702070335,
+          "mae": 76028.43371693084,
+          "rmse": 95563.75822960361,
           "n_obs_comparados": 63
         },
         "lstm_c2": {
@@ -192,20 +192,20 @@
             "dropout": 0.3,
             "epochs": 300,
             "lr": 0.01,
-            "epochs_usadas": 50,
+            "epochs_usadas": 500,
             "semilla": 42,
             "n_muestras_train": 123,
             "loss_inicial": 1.1841760873794556,
-            "loss_final": 0.11658786237239838,
+            "loss_final": 0.017656410112977028,
             "escalado": "z-score sobre la serie transformada",
             "prediccion": "recursiva a un paso",
             "aplanamiento": {
               "meses_cola": 20,
               "escala": "log1p",
-              "media_cola": 11.754749954191118,
-              "sd_cola": 0.01912683304185125,
-              "cv_cola": 0.001627157797178973,
-              "rango_cola": 0.06168971905528409,
+              "media_cola": 11.734312235210307,
+              "sd_cola": 0.0070489341647148535,
+              "cv_cola": 0.0006007113176657787,
+              "rango_cola": 0.02055808813815574,
               "umbral_cv": 0.01,
               "aplanado": true
             },
@@ -227,49 +227,49 @@
               "resultados": [
                 {
                   "epochs": 50,
-                  "rmse_val": 2.626030459438061
+                  "rmse_val": 2.6260304960091787
                 },
                 {
                   "epochs": 100,
-                  "rmse_val": 2.6896798526971892
+                  "rmse_val": 2.689678568475946
                 },
                 {
                   "epochs": 200,
-                  "rmse_val": 2.7345814763091685
+                  "rmse_val": 2.645413494732199
                 },
                 {
                   "epochs": 300,
-                  "rmse_val": 2.7110415222604507
+                  "rmse_val": 2.712272635174455
                 },
                 {
                   "epochs": 500,
-                  "rmse_val": 2.739039066958059
+                  "rmse_val": 2.594660477546602
                 }
               ],
-              "mejor": 50,
-              "rmse_val_mejor": 2.626030459438061,
+              "mejor": 500,
+              "rmse_val_mejor": 2.594660477546602,
               "nota": "la validacion es la cola del entrenamiento; el conjunto de prueba nunca se usa para elegir hiperparametros"
             }
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 44.25081708067421,
-            "pvalue": 1.3839729898484747e-05,
+            "stat": 19.43894212347604,
+            "pvalue": 0.07847184287353637,
             "alpha": 0.05,
-            "independientes": false
+            "independientes": true
           },
-          "mae": 163139.7901498905,
-          "rmse": 183490.93733000185,
+          "mae": 164388.18975286445,
+          "rmse": 184106.44484657768,
           "n_obs_comparados": 63
         }
       },
       "ganador": {
         "modelo": "lstm_c1",
         "criterio": "rmse",
-        "valor": 95563.76702070335,
+        "valor": 95563.75822960361,
         "gana_seasonal_naive_a_sarima": true,
-        "nota_seasonal_naive": "seasonal_naive (rmse=253203.4) iguala o supera a sarima (rmse=257978.6): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
+        "nota_seasonal_naive": "seasonal_naive (rmse=253203.4) iguala o supera a sarima (rmse=257979.0): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
         "modelos_excluidos_sin_metrica": []
       },
       "fig_forecast": "figs/20_forecast_total.png"
@@ -286,8 +286,8 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 303.48922688544394,
-            "pvalue": 8.689375676814505e-58,
+            "stat": 303.4892268854439,
+            "pvalue": 8.689375676814757e-58,
             "alpha": 0.05,
             "independientes": false
           },
@@ -299,11 +299,11 @@
           "parametros": {
             "alpha": 0.9999999850988388
           },
-          "aic": -216.17006855248493,
-          "bic": -210.18920337892746,
+          "aic": -216.17006855248462,
+          "bic": -210.18920337892715,
           "ljung_box": {
-            "stat": 20.88881271560529,
-            "pvalue": 0.05203251501092177,
+            "stat": 20.88881238093314,
+            "pvalue": 0.05203252005613017,
             "alpha": 0.05,
             "independientes": true
           },
@@ -318,18 +318,18 @@
             "seasonal_periods": 12,
             "alpha": 0.9999999850988388,
             "beta": 0.0,
-            "gamma": 2.36921881048584e-10
+            "gamma": 2.369185583812217e-10
           },
-          "aic": -221.82345595431855,
-          "bic": -173.97653456585877,
+          "aic": -221.82345595463076,
+          "bic": -173.97653456617098,
           "ljung_box": {
-            "stat": 25.90428846861884,
-            "pvalue": 0.011073552134744351,
+            "stat": 25.90428895694453,
+            "pvalue": 0.01107355037616534,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 48043.42362390681,
-          "rmse": 52231.08631113691,
+          "mae": 48043.41123931864,
+          "rmse": 52231.07405376311,
           "n_obs_comparados": 63
         },
         "sarima": {
@@ -346,16 +346,16 @@
               12
             ]
           },
-          "aic": 178.92920448079204,
-          "bic": 193.3809501219008,
+          "aic": 178.92920448258,
+          "bic": 193.38095012368876,
           "ljung_box": {
-            "stat": 34.30380975664548,
-            "pvalue": 0.0006039869151683614,
+            "stat": 34.30383788319138,
+            "pvalue": 0.000603980728068139,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 68719.95167433949,
-          "rmse": 73149.55530601462,
+          "mae": 68720.06410254068,
+          "rmse": 73149.65792433525,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -367,13 +367,13 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 239.30145930818856,
-            "pvalue": 2.318035883735636e-44,
+            "stat": 239.14492789984956,
+            "pvalue": 2.4986293181970797e-44,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 89016.95324553501,
-          "rmse": 92230.74108284469,
+          "mae": 89053.97469049603,
+          "rmse": 92265.91665400496,
           "n_obs_comparados": 63
         },
         "lstm_c1": {
@@ -389,16 +389,16 @@
             "semilla": 42,
             "n_muestras_train": 135,
             "loss_inicial": 1.0823382139205933,
-            "loss_final": 0.02270074374973774,
+            "loss_final": 0.027424141764640808,
             "escalado": "z-score sobre la serie transformada",
             "prediccion": "recursiva a un paso",
             "aplanamiento": {
               "meses_cola": 20,
               "escala": "log1p",
-              "media_cola": 11.16824055407572,
-              "sd_cola": 0.004769407954837658,
-              "cv_cola": 0.00042705096937557623,
-              "rango_cola": 0.015427119662140498,
+              "media_cola": 11.000565377006621,
+              "sd_cola": 0.0012418846847161232,
+              "cv_cola": 0.00011289280524725667,
+              "rango_cola": 0.004846270154219567,
               "umbral_cv": 0.01,
               "aplanado": true
             },
@@ -420,40 +420,40 @@
               "resultados": [
                 {
                   "epochs": 50,
-                  "rmse_val": 3.392203536309034
+                  "rmse_val": 3.3922035317735357
                 },
                 {
                   "epochs": 100,
-                  "rmse_val": 3.4036030483515063
+                  "rmse_val": 3.4036025274329247
                 },
                 {
                   "epochs": 200,
-                  "rmse_val": 3.4228652147705354
+                  "rmse_val": 3.4208056786339975
                 },
                 {
                   "epochs": 300,
-                  "rmse_val": 3.3168590093577923
+                  "rmse_val": 3.3884538076409485
                 },
                 {
                   "epochs": 500,
-                  "rmse_val": 3.212601358631181
+                  "rmse_val": 3.243736738675752
                 }
               ],
               "mejor": 500,
-              "rmse_val_mejor": 3.212601358631181,
+              "rmse_val_mejor": 3.243736738675752,
               "nota": "la validacion es la cola del entrenamiento; el conjunto de prueba nunca se usa para elegir hiperparametros"
             }
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 52.94972431316695,
-            "pvalue": 4.2050720795136986e-07,
+            "stat": 7.165960219744249,
+            "pvalue": 0.8464540523307779,
             "alpha": 0.05,
-            "independientes": false
+            "independientes": true
           },
-          "mae": 29183.36722153259,
-          "rmse": 34700.950045961676,
+          "mae": 37008.96680979054,
+          "rmse": 42291.71183774516,
           "n_obs_comparados": 63
         },
         "lstm_c2": {
@@ -469,18 +469,18 @@
             "semilla": 42,
             "n_muestras_train": 123,
             "loss_inicial": 1.1882551908493042,
-            "loss_final": 0.045256778597831726,
+            "loss_final": 0.03770558908581734,
             "escalado": "z-score sobre la serie transformada",
             "prediccion": "recursiva a un paso",
             "aplanamiento": {
               "meses_cola": 20,
               "escala": "log1p",
-              "media_cola": 11.604585207048476,
-              "sd_cola": 0.05543325345990926,
-              "cv_cola": 0.004776840573865562,
-              "rango_cola": 0.16873279141837827,
+              "media_cola": 10.453246377185643,
+              "sd_cola": 2.19221892745069,
+              "cv_cola": 0.2097165653949608,
+              "rango_cola": 5.523536655055549,
               "umbral_cv": 0.01,
-              "aplanado": true
+              "aplanado": false
             },
             "tuneo": {
               "hiperparametro": "epochs",
@@ -500,49 +500,49 @@
               "resultados": [
                 {
                   "epochs": 50,
-                  "rmse_val": 3.413966598062129
+                  "rmse_val": 3.4139665942577873
                 },
                 {
                   "epochs": 100,
-                  "rmse_val": 3.4222477888886136
+                  "rmse_val": 3.422253516220362
                 },
                 {
                   "epochs": 200,
-                  "rmse_val": 3.1938332044578086
+                  "rmse_val": 3.2645729019614196
                 },
                 {
                   "epochs": 300,
-                  "rmse_val": 3.1936317874529703
+                  "rmse_val": 3.2583995674715447
                 },
                 {
                   "epochs": 500,
-                  "rmse_val": 3.1992095608247335
+                  "rmse_val": 3.2748752840580964
                 }
               ],
               "mejor": 300,
-              "rmse_val_mejor": 3.1936317874529703,
+              "rmse_val_mejor": 3.2583995674715447,
               "nota": "la validacion es la cola del entrenamiento; el conjunto de prueba nunca se usa para elegir hiperparametros"
             }
           },
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 22.792006763604636,
-            "pvalue": 0.02954454161817795,
+            "stat": 19.28152250184714,
+            "pvalue": 0.08195721903980341,
             "alpha": 0.05,
-            "independientes": false
+            "independientes": true
           },
-          "mae": 17093.154988116024,
-          "rmse": 22233.924568097944,
+          "mae": 29907.653925125996,
+          "rmse": 41095.17124333133,
           "n_obs_comparados": 63
         }
       },
       "ganador": {
         "modelo": "lstm_c2",
         "criterio": "rmse",
-        "valor": 22233.924568097944,
+        "valor": 41095.17124333133,
         "gana_seasonal_naive_a_sarima": false,
-        "nota_seasonal_naive": "sarima (rmse=73149.6) supera a seasonal_naive (rmse=79077.3).",
+        "nota_seasonal_naive": "sarima (rmse=73149.7) supera a seasonal_naive (rmse=79077.3).",
         "modelos_excluidos_sin_metrica": []
       },
       "fig_forecast": "figs/20_forecast_Aerea.png"
@@ -559,8 +559,8 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 414.95006554554584,
-            "pvalue": 2.5758942207587786e-81,
+            "stat": 414.9500655455459,
+            "pvalue": 2.575894220758706e-81,
             "alpha": 0.05,
             "independientes": false
           },
@@ -570,18 +570,18 @@
         },
         "simple_exponential": {
           "parametros": {
-            "alpha": 0.7838550907565695
+            "alpha": 0.7838553807776334
           },
-          "aic": -281.7892126053239,
-          "bic": -275.80834743176644,
+          "aic": -281.7892126053756,
+          "bic": -275.80834743181816,
           "ljung_box": {
-            "stat": 35.41611953419448,
-            "pvalue": 0.00040191583111104595,
+            "stat": 35.41612862557608,
+            "pvalue": 0.0004019144859936465,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 140428.41672989578,
-          "rmse": 156309.51652749506,
+          "mae": 140428.4141403275,
+          "rmse": 156309.51358657595,
           "n_obs_comparados": 63
         },
         "holt_winters": {
@@ -591,18 +591,18 @@
             "seasonal_periods": 12,
             "alpha": 0.9999999850988388,
             "beta": 0.0,
-            "gamma": 7.636394695162212e-09
+            "gamma": 7.637217444497523e-09
           },
-          "aic": -279.05567616015304,
-          "bic": -231.20875477169326,
+          "aic": -279.0556761122715,
+          "bic": -231.20875472381172,
           "ljung_box": {
-            "stat": 29.845261540709416,
-            "pvalue": 0.002946126123587941,
+            "stat": 29.84522922046912,
+            "pvalue": 0.002946159060011629,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 148022.65981234456,
-          "rmse": 164245.40107524925,
+          "mae": 148019.9678894588,
+          "rmse": 164242.6419820936,
           "n_obs_comparados": 63
         },
         "sarima": {
@@ -619,16 +619,16 @@
               12
             ]
           },
-          "aic": 124.27575038126565,
-          "bic": 135.80695807161112,
+          "aic": 124.27575038129028,
+          "bic": 135.80695807163576,
           "ljung_box": {
-            "stat": 13.682148892588119,
-            "pvalue": 0.3214644777490759,
+            "stat": 13.682152896331049,
+            "pvalue": 0.3214642105496465,
             "alpha": 0.05,
             "independientes": true
           },
-          "mae": 165278.67164812252,
-          "rmse": 181597.23812089532,
+          "mae": 165278.68344986328,
+          "rmse": 181597.24926956417,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -640,20 +640,20 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 212.78483497504027,
-            "pvalue": 7.420455601712915e-39,
+            "stat": 213.27985818139138,
+            "pvalue": 5.860501623975307e-39,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 176160.27227093585,
-          "rmse": 192179.29574037972,
+          "mae": 176051.42973551535,
+          "rmse": 192096.63707789785,
           "n_obs_comparados": 63
         }
       },
       "ganador": {
         "modelo": "simple_exponential",
         "criterio": "rmse",
-        "valor": 156309.51652749506,
+        "valor": 156309.51358657595,
         "gana_seasonal_naive_a_sarima": true,
         "nota_seasonal_naive": "seasonal_naive (rmse=176653.0) iguala o supera a sarima (rmse=181597.2): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
         "modelos_excluidos_sin_metrica": []
@@ -672,8 +672,8 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 145.95587954228762,
-            "pvalue": 3.7430728766158557e-25,
+            "stat": 145.95587954228768,
+            "pvalue": 3.743072876615748e-25,
             "alpha": 0.05,
             "independientes": false
           },
@@ -683,18 +683,18 @@
         },
         "simple_exponential": {
           "parametros": {
-            "alpha": 0.6052412458777842
+            "alpha": 0.605241238203831
           },
-          "aic": 212.15649169096633,
-          "bic": 218.1373568645238,
+          "aic": 212.15649169096193,
+          "bic": 218.1373568645194,
           "ljung_box": {
-            "stat": 59.83091381731319,
-            "pvalue": 2.4233281358753257e-08,
+            "stat": 59.83091321859229,
+            "pvalue": 2.4233287445336586e-08,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 858.3649942540756,
-          "rmse": 1731.9296278437394,
+          "mae": 858.364994254056,
+          "rmse": 1731.9296278437243,
           "n_obs_comparados": 63
         },
         "holt_winters": {
@@ -702,20 +702,20 @@
             "trend": "add",
             "seasonal": "add",
             "seasonal_periods": 12,
-            "alpha": 0.36337000525690033,
+            "alpha": 0.36336742092514657,
             "beta": 0.0,
             "gamma": 0.0
           },
-          "aic": 191.68212670891157,
-          "bic": 239.52904809737134,
+          "aic": 191.68212702667952,
+          "bic": 239.5290484151393,
           "ljung_box": {
-            "stat": 30.270382144777173,
-            "pvalue": 0.002542191314159068,
+            "stat": 30.2707001451913,
+            "pvalue": 0.0025419101221994,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 859.2412450764762,
-          "rmse": 1732.3196682455155,
+          "mae": 859.2412466487276,
+          "rmse": 1732.3196726476658,
           "n_obs_comparados": 63
         },
         "sarima": {
@@ -732,16 +732,16 @@
               12
             ]
           },
-          "aic": 551.9245978679116,
-          "bic": 566.2622701201896,
+          "aic": 551.9245978598751,
+          "bic": 566.262270112153,
           "ljung_box": {
-            "stat": 19.694495765871004,
-            "pvalue": 0.0730902970394945,
+            "stat": 19.694486537479932,
+            "pvalue": 0.07309048535417467,
             "alpha": 0.05,
             "independientes": true
           },
-          "mae": 859.3650502061931,
-          "rmse": 1732.425522294201,
+          "mae": 859.3650502060871,
+          "rmse": 1732.4255222942008,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -753,20 +753,20 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 191.95785856688326,
-            "pvalue": 1.4844226631555482e-34,
+            "stat": 191.95384045269472,
+            "pvalue": 1.4872539558577705e-34,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 783.6651107567681,
-          "rmse": 1644.6313619914426,
+          "mae": 783.7762756595165,
+          "rmse": 1644.744398584982,
           "n_obs_comparados": 63
         }
       },
       "ganador": {
         "modelo": "prophet",
         "criterio": "rmse",
-        "valor": 1644.6313619914426,
+        "valor": 1644.744398584982,
         "gana_seasonal_naive_a_sarima": true,
         "nota_seasonal_naive": "seasonal_naive (rmse=1731.9) iguala o supera a sarima (rmse=1732.4): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
         "modelos_excluidos_sin_metrica": []
@@ -785,8 +785,8 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 233.4559519250449,
-            "pvalue": 3.812588666569801e-43,
+            "stat": 233.45595192504476,
+            "pvalue": 3.812588666570074e-43,
             "alpha": 0.05,
             "independientes": false
           },
@@ -796,18 +796,18 @@
         },
         "simple_exponential": {
           "parametros": {
-            "alpha": 0.9914560711547445
+            "alpha": 0.9914560735201626
           },
-          "aic": 66.5115211352818,
-          "bic": 72.49238630883927,
+          "aic": 66.51152113526831,
+          "bic": 72.49238630882579,
           "ljung_box": {
-            "stat": 41.55611780087309,
-            "pvalue": 3.9544986142825676e-05,
+            "stat": 41.55611820771315,
+            "pvalue": 3.954497992782805e-05,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 94064.177226165,
-          "rmse": 104530.77406890852,
+          "mae": 94064.1772134526,
+          "rmse": 104530.77405372635,
           "n_obs_comparados": 63
         },
         "holt_winters": {
@@ -817,18 +817,18 @@
             "seasonal_periods": 12,
             "alpha": 0.9999999850988388,
             "beta": 0.0,
-            "gamma": 1.4561955946511465e-08
+            "gamma": 1.4561934656136851e-08
           },
-          "aic": 86.0314091995223,
-          "bic": 133.87833058798208,
+          "aic": 86.03140919879337,
+          "bic": 133.87833058725315,
           "ljung_box": {
-            "stat": 44.21950533207676,
-            "pvalue": 1.401098502273854e-05,
+            "stat": 44.21950723423761,
+            "pvalue": 1.4010974555992646e-05,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 101044.21903731371,
-          "rmse": 111526.85044393853,
+          "mae": 101044.04984574484,
+          "rmse": 111526.6676982992,
           "n_obs_comparados": 63
         },
         "sarima": {
@@ -845,16 +845,16 @@
               12
             ]
           },
-          "aic": 438.38783232695806,
-          "bic": 455.63901626616496,
+          "aic": 438.3878256098792,
+          "bic": 455.6390095490861,
           "ljung_box": {
-            "stat": 15.061548077924325,
-            "pvalue": 0.23808780453163897,
+            "stat": 15.061374254552634,
+            "pvalue": 0.23809721319098687,
             "alpha": 0.05,
             "independientes": true
           },
-          "mae": 107540.1733755612,
-          "rmse": 117605.17694718712,
+          "mae": 107540.20035607216,
+          "rmse": 117605.3027444345,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -866,22 +866,22 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 200.81876787893054,
-            "pvalue": 2.2100327437537084e-36,
+            "stat": 200.8998257876789,
+            "pvalue": 2.126495804147331e-36,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 106869.6587992721,
-          "rmse": 117602.52245177452,
+          "mae": 106743.65115246274,
+          "rmse": 117497.93141541889,
           "n_obs_comparados": 63
         }
       },
       "ganador": {
         "modelo": "simple_exponential",
         "criterio": "rmse",
-        "valor": 104530.77406890852,
+        "valor": 104530.77405372635,
         "gana_seasonal_naive_a_sarima": false,
-        "nota_seasonal_naive": "sarima (rmse=117605.2) supera a seasonal_naive (rmse=117633.4).",
+        "nota_seasonal_naive": "sarima (rmse=117605.3) supera a seasonal_naive (rmse=117633.4).",
         "modelos_excluidos_sin_metrica": []
       },
       "fig_forecast": "figs/20_forecast_El_Salvador.png"
@@ -898,7 +898,7 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 444.4519659275218,
+            "stat": 444.45196592752177,
             "pvalue": 1.4226965318276517e-87,
             "alpha": 0.05,
             "independientes": false
@@ -911,11 +911,11 @@
           "parametros": {
             "alpha": 0.9999999850988388
           },
-          "aic": -377.2840532235291,
-          "bic": -371.30318804997165,
+          "aic": -377.28405322352893,
+          "bic": -371.3031880499715,
           "ljung_box": {
-            "stat": 47.44807861487523,
-            "pvalue": 3.8981832672679536e-06,
+            "stat": 47.4480786077258,
+            "pvalue": 3.898183278405348e-06,
             "alpha": 0.05,
             "independientes": false
           },
@@ -930,18 +930,18 @@
             "seasonal_periods": 12,
             "alpha": 0.9999999850988388,
             "beta": 0.0,
-            "gamma": 1.4900207339307488e-08
+            "gamma": 1.4900802589388484e-08
           },
-          "aic": -430.73176072077473,
-          "bic": -382.884839332315,
+          "aic": -430.731760720414,
+          "bic": -382.88483933195425,
           "ljung_box": {
-            "stat": 24.79188206188764,
-            "pvalue": 0.01584045783206978,
+            "stat": 24.791882100454437,
+            "pvalue": 0.01584045763757362,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 44222.49144561319,
-          "rmse": 54635.656505058774,
+          "mae": 44222.4821848348,
+          "rmse": 54635.65212529061,
           "n_obs_comparados": 63
         },
         "sarima": {
@@ -958,16 +958,16 @@
               12
             ]
           },
-          "aic": -7.316796067766994,
-          "bic": 4.244600445120021,
+          "aic": -7.316796094060038,
+          "bic": 4.244600418826977,
           "ljung_box": {
-            "stat": 24.53807453082191,
-            "pvalue": 0.017170019298910908,
+            "stat": 24.53805230093805,
+            "pvalue": 0.01717014019287746,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 35038.016732021315,
-          "rmse": 53135.829671040316,
+          "mae": 35037.935431779326,
+          "rmse": 53135.854946450825,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -979,22 +979,22 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 267.6596807537869,
-            "pvalue": 2.808213349580545e-50,
+            "stat": 268.5959669201122,
+            "pvalue": 1.7891344233943488e-50,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 29031.64435960683,
-          "rmse": 57646.31979439853,
+          "mae": 28998.38698006343,
+          "rmse": 57422.55476607515,
           "n_obs_comparados": 63
         }
       },
       "ganador": {
         "modelo": "sarima",
         "criterio": "rmse",
-        "valor": 53135.829671040316,
+        "valor": 53135.854946450825,
         "gana_seasonal_naive_a_sarima": false,
-        "nota_seasonal_naive": "sarima (rmse=53135.8) supera a seasonal_naive (rmse=58176.3).",
+        "nota_seasonal_naive": "sarima (rmse=53135.9) supera a seasonal_naive (rmse=58176.3).",
         "modelos_excluidos_sin_metrica": []
       },
       "fig_forecast": "figs/20_forecast_Guatemala.png"
@@ -1011,8 +1011,8 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 225.39541087977517,
-            "pvalue": 1.8027168038125247e-41,
+            "stat": 225.39541087977514,
+            "pvalue": 1.802716803812524e-41,
             "alpha": 0.05,
             "independientes": false
           },
@@ -1024,11 +1024,11 @@
           "parametros": {
             "alpha": 0.9999999850988388
           },
-          "aic": 20.060718043836573,
-          "bic": 26.041583217394045,
+          "aic": 20.060718043836076,
+          "bic": 26.041583217393548,
           "ljung_box": {
-            "stat": 33.63854687863793,
-            "pvalue": 0.0007689547063214539,
+            "stat": 33.63854628047753,
+            "pvalue": 0.0007689548727105928,
             "alpha": 0.05,
             "independientes": false
           },
@@ -1043,18 +1043,18 @@
             "seasonal_periods": 12,
             "alpha": 0.9999999850988388,
             "beta": 0.0,
-            "gamma": 1.490103431068516e-08
+            "gamma": 1.4900998034335083e-08
           },
-          "aic": 25.230350132308395,
-          "bic": 73.07727152076818,
+          "aic": 25.230349989498208,
+          "bic": 73.07727137795798,
           "ljung_box": {
-            "stat": 44.03112197415281,
-            "pvalue": 1.5086272516592145e-05,
+            "stat": 44.031118501969985,
+            "pvalue": 1.5086293066210652e-05,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 34198.02877270252,
-          "rmse": 37645.116515322865,
+          "mae": 34195.19433185886,
+          "rmse": 37642.050537754665,
           "n_obs_comparados": 63
         },
         "sarima": {
@@ -1071,16 +1071,16 @@
               12
             ]
           },
-          "aic": 395.3988259577783,
-          "bic": 412.6500098969852,
+          "aic": 395.3988251608355,
+          "bic": 412.6500091000424,
           "ljung_box": {
-            "stat": 18.372444904628697,
-            "pvalue": 0.10484090242651495,
+            "stat": 18.37079928341868,
+            "pvalue": 0.10488686021534738,
             "alpha": 0.05,
             "independientes": true
           },
-          "mae": 41134.88945889204,
-          "rmse": 44576.38683861993,
+          "mae": 41135.38237848794,
+          "rmse": 44576.8225211543,
           "n_obs_comparados": 63
         },
         "prophet": {
@@ -1092,13 +1092,13 @@
           "aic": null,
           "bic": null,
           "ljung_box": {
-            "stat": 207.90238350585312,
-            "pvalue": 7.598509933885609e-38,
+            "stat": 208.04465974939518,
+            "pvalue": 7.100752308690467e-38,
             "alpha": 0.05,
             "independientes": false
           },
-          "mae": 43723.82199041123,
-          "rmse": 46906.18360592822,
+          "mae": 43686.12686518499,
+          "rmse": 46869.97454819262,
           "n_obs_comparados": 63
         }
       },
@@ -1107,7 +1107,7 @@
         "criterio": "rmse",
         "valor": 28953.07765049577,
         "gana_seasonal_naive_a_sarima": true,
-        "nota_seasonal_naive": "seasonal_naive (rmse=44196.2) iguala o supera a sarima (rmse=44576.4): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
+        "nota_seasonal_naive": "seasonal_naive (rmse=44196.2) iguala o supera a sarima (rmse=44576.8): el componente ARIMA no está agregando valor frente al piso ingenuo en esta serie.",
         "modelos_excluidos_sin_metrica": []
       },
       "fig_forecast": "figs/20_forecast_Estados_Unidos_de_America.png"
@@ -1117,9 +1117,9 @@
     "vias": {
       "detalle": {
         "Aérea": {
-          "fuerza_estacionalidad": 0.5581476627853184,
-          "pendiente_anual": 2237.030542774508,
-          "pct_anual_sobre_media": 2.424487937448977,
+          "fuerza_estacionalidad": 0.5581476627853182,
+          "pendiente_anual": 2237.0305427745106,
+          "pct_anual_sobre_media": 2.4244879374489803,
           "cv": 0.3299535796286186,
           "impacto_pandemia": {
             "anio_base": 2019,
@@ -1132,7 +1132,7 @@
           "racha_ceros_max": 0
         },
         "Terrestre": {
-          "fuerza_estacionalidad": 0.3865812400486459,
+          "fuerza_estacionalidad": 0.386581240048646,
           "pendiente_anual": 12373.18938748194,
           "pct_anual_sobre_media": 8.38082453397114,
           "cv": 0.5166416297093888,
@@ -1148,8 +1148,8 @@
         },
         "Marítima": {
           "fuerza_estacionalidad": 0.6143625980651215,
-          "pendiente_anual": 286.40390449712186,
-          "pct_anual_sobre_media": 3.4369178836017236,
+          "pendiente_anual": 286.40390449712197,
+          "pct_anual_sobre_media": 3.436917883601725,
           "cv": 0.8677490270631351,
           "impacto_pandemia": {
             "anio_base": 2019,
@@ -1198,7 +1198,7 @@
           "racha_ceros_max": 5
         },
         "Guatemala": {
-          "fuerza_estacionalidad": 0.5340471780190739,
+          "fuerza_estacionalidad": 0.534047178019074,
           "pendiente_anual": 6946.24267209965,
           "pct_anual_sobre_media": 7.632058020021476,
           "cv": 0.46008985173373745,
@@ -1213,7 +1213,7 @@
           "racha_ceros_max": 0
         },
         "Estados Unidos de América": {
-          "fuerza_estacionalidad": 0.7030192049779346,
+          "fuerza_estacionalidad": 0.7030192049779345,
           "pendiente_anual": 541.0252827573913,
           "pct_anual_sobre_media": 1.8711480634405513,
           "cv": 0.3957367722763906,
@@ -1230,7 +1230,7 @@
       },
       "mas_estacionalidad": {
         "serie": "Estados Unidos de América",
-        "valor": 0.7030192049779346
+        "valor": 0.7030192049779345
       },
       "mas_tendencia_crecimiento": {
         "serie": "Guatemala",

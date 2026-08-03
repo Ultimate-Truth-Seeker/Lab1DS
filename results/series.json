@@ -26,8 +26,8 @@
       "meses_en_cero": 0,
       "racha_ceros_max": 0,
       "adf": {
-        "stat": -1.9700820414677906,
-        "pvalue": 0.29984314212502194,
+        "stat": -1.9700820414677893,
+        "pvalue": 0.2998431421250224,
         "alpha": 0.05,
         "estacionaria": false
       },
@@ -36,7 +36,7 @@
         "modelo": "additive",
         "periodo": 12,
         "serie_base": "log1p",
-        "fuerza_estacionalidad": 0.22385935291579384,
+        "fuerza_estacionalidad": 0.2238593529157935,
         "umbral_estacionalidad_fuerte": 0.64,
         "estacionalidad_fuerte": false,
         "pendiente_mensual": 0.001580588004510694,
@@ -79,13 +79,13 @@
         "pruebas_por_d": [
           {
             "d": 0,
-            "adf_pvalue": 0.19358137884673693,
+            "adf_pvalue": 0.19358137884673782,
             "kpss_pvalue_reportable": ">0.1",
             "ambas_estacionaria": false
           },
           {
             "d": 1,
-            "adf_pvalue": 0.026531787801159574,
+            "adf_pvalue": 0.026531787801159334,
             "kpss_pvalue_reportable": ">0.1",
             "ambas_estacionaria": true
           }
@@ -94,8 +94,8 @@
       "pruebas": {
         "nivel": {
           "adf": {
-            "stat": -1.9700820414677906,
-            "pvalue": 0.29984314212502194,
+            "stat": -1.9700820414677893,
+            "pvalue": 0.2998431421250224,
             "alpha": 0.05,
             "estacionaria": false
           },
@@ -112,13 +112,13 @@
         },
         "transformada": {
           "adf": {
-            "stat": -2.235593980326036,
-            "pvalue": 0.19358137884673693,
+            "stat": -2.2355939803260334,
+            "pvalue": 0.19358137884673782,
             "alpha": 0.05,
             "estacionaria": false
           },
           "kpss": {
-            "stat": 0.16760788672892193,
+            "stat": 0.1676078867289219,
             "pvalue": 0.1,
             "pvalue_topado": true,
             "limite": ">",
@@ -130,13 +130,13 @@
         },
         "final": {
           "adf": {
-            "stat": -3.1002892809892333,
-            "pvalue": 0.026531787801159574,
+            "stat": -3.100289280989237,
+            "pvalue": 0.026531787801159334,
             "alpha": 0.05,
             "estacionaria": true
           },
           "kpss": {
-            "stat": 0.041147922835071356,
+            "stat": 0.04114792283507135,
             "pvalue": 0.1,
             "pvalue_topado": true,
             "limite": ">",
@@ -167,8 +167,8 @@
       "meses_en_cero": 0,
       "racha_ceros_max": 0,
       "adf": {
-        "stat": -2.3637391826888505,
-        "pvalue": 0.15223331912213406,
+        "stat": -2.3637391826888496,
+        "pvalue": 0.15223331912213434,
         "alpha": 0.05,
         "estacionaria": false
       },
@@ -177,7 +177,7 @@
         "modelo": "additive",
         "periodo": 12,
         "serie_base": "log1p",
-        "fuerza_estacionalidad": 0.14623191535099833,
+        "fuerza_estacionalidad": 0.14623191535099844,
         "umbral_estacionalidad_fuerte": 0.64,
         "estacionalidad_fuerte": false,
         "pendiente_mensual": -0.0032490077659465795,
@@ -229,8 +229,8 @@
       "pruebas": {
         "nivel": {
           "adf": {
-            "stat": -2.3637391826888505,
-            "pvalue": 0.15223331912213406,
+            "stat": -2.3637391826888496,
+            "pvalue": 0.15223331912213434,
             "alpha": 0.05,
             "estacionaria": false
           },
@@ -253,7 +253,7 @@
             "estacionaria": true
           },
           "kpss": {
-            "stat": 0.2483210139282369,
+            "stat": 0.24832101392823688,
             "pvalue": 0.1,
             "pvalue_topado": true,
             "limite": ">",
@@ -271,7 +271,7 @@
             "estacionaria": true
           },
           "kpss": {
-            "stat": 0.2483210139282369,
+            "stat": 0.24832101392823688,
             "pvalue": 0.1,
             "pvalue_topado": true,
             "limite": ">",
@@ -302,8 +302,8 @@
       "meses_en_cero": 0,
       "racha_ceros_max": 0,
       "adf": {
-        "stat": -1.8725677323453351,
-        "pvalue": 0.3450740877252113,
+        "stat": -1.8725677323453347,
+        "pvalue": 0.3450740877252115,
         "alpha": 0.05,
         "estacionaria": false
       },
@@ -312,12 +312,12 @@
         "modelo": "additive",
         "periodo": 12,
         "serie_base": "log1p",
-        "fuerza_estacionalidad": 0.24458006494546047,
+        "fuerza_estacionalidad": 0.2445800649454608,
         "umbral_estacionalidad_fuerte": 0.64,
         "estacionalidad_fuerte": false,
-        "pendiente_mensual": 0.003966132868387859,
-        "pendiente_anual": 0.047593594420654306,
-        "pct_anual_sobre_media": 0.40490015027129034,
+        "pendiente_mensual": 0.003966132868387897,
+        "pendiente_anual": 0.047593594420654764,
+        "pct_anual_sobre_media": 0.4049001502712942,
         "tendencia_signo": "positiva",
         "n_puntos_tendencia": 135
       },
@@ -333,7 +333,7 @@
         "corr_nivel_pre_pandemia": 0.9441113509691389,
         "corr_nivel_completo": 0.06671812817541782,
         "nota_pandemia": "medida sobre la serie completa la correlacion baja o cambia de signo: el colapso de 2020-2021 enmascara la dependencia varianza-nivel",
-        "corr_post_transformacion": 0.15774107358566863
+        "corr_post_transformacion": 0.15774107358566902
       },
       "transformacion": {
         "nombre": "log1p",
@@ -355,13 +355,13 @@
         "pruebas_por_d": [
           {
             "d": 0,
-            "adf_pvalue": 0.5618963338518638,
+            "adf_pvalue": 0.5618963338518645,
             "kpss_pvalue_reportable": ">0.1",
             "ambas_estacionaria": false
           },
           {
             "d": 1,
-            "adf_pvalue": 0.009070833750134207,
+            "adf_pvalue": 0.009070833750134266,
             "kpss_pvalue_reportable": ">0.1",
             "ambas_estacionaria": true
           }
@@ -370,8 +370,8 @@
       "pruebas": {
         "nivel": {
           "adf": {
-            "stat": -1.8725677323453351,
-            "pvalue": 0.3450740877252113,
+            "stat": -1.8725677323453347,
+            "pvalue": 0.3450740877252115,
             "alpha": 0.05,
             "estacionaria": false
           },
@@ -388,8 +388,8 @@
         },
         "transformada": {
           "adf": {
-            "stat": -1.4421791294963593,
-            "pvalue": 0.5618963338518638,
+            "stat": -1.4421791294963577,
+            "pvalue": 0.5618963338518645,
             "alpha": 0.05,
             "estacionaria": false
           },
@@ -406,13 +406,13 @@
         },
         "final": {
           "adf": {
-            "stat": -3.4601726392412733,
-            "pvalue": 0.009070833750134207,
+            "stat": -3.460172639241271,
+            "pvalue": 0.009070833750134266,
             "alpha": 0.05,
             "estacionaria": true
           },
           "kpss": {
-            "stat": 0.10139234383347018,
+            "stat": 0.10139234383347014,
             "pvalue": 0.1,
             "pvalue_topado": true,
             "limite": ">",
@@ -443,8 +443,8 @@
       "meses_en_cero": 16,
       "racha_ceros_max": 12,
       "adf": {
-        "stat": -0.9893818845320322,
-        "pvalue": 0.7571172873966927,
+        "stat": -0.9893818845320331,
+        "pvalue": 0.7571172873966923,
         "alpha": 0.05,
         "estacionaria": false
       },
@@ -502,13 +502,13 @@
           },
           {
             "d": 1,
-            "adf_pvalue": 0.5749719689733668,
+            "adf_pvalue": 0.5749719689733612,
             "kpss_pvalue_reportable": ">0.1",
             "ambas_estacionaria": false
           },
           {
             "d": 2,
-            "adf_pvalue": 1.5878661557231832e-16,
+            "adf_pvalue": 1.5878661557232863e-16,
             "kpss_pvalue_reportable": ">0.1",
             "ambas_estacionaria": true
           }
@@ -517,8 +517,8 @@
       "pruebas": {
         "nivel": {
           "adf": {
-            "stat": -0.9893818845320322,
-            "pvalue": 0.7571172873966927,
+            "stat": -0.9893818845320331,
+            "pvalue": 0.7571172873966923,
             "alpha": 0.05,
             "estacionaria": false
           },
@@ -535,14 +535,14 @@
         },
         "transformada": {
           "adf": {
-            "stat": 4.889211946675647,
+            "stat": 4.889211946675654,
             "pvalue": 1.0,
             "alpha": 0.05,
             "estacionaria": false
           },
           "kpss": {
-            "stat": 0.66556880419531,
-            "pvalue": 0.01667556325497182,
+            "stat": 0.6655688041953096,
+            "pvalue": 0.016675563254971854,
             "pvalue_topado": false,
             "limite": "=",
             "pvalue_reportable": "0.0167",
@@ -553,13 +553,13 @@
         },
         "final": {
           "adf": {
-            "stat": -9.633624200941727,
-            "pvalue": 1.5878661557231832e-16,
+            "stat": -9.633624200941714,
+            "pvalue": 1.5878661557232863e-16,
             "alpha": 0.05,
             "estacionaria": true
           },
           "kpss": {
-            "stat": 0.2546008850410646,
+            "stat": 0.25460088504106676,
             "pvalue": 0.1,
             "pvalue_topado": true,
             "limite": ">",
@@ -590,8 +590,8 @@
       "meses_en_cero": 5,
       "racha_ceros_max": 5,
       "adf": {
-        "stat": -1.780707786559189,
-        "pvalue": 0.3900809274184229,
+        "stat": -1.7807077865591892,
+        "pvalue": 0.39008092741842265,
         "alpha": 0.05,
         "estacionaria": false
       },
@@ -600,12 +600,12 @@
         "modelo": "additive",
         "periodo": 12,
         "serie_base": "log1p",
-        "fuerza_estacionalidad": 0.08828818995800125,
+        "fuerza_estacionalidad": 0.08828818995800114,
         "umbral_estacionalidad_fuerte": 0.64,
         "estacionalidad_fuerte": false,
-        "pendiente_mensual": -0.006547000057489028,
-        "pendiente_anual": -0.07856400068986834,
-        "pct_anual_sobre_media": -0.7356952347873613,
+        "pendiente_mensual": -0.006547000057489049,
+        "pendiente_anual": -0.07856400068986859,
+        "pct_anual_sobre_media": -0.7356952347873635,
         "tendencia_signo": "negativa",
         "n_puntos_tendencia": 135
       },
@@ -621,7 +621,7 @@
         "corr_nivel_pre_pandemia": 0.9364196788680307,
         "corr_nivel_completo": 0.14920934611562942,
         "nota_pandemia": "medida sobre la serie completa la correlacion baja o cambia de signo: el colapso de 2020-2021 enmascara la dependencia varianza-nivel",
-        "corr_post_transformacion": 0.12411861224982158
+        "corr_post_transformacion": 0.12411861224982149
       },
       "transformacion": {
         "nombre": "log1p",
@@ -643,13 +643,13 @@
         "pruebas_por_d": [
           {
             "d": 0,
-            "adf_pvalue": 0.43247871057598564,
+            "adf_pvalue": 0.4324787105759871,
             "kpss_pvalue_reportable": ">0.1",
             "ambas_estacionaria": false
           },
           {
             "d": 1,
-            "adf_pvalue": 2.25390922307677e-07,
+            "adf_pvalue": 2.253909223076873e-07,
             "kpss_pvalue_reportable": ">0.1",
             "ambas_estacionaria": true
           }
@@ -658,8 +658,8 @@
       "pruebas": {
         "nivel": {
           "adf": {
-            "stat": -1.780707786559189,
-            "pvalue": 0.3900809274184229,
+            "stat": -1.7807077865591892,
+            "pvalue": 0.39008092741842265,
             "alpha": 0.05,
             "estacionaria": false
           },
@@ -676,8 +676,8 @@
         },
         "transformada": {
           "adf": {
-            "stat": -1.6973493030854112,
-            "pvalue": 0.43247871057598564,
+            "stat": -1.6973493030854088,
+            "pvalue": 0.4324787105759871,
             "alpha": 0.05,
             "estacionaria": false
           },
@@ -694,8 +694,8 @@
         },
         "final": {
           "adf": {
-            "stat": -5.94162031058413,
-            "pvalue": 2.25390922307677e-07,
+            "stat": -5.941620310584121,
+            "pvalue": 2.253909223076873e-07,
             "alpha": 0.05,
             "estacionaria": true
           },
@@ -744,9 +744,9 @@
         "fuerza_estacionalidad": 0.3371436710984852,
         "umbral_estacionalidad_fuerte": 0.64,
         "estacionalidad_fuerte": false,
-        "pendiente_mensual": 0.0044420173325950656,
-        "pendiente_anual": 0.05330420799114079,
-        "pct_anual_sobre_media": 0.4715430479081266,
+        "pendiente_mensual": 0.004442017332595042,
+        "pendiente_anual": 0.05330420799114051,
+        "pct_anual_sobre_media": 0.4715430479081241,
         "tendencia_signo": "positiva",
         "n_puntos_tendencia": 135
       },
@@ -784,13 +784,13 @@
         "pruebas_por_d": [
           {
             "d": 0,
-            "adf_pvalue": 0.38465990433317776,
+            "adf_pvalue": 0.3846599043331779,
             "kpss_pvalue_reportable": ">0.1",
             "ambas_estacionaria": false
           },
           {
             "d": 1,
-            "adf_pvalue": 0.03654043100153716,
+            "adf_pvalue": 0.036540431001536526,
             "kpss_pvalue_reportable": ">0.1",
             "ambas_estacionaria": true
           }
@@ -817,8 +817,8 @@
         },
         "transformada": {
           "adf": {
-            "stat": -1.7915599854479143,
-            "pvalue": 0.38465990433317776,
+            "stat": -1.7915599854479138,
+            "pvalue": 0.3846599043331779,
             "alpha": 0.05,
             "estacionaria": false
           },
@@ -835,13 +835,13 @@
         },
         "final": {
           "adf": {
-            "stat": -2.98271505412849,
-            "pvalue": 0.03654043100153716,
+            "stat": -2.982715054128496,
+            "pvalue": 0.036540431001536526,
             "alpha": 0.05,
             "estacionaria": true
           },
           "kpss": {
-            "stat": 0.06767028534671116,
+            "stat": 0.06767028534671111,
             "pvalue": 0.1,
             "pvalue_topado": true,
             "limite": ">",
@@ -872,8 +872,8 @@
       "meses_en_cero": 5,
       "racha_ceros_max": 5,
       "adf": {
-        "stat": -3.1223223442498798,
-        "pvalue": 0.024944736205908643,
+        "stat": -3.1223223442498806,
+        "pvalue": 0.024944736205908594,
         "alpha": 0.05,
         "estacionaria": true
       },
@@ -882,12 +882,12 @@
         "modelo": "additive",
         "periodo": 12,
         "serie_base": "log1p",
-        "fuerza_estacionalidad": 0.09175301440309025,
+        "fuerza_estacionalidad": 0.09175301440309036,
         "umbral_estacionalidad_fuerte": 0.64,
         "estacionalidad_fuerte": false,
         "pendiente_mensual": -0.010481021062682042,
         "pendiente_anual": -0.1257722527521845,
-        "pct_anual_sobre_media": -1.2652432032300693,
+        "pct_anual_sobre_media": -1.2652432032300691,
         "tendencia_signo": "negativa",
         "n_puntos_tendencia": 135
       },
@@ -903,7 +903,7 @@
         "corr_nivel_pre_pandemia": 0.9015914621562812,
         "corr_nivel_completo": -0.32435697854184575,
         "nota_pandemia": "medida sobre la serie completa la correlacion baja o cambia de signo: el colapso de 2020-2021 enmascara la dependencia varianza-nivel",
-        "corr_post_transformacion": -0.13275180741254586
+        "corr_post_transformacion": -0.13275180741254697
       },
       "transformacion": {
         "nombre": "log1p",
@@ -925,13 +925,13 @@
         "pruebas_por_d": [
           {
             "d": 0,
-            "adf_pvalue": 0.05011616428827316,
+            "adf_pvalue": 0.05011616428827238,
             "kpss_pvalue_reportable": ">0.1",
             "ambas_estacionaria": false
           },
           {
             "d": 1,
-            "adf_pvalue": 0.030718364095309158,
+            "adf_pvalue": 0.03071836409530909,
             "kpss_pvalue_reportable": ">0.1",
             "ambas_estacionaria": true
           }
@@ -940,8 +940,8 @@
       "pruebas": {
         "nivel": {
           "adf": {
-            "stat": -3.1223223442498798,
-            "pvalue": 0.024944736205908643,
+            "stat": -3.1223223442498806,
+            "pvalue": 0.024944736205908594,
             "alpha": 0.05,
             "estacionaria": true
           },
@@ -958,13 +958,13 @@
         },
         "transformada": {
           "adf": {
-            "stat": -2.8606720708448723,
-            "pvalue": 0.05011616428827316,
+            "stat": -2.8606720708448785,
+            "pvalue": 0.05011616428827238,
             "alpha": 0.05,
             "estacionaria": false
           },
           "kpss": {
-            "stat": 0.31631670363228054,
+            "stat": 0.31631670363228076,
             "pvalue": 0.1,
             "pvalue_topado": true,
             "limite": ">",
@@ -976,8 +976,8 @@
         },
         "final": {
           "adf": {
-            "stat": -3.0471657323537684,
-            "pvalue": 0.030718364095309158,
+            "stat": -3.047165732353769,
+            "pvalue": 0.03071836409530909,
             "alpha": 0.05,
             "estacionaria": true
           },
